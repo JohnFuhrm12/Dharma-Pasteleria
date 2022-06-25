@@ -1,0 +1,23 @@
+.page {
+    align-items: center;
+    text-align: center;
+}
+
+.title {
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    margin-top: 0px;
+}
+
+.categories {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 50px;
+}
+
+.categories h2 {
+    margin-right: 50px;
+}

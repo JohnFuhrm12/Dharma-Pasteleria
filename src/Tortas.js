@@ -5,6 +5,8 @@ import instagram from './static/instagram.webp';
 
 import cake1 from './static/torta1.png';
 import cake2 from './static/torta2.png';
+import Praline from './static/tortaPraline.png';
+import FrutosRojos from './static/tortaFrutosRojos.png';
 
 import {useState, useEffect} from 'react';
 
@@ -58,7 +60,24 @@ function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
           <h2 onClick={showOtros}>OTROS</h2>
         </div>
       </div>
-      <h1>Tortas</h1>
+      <div className='sectionBar'>
+        <h2 onClick={returnHome} className='sectionHeadingHome'>Inicio</h2>
+        <h2 className='sectionHeading'>/</h2>
+        <h2 className='sectionHeading'>Tortas</h2>
+      </div>
+      <h1>LAS TORTAS</h1>
+      <div className='sectionImages'>
+        <div className='sectionImagesTop'>
+          <div>
+            <img src={Praline} className="sectionIMG" alt="Praline"/>
+            <h1>Torta Praline</h1>
+          </div>
+          <div>
+            <img src={FrutosRojos} className="sectionIMG" alt="Frutos Rojos"/>
+            <h1>Torta Frutos Rojos</h1>
+          </div>
+        </div>
+      </div>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>
           <div className='footerInsta'>

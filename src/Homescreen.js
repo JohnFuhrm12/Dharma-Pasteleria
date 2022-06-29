@@ -106,25 +106,25 @@ function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
         <div className='selectionChoicesTop'>
           <div>
             <img onClick={showCakes} src={cake2} className="selectionIMG" alt="Selección-Tortas"/>
-            <h1  onClick={showCakes} className='selectionName'>TORTAS</h1>
+            <h1  onClick={showCakes} className='selectionName'>LAS TORTAS</h1>
           </div>
           <div>
             <img onClick={showTartas} src={tart1} className="selectionIMG" alt="Selección-Tartas"/>
-            <h1 onClick={showTartas} className='selectionName'>TARTAS</h1>
+            <h1 onClick={showTartas} className='selectionName'>LAS TARTAS</h1>
           </div>
           <div>
             <img onClick={showSalado} src={salty1} className="selectionIMG" alt="Selección-Salado"/>
-            <h1 onClick={showSalado} className='selectionName'>SALADO</h1>
+            <h1 onClick={showSalado} className='selectionName'>LO SALADO</h1>
           </div>
         </div>
         <div className='selectionChoicesBottom'>
           <div>
             <img onClick={showBudines} src={budin1} className="selectionIMG" alt="Selección-Budines"/>
-            <h1 onClick={showBudines} className='selectionName'>BUDINES</h1>
+            <h1 onClick={showBudines} className='selectionName'>LOS BUDINES</h1>
           </div>
           <div>
             <img onClick={showOtros} src={alfajores1} className="selectionIMG" alt="Selección-Otros"/>
-            <h1 onClick={showOtros} className='selectionName'>OTROS</h1>
+            <h1 onClick={showOtros} className='selectionName'>LOS OTROS</h1>
           </div>
         </div>
         <div className='whereFindSection'>

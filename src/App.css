@@ -36,7 +36,7 @@ html body {
     z-index: 2;
     margin-bottom: 5px;
     font-size: 28px;
-    margin-left: 10px;
+    margin-right: 110px;
 }
 
 .subtitle {
@@ -81,11 +81,23 @@ html body {
     margin-top: 40px;
 }
 
+.leftBarBox {
+    display: flex;
+    flex-direction: row;
+}
+
 .leftBar {
     font-size: 16px;
     font-weight: bold;
     margin-top: 25px;
     margin-left: 50px;
+}
+
+.vegan {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    margin-top: 25px;
 }
 
 .searchBar {

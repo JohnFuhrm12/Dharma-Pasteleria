@@ -3,6 +3,8 @@ import img1 from './pastry1.png';
 import img2 from './pastry2.png';
 import img3 from './pastry3.png';
 
+import vegan from './vegan.png';
+
 import cake1 from './torta1.png';
 import cake2 from './torta2.png';
 import tart1 from './tarta1.png';
@@ -39,7 +41,10 @@ function App() {
       <h1 className='titleBehindD'>D</h1>
       <h1 className='titleBehindP'>P</h1>
       <div className='titleBar'>
-        <h2 className='leftBar'>Pastelera Profesional Del IAG</h2>
+        <div className='leftBarBox'>
+          <h2 className='leftBar'>Pasteles Especiales Para Celiacos y Veganos</h2>
+          <img src={vegan} className="vegan" alt="Vegano"/>
+        </div>
         <h1 className='title'>Dharma Pastelería</h1>
         <input className='searchBar' type="text" placeholder="Buscar ..."></input>
       </div>

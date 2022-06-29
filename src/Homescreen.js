@@ -15,7 +15,7 @@ import alfajores1 from './static/alfajores1.png';
 
 import {useState, useEffect} from 'react';
 
-function Homescreen( {setCakesScreen, setHome, setTartasScreen}) {
+function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen}) {
   useEffect(() => {
     const buttons = document.querySelectorAll("[data-carousel-button]")
 
@@ -45,6 +45,22 @@ function Homescreen( {setCakesScreen, setHome, setTartasScreen}) {
     setHome(false);
   };
 
+  function showSalado() {
+    setSaladoScreen(true);
+    setHome(false);
+  };
+
+  function showBudines() {
+    setBudinesScreen(true);
+    setHome(false);
+  };
+
+  function showOtros() {
+    setOtrosScreen(true);
+    setHome(false);
+  };
+
+
   function refresh() {
     window.location.reload(false);
   };
@@ -67,9 +83,9 @@ function Homescreen( {setCakesScreen, setHome, setTartasScreen}) {
         <div className='categories'>
           <h2 onClick={showCakes}>TORTAS</h2>
           <h2 onClick={showTartas}>TARTAS</h2>
-          <h2>SALADO</h2>
-          <h2>BUDINES</h2>
-          <h2>OTROS</h2>
+          <h2 onClick={showSalado}>SALADO</h2>
+          <h2 onClick={showBudines}>BUDINES</h2>
+          <h2 onClick={showOtros}>OTROS</h2>
         </div>
       </div>
         <div className='carouselBlock'>
@@ -97,18 +113,18 @@ function Homescreen( {setCakesScreen, setHome, setTartasScreen}) {
             <h1 onClick={showTartas} className='selectionName'>TARTAS</h1>
           </div>
           <div>
-            <img src={salty1} className="selectionIMG" alt="Selección-Salado"/>
-            <h1 className='selectionName'>SALADO</h1>
+            <img onClick={showSalado} src={salty1} className="selectionIMG" alt="Selección-Salado"/>
+            <h1 onClick={showSalado} className='selectionName'>SALADO</h1>
           </div>
         </div>
         <div className='selectionChoicesBottom'>
           <div>
-            <img src={budin1} className="selectionIMG" alt="Selección-Budines"/>
-            <h1 className='selectionName'>BUDINES</h1>
+            <img onClick={showBudines} src={budin1} className="selectionIMG" alt="Selección-Budines"/>
+            <h1 onClick={showBudines} className='selectionName'>BUDINES</h1>
           </div>
           <div>
-            <img src={alfajores1} className="selectionIMG" alt="Selección-Otros"/>
-            <h1 className='selectionName'>OTROS</h1>
+            <img onClick={showOtros} src={alfajores1} className="selectionIMG" alt="Selección-Otros"/>
+            <h1 onClick={showOtros} className='selectionName'>OTROS</h1>
           </div>
         </div>
         <div className='whereFindSection'>

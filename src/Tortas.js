@@ -8,7 +8,7 @@ import cake2 from './static/torta2.png';
 
 import {useState, useEffect} from 'react';
 
-function Tortas( {setCakesScreen, setHome, setTartasScreen} ) {
+function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen} ) {
 
   function returnHome() {
     setCakesScreen(false);
@@ -18,6 +18,21 @@ function Tortas( {setCakesScreen, setHome, setTartasScreen} ) {
   function showTartas() {
     setCakesScreen(false);
     setTartasScreen(true);
+  };
+
+  function showSalado() {
+    setCakesScreen(false);
+    setSaladoScreen(true);
+  };
+
+  function showBudines() {
+    setCakesScreen(false);
+    setBudinesScreen(true);
+  };
+
+  function showOtros() {
+    setCakesScreen(false);
+    setOtrosScreen(true);
   };
 
   return (
@@ -38,9 +53,9 @@ function Tortas( {setCakesScreen, setHome, setTartasScreen} ) {
         <div className='categories'>
           <h2>TORTAS</h2>
           <h2 onClick={showTartas}>TARTAS</h2>
-          <h2>SALADO</h2>
-          <h2>BUDINES</h2>
-          <h2>OTROS</h2>
+          <h2 onClick={showSalado}>SALADO</h2>
+          <h2 onClick={showBudines}>BUDINES</h2>
+          <h2 onClick={showOtros}>OTROS</h2>
         </div>
       </div>
       <h1>Tortas</h1>

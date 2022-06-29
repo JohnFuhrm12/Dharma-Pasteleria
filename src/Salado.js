@@ -5,33 +5,32 @@ import instagram from './static/instagram.webp';
 
 import {useState, useEffect} from 'react';
 
-function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen} ) {
+function Salado( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen} ) {
 
-    function returnHome() {
-        setTartasScreen(false);
-        setHome(true);
-      };
-
-
-    function showTortas() {
-        setTartasScreen(false);
-        setCakesScreen(true);
-    };
-
-    function showSalado() {
-      setTartasScreen(false);
-      setSaladoScreen(true);
+  function returnHome() {
+    setSaladoScreen(false);
+    setHome(true);
   };
 
-    function showBudines() {
-      setTartasScreen(false);
-      setBudinesScreen(true);
+  function showCakes() {
+    setSaladoScreen(false);
+    setCakesScreen(true);
+  };
+
+  function showTartas() {
+    setSaladoScreen(false);
+    setTartasScreen(true);
+  };
+
+  function showBudines() {
+    setSaladoScreen(false);
+    setBudinesScreen(true);
   };
 
   function showOtros() {
-    setTartasScreen(false);
+    setSaladoScreen(false);
     setOtrosScreen(true);
-};
+  };
 
   return (
     <>
@@ -49,14 +48,14 @@ function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
       <div className='categories-box'>
         <div className='categories'>
-          <h2 onClick={showTortas}>TORTAS</h2>
-          <h2>TARTAS</h2>
-          <h2 onClick={showSalado}>SALADO</h2>
+          <h2 onClick={showCakes}>TORTAS</h2>
+          <h2 onClick={showTartas}>TARTAS</h2>
+          <h2>SALADO</h2>
           <h2 onClick={showBudines}>BUDINES</h2>
           <h2 onClick={showOtros}>OTROS</h2>
         </div>
       </div>
-      <h1>Tartas</h1>
+      <h1>Salado</h1>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>
           <div className='footerInsta'>
@@ -69,4 +68,4 @@ function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
   );
 }
 
-export default Tartas;
+export default Salado;

@@ -4,6 +4,7 @@ import img2 from './pastry2.png';
 import img3 from './pastry3.png';
 
 import vegan from './vegan.png';
+import instagram from './instagram.webp'; 
 
 import cake1 from './torta1.png';
 import cake2 from './torta2.png';
@@ -57,6 +58,7 @@ function App() {
           <h2>BUDINES</h2>
           <h2>OTROS</h2>
         </div>
+      </div>
         <div className='carouselBlock'>
           <div className="carousel" data-carousel>
               <button className="prev" data-carousel-button="prev">&#8249;</button>
@@ -96,7 +98,26 @@ function App() {
             <h1 className='selectionName'>OTROS</h1>
           </div>
         </div>
-      </div>
+        <div className='whereFindSection'>
+          <div className='whereFindTitles'>
+            <h1 className='whereFindTitleBehind'>La Tienda</h1>
+            <h1 className='whereFindTitle'>¿Donde Encontrarnos?</h1>
+          </div>
+          <div className='whereFindParagraphs'>
+            <p>Operamos desde casa adentro de la provincia de Buenos Aires. El punto de retiro es Caseros. La Dirección:</p>
+            <p>Dr. Amadeo Sabattini 4545, B1678 Caseros, Provincia de Buenos Aires, Argentina</p>
+          </div>
+          <div className='whereFindParagraphs2'>
+            <p>Todos los pedidos encargados serán retirados o enviados a domicilio despues de 24 horas realizada la compra. Contactanos a través de Whatsapp para coordinar las entregas.</p>
+          </div>
+        </div>
+        <div className='footer'>
+          <h1>Dharma Pastelería</h1>
+          <div className='footerInsta'>
+            <h1>Seguinos en Instagram:</h1>
+            <a href='https://www.instagram.com/dharma.pasteleria/'><img src={instagram} className="instagram" alt="Instagram"/></a>
+          </div>
+        </div>
     </div>
     </>
   );

@@ -432,11 +432,10 @@ html body {
 .quantity {
     cursor: pointer;
     border: solid 1px black;
-    padding-bottom: 15px;
+    height: 48px;
     padding-left: 10px;
     padding-right: 10px;
-    height: 25px;
-    margin-top: -1px;
+    margin: 0px;
     font-size: 20px;
 }
 

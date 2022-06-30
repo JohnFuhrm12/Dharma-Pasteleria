@@ -22,16 +22,17 @@ function App() {
   const [productImage, setProductImage] = useState();
   const [productName, setProductName] = useState(''); 
   const [productPrice, setProductPrice] = useState(''); 
+  const [productDesc, setProductDesc] = useState(''); 
 
   return (
     <>
       {home ? <Homescreen setHome={setHome} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div> }
-      {cakesScreen && home === false ? <Tortas setHome={setHome} setProductScreen={setProductScreen} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
+      {cakesScreen && home === false ? <Tortas setHome={setHome} setProductScreen={setProductScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
       {tartasScreen && home === false ? <Tartas setHome={setHome} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
       {saladoScreen && home === false ? <Salado setHome={setHome} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
       {budinesScreen && home === false ? <Budines setHome={setHome} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
       {otrosScreen && home === false ? <Otros setHome={setHome} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
-      {productScreen && home === false && cakesScreen === false && tartasScreen === false && saladoScreen === false && budinesScreen === false && otrosScreen === false ? <Product setHome={setHome} setProductScreen={setProductScreen} productImage={productImage} setProductImage={setProductImage} productName={productName}setProductName={setProductName} productPrice={productPrice} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
+      {productScreen && home === false && cakesScreen === false && tartasScreen === false && saladoScreen === false && budinesScreen === false && otrosScreen === false ? <Product setHome={setHome} setProductScreen={setProductScreen} productImage={productImage} setProductImage={setProductImage} productName={productName}setProductName={setProductName} productPrice={productPrice} productDesc={productDesc} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
     </>
   );
 }

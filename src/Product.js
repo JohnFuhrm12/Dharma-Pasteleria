@@ -11,7 +11,7 @@ import Oreo from './static/tortaOreo.png';
 
 import {useState, useEffect} from 'react';
 
-function Product( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
+function Product( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
 
   const [quantity, setQuantity] = useState(0);
 
@@ -99,11 +99,12 @@ function Product( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, se
           <h1 className='sectionTitle'>{productName}</h1>
           <h1 className='itemName'>{productName}</h1>
           <h1 className='itemPrice'>{productPrice}</h1>
+          <p className='itemDesc'>{productDesc}</p>
           <div className='addSubtCart'>
             <button className='subtButton' onClick={subtract}>-</button>
             <h1 className='quantity'>{quantity}</h1>
             <button className='addButton' onClick={add}>+</button>
-            <button>Agrega al Carrito</button>
+            <button className='addCartButton'>Agregar al Carrito</button>
           </div>
         </div>
       </div>

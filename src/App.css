@@ -314,6 +314,12 @@ html body {
     transition: 0.2s;
 }
 
+.sectionTitle {
+    color: black;
+    font-family: 'Dancing Script';
+    font-size: 40px;
+}
+
 .sectionBar {
     background-color: rgb(224, 212, 197);
     display: flex;
@@ -332,17 +338,12 @@ html body {
 }
 
 .sectionImages {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-left: 15%;
-    margin-right: 15%;
-    margin-bottom: 100px;
+    margin-bottom: 60px;
 }
 
 .sectionIMG {
-    width: 300px;
-    height: 300px;
+    width: 280px;
+    height: 280px;
     border: solid 4px rgb(139, 123, 103);
     border-radius: 20px;
     margin-left: 50px;
@@ -354,8 +355,8 @@ html body {
 }
 
 .sectionIMG:hover {
-    width: 320px;
-    height: 320px;
+    width: 300px;
+    height: 300px;
     border: solid 4px rgb(139, 123, 103);
     border-radius: 20px;
     margin-left: 40px;
@@ -372,4 +373,24 @@ html body {
     justify-content: space-around;
     margin-left: 25%;
     margin-right: 25%;
+    margin-top: -40px;
+}
+
+.itemName {
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.itemPrice {
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.sectionImagesBottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: -10px;
 }

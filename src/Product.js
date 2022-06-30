@@ -3,8 +3,6 @@ import './App.css';
 import vegan from './static/vegan.png';
 import instagram from './static/instagram.webp'; 
 
-import cake1 from './static/torta1.png';
-import cake2 from './static/torta2.png';
 import Praline from './static/tortaPraline.png';
 import FrutosRojos from './static/tortaFrutosRojos.png';
 import Vegana from './static/tortaVegana.png';
@@ -13,11 +11,24 @@ import Oreo from './static/tortaOreo.png';
 
 import {useState, useEffect} from 'react';
 
-function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice} ) {
+function Product( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
+
+  const [quantity, setQuantity] = useState(0);
+
+  useEffect(() => {
+    console.log('Image:', productImage);
+    console.log('Name:', productName);
+    console.log('Price:', productPrice);
+  }, []);
 
   function returnHome() {
-    setCakesScreen(false);
+    setProductScreen(false);
     setHome(true);
+  };
+
+  function showCakes() {
+    setProductScreen(false);
+    setCakesScreen(true);
   };
 
   function showTartas() {
@@ -40,14 +51,14 @@ function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
     setOtrosScreen(true);
   };
 
-  function goToProduct(e) {
-    setCakesScreen(false);
-    setProductScreen(true);
-    setProductImage(e.currentTarget.title);
-    setProductName(e.currentTarget.name);
-    setProductPrice(e.currentTarget.id);
-    //console.log(e.currentTarget);
-    //console.log(e.currentTarget.innerHTML);
+  function subtract() {
+    if (quantity > 0) {
+      setQuantity(quantity - 1);
+    };
+  };
+
+  function add() {
+    setQuantity(quantity + 1);
   };
 
   return (
@@ -66,7 +77,7 @@ function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
       <div className='categories-box'>
         <div className='categories'>
-          <h2>TORTAS</h2>
+          <h2 onClick={showCakes}>TORTAS</h2>
           <h2 onClick={showTartas}>TARTAS</h2>
           <h2 onClick={showSalado}>SALADO</h2>
           <h2 onClick={showBudines}>BUDINES</h2>
@@ -77,36 +88,22 @@ function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
         <h2 onClick={returnHome} className='sectionHeadingHome'>Inicio</h2>
         <h2 className='sectionHeading'>/</h2>
         <h2 className='sectionHeading'>Tortas</h2>
+        <h2 className='sectionHeading'>/</h2>
+        <h2 className='sectionHeading'>{productName}</h2>
       </div>
-      <h1 className='sectionTitle'>LAS TORTAS</h1>
-      <div className='sectionImages'>
-        <div className='sectionImagesTop'>
-          <div>
-            <img onClick={goToProduct} src={Praline} className="sectionIMG" title={Praline} name="Torta Praline" id="$2.500" alt="Praline"/>
-            <h1 className='itemName'>Torta Praline</h1>
-            <h1 className='itemPrice'>$2.500</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={FrutosRojos} className="sectionIMG" title={FrutosRojos} name="Torta Frutos Rojos" id="$3.500" alt="Frutos Rojos"/>
-            <h1 className='itemName'>Torta Frutos Rojos</h1>
-            <h1 className='itemPrice'>$3.500</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={Vegana} className="sectionIMG" title={Vegana} name="Torta Vegana" id="$3.000" alt="Vegana"/>
-            <h1 className='itemName'>Torta Vegana</h1>
-            <h1 className='itemPrice'>$3.000</h1>
-          </div>
+      <div className='productWrapper'>
+        <div className='productImageSection'>
+          <img src={productImage} className="productIMG" alt="Foto de Producto"/>
         </div>
-        <div className='sectionImagesBottom'>
-          <div>
-            <img onClick={goToProduct} src={Nuez} className="sectionIMG" title={Nuez} name="Torta Nuez" id="$2.700" alt="Nuez"/>
-            <h1 className='itemName'>Torta Nuez</h1>
-            <h1 className='itemPrice'>$2.700</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={Oreo} className="sectionIMG" title={Oreo} name="Torta Oreo" id="$2.550" alt="Oreo"/>
-            <h1 className='itemName'>Torta Oreo</h1>
-            <h1 className='itemPrice'>$2.550</h1>
+        <div className='productDescSection'>
+          <h1 className='sectionTitle'>{productName}</h1>
+          <h1 className='itemName'>{productName}</h1>
+          <h1 className='itemPrice'>{productPrice}</h1>
+          <div className='addSubtCart'>
+            <button className='subtButton' onClick={subtract}>-</button>
+            <h1 className='quantity'>{quantity}</h1>
+            <button className='addButton' onClick={add}>+</button>
+            <button>Agrega al Carrito</button>
           </div>
         </div>
       </div>
@@ -122,4 +119,4 @@ function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
   );
 }
 
-export default Tortas;
+export default Product;

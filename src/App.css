@@ -394,3 +394,54 @@ html body {
     margin-right: 25%;
     margin-top: -10px;
 }
+
+.productWrapper {
+    display: flex;
+    flex-direction: row;
+    margin-left: 25%;
+    margin-bottom: 5%;
+}
+
+.productImageSection {
+    margin-right: 10%;
+}
+
+.productIMG {
+    width: 400px;
+    height: 400px;
+    border: solid 4px rgb(139, 123, 103);
+    border-radius: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 50px;
+    margin-bottom: 5px;
+}
+
+.addSubtCart {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+}
+
+.subtButton {
+    cursor: pointer;
+    border: solid 1px black;
+    padding: 5px;
+}
+
+.quantity {
+    cursor: pointer;
+    border: solid 1px black;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 25px;
+    margin-top: -1px;
+    font-size: 20px;
+}
+
+.addButton {
+    cursor: pointer;
+    border: solid 1px black;
+    padding: 5px;
+}

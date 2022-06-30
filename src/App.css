@@ -1,3 +1,4 @@
+/* Initial Setup */
 html body {
     overflow-x: hidden;
     margin: 0;
@@ -8,7 +9,9 @@ html body {
     text-align: center;
     font-family: 'Lato', sans-serif;
 }
+/* Initial Setup */
 
+/* Nav Bar */
 .titleBehindD {
     z-index: 1;
     color: rgb(139, 123, 103);
@@ -110,6 +113,7 @@ html body {
     height: 30px;
     margin-top: 10px;
 }
+/* Nav Bar */
 
 /* Home-screen Carousel */
 .carousel {
@@ -176,6 +180,7 @@ html body {
 }
 /* Home-screen Carousel */
 
+/* Home-screen Selection Section*/
 .selectionTitleBehind {
     z-index: 1;
     color: rgb(139, 123, 103);
@@ -244,7 +249,9 @@ html body {
     cursor: pointer;
     transition: 0.2s;
 }
+/* Home-screen Selection Section*/
 
+/* Home-screen WheretoFind Section*/
 .whereFindSection {
     background-color: rgb(253, 249, 244);
 }
@@ -280,7 +287,9 @@ html body {
 .whereFindParagraphs p {
     font-size: 19px;
 }
+/* Home-screen WheretoFind Section*/
 
+/* Footer*/
 .footer {
     background-color: rgb(224, 212, 197);
     display: flex;
@@ -313,7 +322,9 @@ html body {
     margin-right: -5px;
     transition: 0.2s;
 }
+/* Footer*/
 
+/* Product Type Section */
 .sectionTitle {
     color: black;
     font-family: 'Dancing Script';
@@ -376,6 +387,17 @@ html body {
     margin-top: -40px;
 }
 
+.sectionImagesBottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: -10px;
+}
+/* Product Type Section */
+
+/* Product Desc Section */
 .itemName {
     font-size: 18px;
     letter-spacing: 2px;
@@ -388,15 +410,6 @@ html body {
 
 .itemDesc {
     font-size: 20px;
-}
-
-.sectionImagesBottom {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-left: 25%;
-    margin-right: 25%;
-    margin-top: -10px;
 }
 
 .productWrapper {
@@ -479,3 +492,4 @@ html body {
     width: 400px;
     align-items: center;
 }
+/* Product Desc Section */

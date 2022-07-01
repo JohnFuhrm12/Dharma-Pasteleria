@@ -18,7 +18,7 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
-function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen}) {
+function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen}) {
   useEffect(() => {
     const buttons = document.querySelectorAll("[data-carousel-button]")
 
@@ -63,6 +63,10 @@ function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
     setHome(false);
   };
 
+  function showCart() {
+    setCartScreen(true);
+    setHome(false);
+  };
 
   function refresh() {
     window.location.reload(false);
@@ -82,7 +86,7 @@ function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
-          <img src={cart} className="cart" alt="Carrito"/>
+          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>0</p>
         </div>
       </div>

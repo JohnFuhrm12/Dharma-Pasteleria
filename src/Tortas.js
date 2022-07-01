@@ -15,7 +15,7 @@ import Oreo from './static/tortaOreo.png';
 
 import {useState, useEffect} from 'react';
 
-function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc} ) {
+function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
 
   function returnHome() {
     setCakesScreen(false);
@@ -40,6 +40,11 @@ function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
   function showOtros() {
     setCakesScreen(false);
     setOtrosScreen(true);
+  };
+
+  function showCart() {
+    setCartScreen(true);
+    setCakesScreen(false);
   };
 
   function goToProduct(e) {
@@ -67,7 +72,7 @@ function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
-          <img src={cart} className="cart" alt="Carrito"/>
+          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>0</p>
         </div>
       </div>

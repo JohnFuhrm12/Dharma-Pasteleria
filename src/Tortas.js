@@ -2,6 +2,8 @@ import './App.css';
 
 import vegan from './static/vegan.png';
 import instagram from './static/instagram.webp'; 
+import cart from './static/cart.png';
+import search from './static/search.png';
 
 import cake1 from './static/torta1.png';
 import cake2 from './static/torta2.png';
@@ -62,7 +64,12 @@ function Tortas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
           <img src={vegan} className="vegan" alt="Vegano"/>
         </div>
         <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
-        <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+        <div className='searchCart'>
+          <img src={search} className="search" alt="Buscar"/>
+          <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+          <img src={cart} className="cart" alt="Carrito"/>
+          <p className='cartQuantity'>0</p>
+        </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
       <div className='categories-box'>

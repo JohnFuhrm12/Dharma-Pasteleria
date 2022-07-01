@@ -13,6 +13,9 @@ import salty1 from './static/salado1.png';
 import budin1 from './static/budin1.png';
 import alfajores1 from './static/alfajores1.png';
 
+import cart from './static/cart.png';
+import search from './static/search.png';
+
 import {useState, useEffect} from 'react';
 
 function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen}) {
@@ -76,7 +79,12 @@ function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
           <img src={vegan} className="vegan" alt="Vegano"/>
         </div>
         <h1 onClick={refresh} className='title'>Dharma Pastelería</h1>
-        <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+        <div className='searchCart'>
+          <img src={search} className="search" alt="Buscar"/>
+          <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+          <img src={cart} className="cart" alt="Carrito"/>
+          <p className='cartQuantity'>0</p>
+        </div>
       </div>
       <h2 onClick={refresh} className='subtitle'>Buenos Aires</h2>
       <div className='categories-box'>

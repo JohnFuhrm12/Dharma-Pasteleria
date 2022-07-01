@@ -42,7 +42,7 @@ html body {
     z-index: 2;
     margin-bottom: 5px;
     font-size: 28px;
-    margin-right: 110px;
+    margin-left: 10px;
     cursor: pointer;
 }
 
@@ -108,10 +108,56 @@ html body {
     margin-top: 25px;
 }
 
-.searchBar {
+.searchCart {
+    display: flex;
+    flex-direction: row;
     margin-right: 100px;
+}
+
+.searchBar {
     height: 30px;
     margin-top: 10px;
+    margin-right: 10px;
+    border: solid 2px gray;
+}
+
+.cart {
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    margin-top: 15px;
+    cursor: pointer;
+    margin-left: 5px;
+    transition: 0.5s;
+}
+
+.cart:hover {
+    height: 32px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.cartQuantity {
+    z-index: 1;
+    margin-left: 10px;
+    font-weight: bold;
+    background-color: rgb(199, 77, 77);
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 50%;
+}
+
+.search {
+    z-index: 2;
+    width: 25px;
+    height: 25px;
+    padding: 3px;
+    padding-top: 4px;
+    margin-top: 10px;
+    margin-right: -2px;
+    border: solid 2px gray;
 }
 /* Nav Bar */
 

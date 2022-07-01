@@ -10,21 +10,24 @@ import Otros from './Otros';
 import Product from './Product';
 import Cart from './Cart';
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+// Firebase imports
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
+// Initialize Firebase Database
+firebase.initializeApp({
   apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
   authDomain: "dharma-ec35e.firebaseapp.com",
   projectId: "dharma-ec35e",
   storageBucket: "dharma-ec35e.appspot.com",
   messagingSenderId: "79111090409",
   appId: "1:79111090409:web:b41568c2860577b3844078"
-};
+});
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Firebase Database
+const db = firebase.firestore();
 
 function App() {
   const [home, setHome] = useState(true);

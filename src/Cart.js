@@ -7,7 +7,40 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
+// Firebase imports
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
+
+// Initialize Firebase Database
+firebase.initializeApp({
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
+});
+
+// Firebase Database
+const db = firebase.firestore();
+
 function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, currentUser} ) {
+
+    const [cartItems, setCartItems] = useState([]);
+
+    const cartRef = collection(db, "cart");
+
+    const getDbmessages = async () => {
+        const itemsRef = query(cartRef, where('user', '==', {currentUser}));
+        const currentQuerySnapshot = await getDocs(itemsRef);
+        setCartItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+      };
+
+    useEffect(() => {     
+        getDbmessages();
+    }, []);
 
     function returnHome() {
         setCartScreen(false);
@@ -71,6 +104,13 @@ function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBu
       <div className='sectionBar'>
         <h2 className='sectionHeading'>Carrito</h2>
       </div>
+      {cartItems.map((cartItem) => {
+          return (
+            <div>
+              <h1>{cartItem.itemName}</h1>
+            </div>
+          )
+        })}
       <h1>Product 1</h1>
       <h1>Product 2</h1>
       <h1>Product 3</h1>

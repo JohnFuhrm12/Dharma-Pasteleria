@@ -79,9 +79,15 @@ function Cart( {setHome, setCakesScreen, cartAmount, setTartasScreen, setSaladoS
 };
 
 const subtract = async (cartItem) => {
+  if (cartItem.itemQuantity > 0) {
     await setDoc(doc(db, "cart", cartItem.id), {
       itemQuantity: firebase.firestore.FieldValue.increment(-1),
     }, { merge: true });
+  };
+
+  if (cartItem.itemQuantity === 1) {
+    removeItem(cartItem);
+  };
 
     getDbmessages();
   };

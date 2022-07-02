@@ -78,14 +78,25 @@ function Cart( {setHome, setCakesScreen, cartAmount, setTartasScreen, setSaladoS
     setOtrosScreen(true);
 };
 
-function subtract() {
-    //if (quantity > 0) {
-      //setQuantity(quantity - 1);
-    //};
+const subtract = async (cartItem) => {
+    await setDoc(doc(db, "cart", cartItem.id), {
+      itemQuantity: firebase.firestore.FieldValue.increment(-1),
+    }, { merge: true });
+
+    getDbmessages();
   };
 
-  function add() {
-    //setQuantity(quantity + 1);
+  const add = async (cartItem) => {
+    await setDoc(doc(db, "cart", cartItem.id), {
+      itemQuantity: firebase.firestore.FieldValue.increment(1),
+    }, { merge: true });
+
+    getDbmessages();
+  };
+
+  const removeItem = async (cartItem) => {
+    await deleteDoc(doc(db, "cart", cartItem.id));
+    getDbmessages();
   };
 
   return (
@@ -127,22 +138,21 @@ function subtract() {
       </div>
       {cartItems.map((cartItem) => {
         const photo = require(`./static/${cartItem.itemIMG}.png`);
-
-
           return (
             <div className='cartList'>
                 <div className='cartTableProducts'>
+                  <h1 onClick={() => removeItem(cartItem)} className='cancel'>x</h1>
                 <div className='cartImageTitle'>
                     <img src={photo} className="cartImage" alt="ItemIMG"/>
                     <h1 className='cartItemName'>{cartItem.itemName}</h1>
                 </div>
                 <h1 className='cartItemName'>${cartItem.itemPrice}</h1>
                 <div className='addSubtCart2'>
-                    <button className='subtButton' onClick={subtract}>-</button>
+                    <button className='subtButton' onClick={() => subtract(cartItem)}>-</button>
                     <h1 className='quantity'>{cartItem.itemQuantity}</h1>
-                    <button className='addButton' onClick={add}>+</button>
+                    <button className='addButton' onClick={() => add(cartItem)}>+</button>
                 </div>
-                <h1 className='cartItemName'>${cartItem.itemPrice}</h1>
+                <h1 className='cartItemName'>${cartItem.itemPrice * cartItem.itemQuantity}</h1>
                 </div>
             </div>
           )

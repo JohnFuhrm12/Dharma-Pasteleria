@@ -54,8 +54,6 @@ function Tortas( {setHome, cartAmount, setCakesScreen, setTartasScreen, setSalad
     setProductName(e.currentTarget.alt);
     setProductPrice(e.currentTarget.id);
     setProductDesc(e.currentTarget.name);
-    //console.log(e.currentTarget);
-    //console.log(e.currentTarget.innerHTML);
   };
 
   return (

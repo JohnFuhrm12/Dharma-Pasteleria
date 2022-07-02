@@ -592,4 +592,14 @@ html body {
     border-radius: 20px;
     margin-top: 20px;
 }
+
+.cancel {
+    margin-top: 80px;
+    cursor: pointer;
+    height: 20px;
+}
+
+.cancel:hover {
+    color: rgb(104, 101, 76);
+}
 /* Cart */

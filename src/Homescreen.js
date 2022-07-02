@@ -18,7 +18,7 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
-function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen}) {
+function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, cartAmount}) {
   useEffect(() => {
     const buttons = document.querySelectorAll("[data-carousel-button]")
 
@@ -87,7 +87,7 @@ function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>0</p>
+          <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>
       <h2 onClick={refresh} className='subtitle'>Buenos Aires</h2>

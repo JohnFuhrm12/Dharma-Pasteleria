@@ -4,6 +4,10 @@ import vegan from './static/vegan.png';
 import instagram from './static/instagram.webp'; 
 import cart from './static/cart.png';
 import search from './static/search.png';
+import Praline from './static/tortaPraline.png';
+import Nuez from './static/tortaNuez.png';
+
+
 
 import {useState, useEffect} from 'react';
 
@@ -26,7 +30,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, currentUser} ) {
+function Cart( {setHome, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, currentUser} ) {
 
     const [cartItems, setCartItems] = useState([]);
 
@@ -74,6 +78,16 @@ function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBu
     setOtrosScreen(true);
 };
 
+function subtract() {
+    //if (quantity > 0) {
+      //setQuantity(quantity - 1);
+    //};
+  };
+
+  function add() {
+    //setQuantity(quantity + 1);
+  };
+
   return (
     <>
     <div className="page">
@@ -89,7 +103,7 @@ function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBu
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
           <img src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>0</p>
+          <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
@@ -105,16 +119,36 @@ function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBu
       <div className='sectionBar'>
         <h2 className='sectionHeading'>Carrito</h2>
       </div>
+      <div className='cartTable'>
+        <h1>Producto</h1>
+        <h1>Precio</h1>
+        <h1>Cantidad</h1>
+        <h1>Total Parcial</h1>
+      </div>
       {cartItems.map((cartItem) => {
+        const photo = require(`./static/${cartItem.itemIMG}.png`);
+
+
           return (
-            <div>
-              <img src={cartItem.itemIMG} className="vegan" alt="ItemIMG"/>
-              <h1>{cartItem.itemName}</h1>
-              <h1>{cartItem.itemPrice}</h1>
-              <h1>{cartItem.itemQuantity}</h1>
+            <div className='cartList'>
+                <div className='cartTableProducts'>
+                <div className='cartImageTitle'>
+                    <img src={photo} className="cartImage" alt="ItemIMG"/>
+                    <h1 className='cartItemName'>{cartItem.itemName}</h1>
+                </div>
+                <h1 className='cartItemName'>${cartItem.itemPrice}</h1>
+                <div className='addSubtCart2'>
+                    <button className='subtButton' onClick={subtract}>-</button>
+                    <h1 className='quantity'>{cartItem.itemQuantity}</h1>
+                    <button className='addButton' onClick={add}>+</button>
+                </div>
+                <h1 className='cartItemName'>${cartItem.itemPrice}</h1>
+                </div>
             </div>
           )
         })}
+        <div className='space'>
+        </div>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>
           <div className='footerInsta'>

@@ -13,7 +13,7 @@ import Oreo from './static/tortaOreo.png';
 
 import {useState, useEffect} from 'react';
 
-function Product( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
+function Product( {setHome, setCartScreen, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
 
   const [quantity, setQuantity] = useState(0);
 
@@ -34,23 +34,28 @@ function Product( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, se
   };
 
   function showTartas() {
-    setCakesScreen(false);
+    setProductScreen(false);
     setTartasScreen(true);
   };
 
   function showSalado() {
-    setCakesScreen(false);
+    setProductScreen(false);
     setSaladoScreen(true);
   };
 
   function showBudines() {
-    setCakesScreen(false);
+    setProductScreen(false);
     setBudinesScreen(true);
   };
 
   function showOtros() {
-    setCakesScreen(false);
+    setProductScreen(false);
     setOtrosScreen(true);
+  };
+
+  function showCart() {
+    setCartScreen(true);
+    setProductScreen(false);
   };
 
   function subtract() {
@@ -77,8 +82,8 @@ function Product( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, se
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
-          <img src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>0</p>
+          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
+          <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>

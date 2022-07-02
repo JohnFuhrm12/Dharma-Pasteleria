@@ -539,3 +539,57 @@ html body {
     align-items: center;
 }
 /* Product Desc Section */
+
+/* Cart */
+.cartTable {
+    display: flex;
+    flex-direction: row;
+    margin-left: 25%;
+    margin-right: 25%;
+    border-bottom: solid 2px black;
+    justify-content: space-around;
+}
+
+.cartTable h1 {
+    margin-left: 26px;
+    margin-right: 26px;
+    font-size: 25px;
+}
+
+.cartImageTitle {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.addSubtCart2 {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    margin-top: 20px;
+}
+
+.cartTableProducts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.cartItemName {
+    font-size: 25px;
+}
+
+.space {
+    margin-bottom: 150px;
+}
+
+.cartImage {
+    width: 150px;
+    height: 150px;
+    border: solid 4px rgb(139, 123, 103);
+    border-radius: 20px;
+    margin-top: 20px;
+}
+/* Cart */

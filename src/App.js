@@ -9,6 +9,7 @@ import Otros from './Otros';
 
 import Product from './Product';
 import Cart from './Cart';
+import ClientInfo from './ClientInfo';
 
 // Firebase imports
 import firebase from 'firebase/compat/app';
@@ -39,6 +40,7 @@ function App() {
   const [otrosScreen, setOtrosScreen] = useState(false);
 
   const [cartScreen, setCartScreen] = useState(false);
+  const [clientInfoScreen, setClientInfoScreen] = useState(false);
 
   const [productScreen, setProductScreen] = useState(false);
   const [productImage, setProductImage] = useState();
@@ -72,7 +74,8 @@ function App() {
       {budinesScreen && home === false ? <Budines setHome={setHome} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
       {otrosScreen && home === false ? <Otros setHome={setHome} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
       {productScreen && home === false && cakesScreen === false && tartasScreen === false && saladoScreen === false && budinesScreen === false && otrosScreen === false ? <Product setHome={setHome} setCartItems={setCartItems} cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} productImage={productImage} setProductImage={setProductImage} productName={productName}setProductName={setProductName} productPrice={productPrice} productDesc={productDesc} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
-      {cartScreen && home === false ? <Cart setHome={setHome} cartAmount={cartAmount} currentUser={currentUser} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
+      {cartScreen && home === false ? <Cart setHome={setHome} setClientInfoScreen={setClientInfoScreen} cartAmount={cartAmount} currentUser={currentUser} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
+      {clientInfoScreen && home === false ? <ClientInfo setHome={setHome} setClientInfoScreen={setClientInfoScreen} cartAmount={cartAmount} currentUser={currentUser} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
     </>
   );
 }

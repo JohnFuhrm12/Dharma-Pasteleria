@@ -30,7 +30,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Cart( {setHome, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, currentUser} ) {
+function Cart( {setHome, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, setClientInfoScreen, currentUser} ) {
 
     const [cartItems, setCartItems] = useState([]);
     const [newSum, setNewSum] = useState(0);
@@ -92,6 +92,11 @@ function Cart( {setHome, setCakesScreen, cartAmount, setTartasScreen, setSaladoS
   function showOtros() {
     setCartScreen(false);
     setOtrosScreen(true);
+};
+
+function showClientInfo() {
+  setCartScreen(false);
+  setClientInfoScreen(true);
 };
 
 const subtract = async (cartItem) => {
@@ -182,6 +187,7 @@ const subtract = async (cartItem) => {
         <div className='cartTotalBox'>
           <h1 className='cartTotalHeader'>Carrito Total</h1>
           <h1>${newSum}</h1>
+          <button onClick={showClientInfo} className='procedeButton'>Finalizar Pedido</button>
         </div>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>

@@ -581,10 +581,6 @@ html body {
     font-size: 25px;
 }
 
-.space {
-    margin-bottom: 150px;
-}
-
 .cartImage {
     width: 150px;
     height: 150px;
@@ -601,5 +597,21 @@ html body {
 
 .cancel:hover {
     color: rgb(104, 101, 76);
+}
+
+.cartTotalBox {
+    border: solid 12px rgb(233, 223, 210);
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 50px;
+}
+
+.cartTotalHeader {
+    border-bottom: solid 4px rgb(233, 223, 210);
+    width: 300px;
+    margin: 0 auto;
+    padding-bottom: 20px;
 }
 /* Cart */

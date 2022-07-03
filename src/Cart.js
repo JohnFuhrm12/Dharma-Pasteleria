@@ -179,9 +179,9 @@ const subtract = async (cartItem) => {
             </div>
           )
         })}
-        <h1>Carrito Total</h1>
-        <h1>${newSum}</h1>
-        <div className='space'>
+        <div className='cartTotalBox'>
+          <h1 className='cartTotalHeader'>Carrito Total</h1>
+          <h1>${newSum}</h1>
         </div>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>

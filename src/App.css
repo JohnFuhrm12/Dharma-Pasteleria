@@ -654,9 +654,88 @@ html body {
 
 .clientInfoLabel {
     margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-style: italic;
 }
 
 .clientInfoInput {
     margin-bottom: 20px;
+    font-style: italic;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.procedeButtonClientInfo {
+    margin-top: 20px;
+    background-color: rgb(185, 164, 139);
+    font-size: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    padding: 10px;
+    transition: 0.5s;
+    margin-bottom: 60px;
+}
+
+.procedeButtonClientInfo:hover {
+    background-color: white;
+    color: rgb(139, 123, 103);
+    transition: 0.5s;
+    border-color: rgb(139, 123, 103);
 }
 /* Client Info */
+
+.infoHeader {
+    font-family: 'Dancing Script';
+    color: rgb(139, 123, 103);
+    font-size: 45px;
+}
+
+.clientDetails {
+    text-align: left;
+    width: 400px;
+    margin: 0 auto;
+}
+
+.clientDetail {
+    font-size: 20px;
+}
+
+.detailsHeaders {
+    display: flex;
+    flex-direction: row;
+    width: 600px;
+    margin: 0 auto;
+    justify-content: space-around;
+    border-bottom: solid 2px black;
+}
+
+.summaryItems {
+    display: flex;
+    flex-direction: row;
+    width: 500px;
+    margin: 0 auto;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.summaryItems h1 {
+    margin: 10px;
+}
+
+.nameQuantity {
+    display: flex;
+    flex-direction: row;
+}
+
+.clientDetailsTotalBox {
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.clientDetailsTotal {
+    border-bottom: solid 2px black;
+    width: 150px;
+    margin: 0 auto;
+}

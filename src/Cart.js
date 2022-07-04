@@ -30,12 +30,14 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Cart( {setHome, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, setClientInfoScreen, currentUser} ) {
+function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, setClientInfoScreen, currentUser} ) {
 
     const [cartItems, setCartItems] = useState([]);
     const [newSum, setNewSum] = useState(0);
     const totals = [];
     const cartRef = collection(db, "cart");
+
+    const cartAmount = cartItems.length;
 
     let sum = 0;
 
@@ -104,6 +106,8 @@ const subtract = async (cartItem) => {
     await setDoc(doc(db, "cart", cartItem.id), {
       itemQuantity: firebase.firestore.FieldValue.increment(-1),
     }, { merge: true });
+
+    getDbmessages();
   };
 
   if (cartItem.itemQuantity === 1) {

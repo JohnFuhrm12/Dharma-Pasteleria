@@ -18,7 +18,12 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
-function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, cartAmount}) {
+function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, cartAmount, getDbmessages}) {
+
+  useEffect(() => {
+    getDbmessages();
+  }, []);
+
   useEffect(() => {
     const buttons = document.querySelectorAll("[data-carousel-button]")
 

@@ -26,7 +26,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen} ) {
+function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount} ) {
 
   const [clientFirstName, setClientFirstName] = useState('');
   const [businessName, setBusinessName] = useState('');
@@ -132,7 +132,7 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
           <img src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>0</p>
+          <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>

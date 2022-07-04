@@ -7,7 +7,7 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
-function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen} ) {
+function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
 
     function returnHome() {
         setTartasScreen(false);
@@ -35,6 +35,15 @@ function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
     setOtrosScreen(true);
 };
 
+function goToProduct(e) {
+  setTartasScreen(false);
+  setProductScreen(true);
+  setProductImage(e.currentTarget.title);
+  setProductName(e.currentTarget.alt);
+  setProductPrice(e.currentTarget.id);
+  setProductDesc(e.currentTarget.name);
+};
+
   return (
     <>
     <div className="page">
@@ -50,7 +59,7 @@ function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
           <img src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>0</p>
+          <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
@@ -63,7 +72,19 @@ function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
           <h2 onClick={showOtros}>OTROS</h2>
         </div>
       </div>
-      <h1>Tartas</h1>
+      <div className='sectionBar'>
+        <h2 onClick={returnHome} className='sectionHeadingHome'>Inicio</h2>
+        <h2 className='sectionHeading'>/</h2>
+        <h2 className='sectionHeading'>Tartas</h2>
+      </div>
+      <h1 className='sectionTitle'>LAS TARTAS</h1>
+      <div className='sectionImages'>
+        <div className='sectionImagesTop'>
+          <div>
+
+          </div>
+        </div>
+      </div>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>
           <div className='footerInsta'>

@@ -1003,17 +1003,17 @@ html body {
     background-color: rgb(224, 212, 197);
     display: flex;
     flex-direction: row;
-    padding-left: 40px;
+    padding-left: 20px;
 }
 .sectionHeadingHome {
-    margin-left: 10px;
-    font-size: 20px;
+    margin-left: 0px;
+    font-size: 16px;
     cursor: pointer;
 }
 
 .sectionHeading {
-    margin-left: 10px;
-    font-size: 20px;
+    margin-left: 5px;
+    font-size: 16px;
 }
 
 .sectionImages {
@@ -1103,51 +1103,58 @@ html body {
 .addSubtCart {
     display: flex;
     flex-direction: row;
-    height: 50px;
+    height: 30px;
     margin-left: 0%;
     margin-right: 18%;
     margin-top: 40px;
+    margin-bottom: 100px;
 }
 
 .subtButton {
     cursor: pointer;
     border: solid 1px black;
-    padding: 5px;
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
     width: 30px;
-    font-size: 25px;
+    font-size: 20px;
     background-color: white;
 }
 
 .quantity {
     border: solid 1px black;
-    height: 36px;
+    height: 16px;
     width: 10px;
-    padding-top: 12px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 8px;
     margin: 0px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .addButton {
     cursor: pointer;
     border: solid 1px black;
-    padding: 5px;
+    padding: 0px;
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
     width: 30px;
-    font-size: 25px;
+    font-size: 20px;
     background-color: white;
 }
 
 .addCartButton {
     margin-left: 20px;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
+    min-width: 100px;
+    min-height: 40px;
     background-color: rgb(185, 164, 139);
-    font-size: 10px;
+    font-size: 12px;
     border-radius: 15px;
     cursor: pointer;
     transition: 0.5s;
+    margin-top: -5px;
 }
 
 .addCartButton:hover {
@@ -1161,5 +1168,238 @@ html body {
     width: 200px;
     align-items: center;
 }
-/* Product Desc Section */
+
+/* Cart */
+.cartTable {
+    display: flex;
+    flex-direction: row;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-bottom: solid 2px black;
+    justify-content: space-around;
+    margin-top: 5px;
+}
+
+.cartTable h1 {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.cartImageTitle {
+    display: flex;
+    flex-direction: column;
+    margin-right: 0px;
+}
+
+.addSubtCart2 {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    margin-top: 20px;
+    width: 60px;
+    margin-right: 20px;
+    margin-left: 30px;
+}
+
+.addSubtCart2 h1 {
+    font-size: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.addSubtCart2 .addButton {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.addSubtCart2 .subtButton {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.cartTableProducts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-left: 2%;
+    margin-right: 5%;
+}
+
+.cartItemName {
+    font-size: 14px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.cartImage {
+    width: 80px;
+    height: 80px;
+    border: solid 4px rgb(139, 123, 103);
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.cancel {
+    margin-top: 45px;
+    cursor: pointer;
+    height: 20px;
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.cancel:hover {
+    color: rgb(104, 101, 76);
+}
+
+.cartTotalBox {
+    border: solid 12px rgb(233, 223, 210);
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    padding: 20px;
+}
+
+.cartTotalBox h1 {
+    font-size: 22px;
+}
+
+.cartTotalHeader {
+    border-bottom: solid 4px rgb(233, 223, 210);
+    width: 200px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+    font-size: 22px;
+}
+
+.procedeButton {
+    margin-top: 20px;
+    background-color: rgb(185, 164, 139);
+    font-size: 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    padding: 10px;
+    transition: 0.5s;
+}
+
+.procedeButton:hover {
+    background-color: white;
+    color: rgb(139, 123, 103);
+    transition: 0.5s;
+    border-color: rgb(139, 123, 103);
+}
+/* Cart */
+
+/* Client Info */
+.clientInfoBox {
+    margin-left: 2%;
+    margin-right: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.firstInfoColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.secondInfoColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.clientInfoLabel {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-style: italic;
+}
+
+.clientInfoInput {
+    margin-bottom: 20px;
+    font-style: italic;
+    font-size: 16px;
+    padding: 5px;
+    width: 150px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.procedeButtonClientInfo {
+    margin-top: 20px;
+    background-color: rgb(185, 164, 139);
+    font-size: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    padding: 10px;
+    transition: 0.5s;
+    margin-bottom: 60px;
+}
+
+.procedeButtonClientInfo:hover {
+    background-color: white;
+    color: rgb(139, 123, 103);
+    transition: 0.5s;
+    border-color: rgb(139, 123, 103);
+}
+/* Client Info */
+
+.infoHeader {
+    font-family: 'Dancing Script';
+    color: rgb(139, 123, 103);
+    font-size: 35px;
+}
+
+.clientDetails {
+    text-align: left;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.clientDetail {
+    font-size: 16px;
+}
+
+.detailsHeaders {
+    display: flex;
+    flex-direction: row;
+    width: 380px;
+    margin: 0 auto;
+    justify-content: space-around;
+    border-bottom: solid 2px black;
+    font-size: 14px;
+}
+
+.summaryItems {
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    margin: 0 auto;
+    justify-content: space-around;
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.summaryItems h1 {
+    margin: 10px;
+}
+
+.nameQuantity {
+    display: flex;
+    flex-direction: row;
+}
+
+.clientDetailsTotalBox {
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.clientDetailsTotal {
+    border-bottom: solid 2px black;
+    width: 150px;
+    margin: 0 auto;
+}
 }

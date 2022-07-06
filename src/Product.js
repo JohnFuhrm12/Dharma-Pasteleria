@@ -11,6 +11,8 @@ import Vegana from './static/tortaVegana.png';
 import Nuez from './static/tortaNuez.png';
 import Oreo from './static/tortaOreo.png';
 
+import miniTarteletas from './static/miniTarteletas.png';
+
 import {useState, useEffect} from 'react';
 
 // Firebase imports

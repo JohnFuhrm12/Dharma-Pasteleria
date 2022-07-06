@@ -5,6 +5,9 @@ import instagram from './static/instagram.webp';
 import cart from './static/cart.png';
 import search from './static/search.png';
 
+import miniTarteletas from './static/miniTarteletas.png';
+import Ricota from './static/tartadeRicota.png';
+
 import {useState, useEffect} from 'react';
 
 function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
@@ -81,7 +84,14 @@ function goToProduct(e) {
       <div className='sectionImages'>
         <div className='sectionImagesTop'>
           <div>
-
+            <img onClick={goToProduct} src={miniTarteletas} className="sectionIMG" title={miniTarteletas} name="Masa sablee de limon, viene en una caja de 12 unidades." id="$1.650" alt="Mini Tarteletas"/>
+            <h1 className='itemName'>Mini Tarteletas</h1>
+            <h1 className='itemPrice'>$1.650</h1>
+          </div>
+          <div>
+            <img onClick={goToProduct} src={Ricota} className="sectionIMG" title={Ricota} name="Masa sablee de limon, rellena con ricota citrica, opcional agregar dulce de leche." id="$1.650" alt="Tarta de Ricota"/>
+            <h1 className='itemName'>Tarta de Ricota</h1>
+            <h1 className='itemPrice'>$1.850</h1>
           </div>
         </div>
       </div>

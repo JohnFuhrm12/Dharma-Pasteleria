@@ -5,9 +5,13 @@ import instagram from './static/instagram.webp';
 import cart from './static/cart.png';
 import search from './static/search.png';
 
+import budinesVeganos from './static/budinesVeganos.png';
+import budinPera from './static/budindePeras.png';
+import budinFrutosRojos from './static/budinFrutosRojos.png';
+
 import {useState, useEffect} from 'react';
 
-function Budines( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen} ) {
+function Budines( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
 
   function returnHome() {
     setBudinesScreen(false);
@@ -34,6 +38,15 @@ function Budines( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, se
     setOtrosScreen(true);
   };
 
+  function goToProduct(e) {
+    setBudinesScreen(false);
+    setProductScreen(true);
+    setProductImage(e.currentTarget.title);
+    setProductName(e.currentTarget.alt);
+    setProductPrice(e.currentTarget.id);
+    setProductDesc(e.currentTarget.name);
+  };
+
   return (
     <>
     <div className="page">
@@ -49,7 +62,7 @@ function Budines( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, se
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
           <img src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>0</p>
+          <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
@@ -62,7 +75,31 @@ function Budines( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, se
           <h2 onClick={showOtros}>OTROS</h2>
         </div>
       </div>
-      <h1>Budines</h1>
+      <div className='sectionBar'>
+        <h2 onClick={returnHome} className='sectionHeadingHome'>Inicio</h2>
+        <h2 className='sectionHeading'>/</h2>
+        <h2 className='sectionHeading'>Budines</h2>
+      </div>
+      <h1 className='sectionTitle'>Los Budines</h1>
+      <div className='sectionImages'>
+        <div className='sectionImagesTop'>
+          <div>
+            <img onClick={goToProduct} src={budinesVeganos} className="sectionIMG" title={budinesVeganos} name="Budin vegano grande, rinde 12 porciones." id="$950" alt="Budines Veganos"/>
+            <h1 className='itemName'>Budines Veganos</h1>
+            <h1 className='itemPrice'>$950</h1>
+          </div>
+          <div>
+            <img onClick={goToProduct} src={budinPera} className="sectionIMG" title={budinPera} name="Budin de vainilla y peras, cubierto con salsa de caramelo, peras asadas y chocolate blanco." id="$700" alt="Budin de Pera"/>
+            <h1 className='itemName'>Budin de Pera</h1>
+            <h1 className='itemPrice'>$700</h1>
+          </div>
+          <div>
+            <img onClick={goToProduct} src={budinFrutosRojos} className="sectionIMG" title={budinFrutosRojos} name="Budin de vainilla y queso mascarpone, cubierto con crema y frutos rojos." id="$900" alt="Budin Frutos Rojos"/>
+            <h1 className='itemName'>Budin Frutos Rojos</h1>
+            <h1 className='itemPrice'>$900</h1>
+          </div>
+        </div>
+      </div>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>
           <div className='footerInsta'>

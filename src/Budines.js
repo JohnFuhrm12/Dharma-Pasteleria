@@ -11,7 +11,7 @@ import budinFrutosRojos from './static/budinFrutosRojos.png';
 
 import {useState, useEffect} from 'react';
 
-function Budines( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
+function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
 
   function returnHome() {
     setBudinesScreen(false);
@@ -41,6 +41,7 @@ function Budines( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, se
   function goToProduct(e) {
     setBudinesScreen(false);
     setProductScreen(true);
+    setCurrentSection('Budines');
     setProductImage(e.currentTarget.title);
     setProductName(e.currentTarget.alt);
     setProductPrice(e.currentTarget.id);

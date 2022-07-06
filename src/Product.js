@@ -34,7 +34,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Product( {setHome, setCartScreen, setCartItems, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
+function Product( {setHome, currentSection, setCartScreen, setCartItems, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
   
   const [currentQuantity, setCurrentQuantity] = useState(0);
   const cartRef = db.collection('cart');
@@ -152,7 +152,7 @@ function Product( {setHome, setCartScreen, setCartItems, setCakesScreen, cartAmo
       <div className='sectionBar'>
         <h2 onClick={returnHome} className='sectionHeadingHome'>Inicio</h2>
         <h2 className='sectionHeading'>/</h2>
-        <h2 className='sectionHeading'>Tortas</h2>
+        <h2 className='sectionHeading'>{currentSection}</h2>
         <h2 className='sectionHeading'>/</h2>
         <h2 className='sectionHeading'>{productName}</h2>
       </div>

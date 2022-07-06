@@ -15,7 +15,7 @@ import Oreo from './static/tortaOreo.png';
 
 import {useState, useEffect} from 'react';
 
-function Tortas( {setHome, cartAmount, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
+function Tortas( {setHome, setCurrentSection, cartAmount, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
 
   function returnHome() {
     setCakesScreen(false);
@@ -50,6 +50,7 @@ function Tortas( {setHome, cartAmount, setCakesScreen, setTartasScreen, setSalad
   function goToProduct(e) {
     setCakesScreen(false);
     setProductScreen(true);
+    setCurrentSection('Tortas');
     setProductImage(e.currentTarget.title);
     setProductName(e.currentTarget.alt);
     setProductPrice(e.currentTarget.id);

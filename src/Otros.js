@@ -13,7 +13,7 @@ import donas from './static/donas.png';
 
 import {useState, useEffect} from 'react';
 
-function Otros( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
+function Otros( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
 
   function returnHome() {
     setOtrosScreen(false);
@@ -43,6 +43,7 @@ function Otros( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setB
   function goToProduct(e) {
     setOtrosScreen(false);
     setProductScreen(true);
+    setCurrentSection('Otros');
     setProductImage(e.currentTarget.title);
     setProductName(e.currentTarget.alt);
     setProductPrice(e.currentTarget.id);

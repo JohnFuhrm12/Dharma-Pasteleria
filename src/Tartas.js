@@ -10,7 +10,7 @@ import Ricota from './static/tartadeRicota.png';
 
 import {useState, useEffect} from 'react';
 
-function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
+function Tartas( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
 
     function returnHome() {
         setTartasScreen(false);
@@ -41,6 +41,7 @@ function Tartas( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
 function goToProduct(e) {
   setTartasScreen(false);
   setProductScreen(true);
+  setCurrentSection('Tartas');
   setProductImage(e.currentTarget.title);
   setProductName(e.currentTarget.alt);
   setProductPrice(e.currentTarget.id);

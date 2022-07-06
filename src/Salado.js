@@ -9,7 +9,7 @@ import scons from './static/scons.png';
 
 import {useState, useEffect} from 'react';
 
-function Salado( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
+function Salado( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
 
   function returnHome() {
     setSaladoScreen(false);
@@ -39,6 +39,7 @@ function Salado( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
   function goToProduct(e) {
     setSaladoScreen(false);
     setProductScreen(true);
+    setCurrentSection('Salado');
     setProductImage(e.currentTarget.title);
     setProductName(e.currentTarget.alt);
     setProductPrice(e.currentTarget.id);

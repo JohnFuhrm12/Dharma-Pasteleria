@@ -5,7 +5,7 @@ Link to Site: https://dharmapasteleria.netlify.app/
 
 A SPA that mimics a multi-page site with a homepage, various product categories, the ability to see product descriptions and add them to your cart, put in your shipping information and send product orders to the business via Whatsapp.
 
-
+# Images
 
 ![dharma1](https://user-images.githubusercontent.com/61069716/177702716-9ae5d1ee-a019-4c38-80b4-a9bd2e257221.png)
 

@@ -33,12 +33,14 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
   const [streetName, setStreetName] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [phone, setPhone] = useState('');
+  const [payment, setPayment] = useState('Effectivo');
 
   const [clientLastName, setClientLastName] = useState('');
   const [countryName, setCountryName] = useState('Argentina');
   const [buildingName, setBuildingName] = useState('');
   const [cityName, setCityName] = useState('');
   const [emailName, setEmailName] = useState('');
+  const [service, setService] = useState('Domicilio');
 
   const [firstPage, setFirstPage] = useState(true);
 
@@ -46,6 +48,31 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
   const [newSum, setNewSum] = useState(0);
   const totals = [];
   const cartRef = collection(db, "cart");
+
+  const message = `Hola! Vengo de https://dharmapasteleria.netlify.app/.  
+  Tipo de Servicio: ${service}
+  
+  Nombre: ${clientFirstName}${clientLastName}
+  Teléfono: ${phone}
+  Dirección: ${streetName}, ${cityName}, ${postalCode}
+  
+  Metodo del pago: ${payment}
+  Estado del pago: No Pagado
+  
+  Costos:
+  Costo de los productos: $${newSum}
+  Costo de entrega: Por Confirmar
+  Total a pagar: $${newSum}
+  
+  Pedido:
+  ${cartItems.map((cartItem) => {
+    return (cartItem.itemName + ' ' + 'x' + cartItem.itemQuantity + ' $' + cartItem.itemPrice);
+  })}
+
+  Punto de Retiro Para Llevar: Dr. Amadeo Sabattini 4545, B1678 Caseros, Provincia de Buenos Aires, Argentina.
+  Tiempo hasta que sale un domicilio: 24 horas.
+  
+  Te atenderemos enseguida!`;
 
   let sum = 0;
 
@@ -154,13 +181,15 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
             <label className='clientInfoLabel' for="Name">Nombre:</label>
             <input onChange={(e) => {setClientFirstName(e.target.value)}} className='clientInfoInput' name='Name' value={clientFirstName} required></input>
             <label className='clientInfoLabel' for="Business">Empresa (Opcional):</label>
-            <input onChange={(e) => {setBusinessName(e.target.value)}} className='clientInfoInput' name='Business' value={businessName} required></input>
+            <input onChange={(e) => {setBusinessName(e.target.value)}} className='clientInfoInput' name='Business' value={businessName}></input>
             <label className='clientInfoLabel' for="Street">Calle:</label>
             <input onChange={(e) => {setStreetName(e.target.value)}} className='clientInfoInput' name='Street' value={streetName} required></input>
             <label className='clientInfoLabel' for="PostalCode">Código Postal:</label>
             <input onChange={(e) => {setPostalCode(e.target.value)}} className='clientInfoInput' name='PostalCode' value={postalCode} required></input>
             <label className='clientInfoLabel' for="Phone">Teléfono:</label>
             <input onChange={(e) => {setPhone(e.target.value)}} className='clientInfoInput' name='Phone' value={phone} required></input>
+            <label className='clientInfoLabel' for="Payment">Método del Pago:</label>
+            <input onChange={(e) => {setPayment(e.target.value)}} className='clientInfoInput' name='Payment' value={'Effectivo'} required></input>
         </div>
         <div className='secondInfoColumn'>
             <label className='clientInfoLabel' for="LastName">Apellido:</label>
@@ -172,7 +201,12 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
             <label className='clientInfoLabel' for="City">Ciudad:</label>
             <input onChange={(e) => {setCityName(e.target.value)}} className='clientInfoInput' name='City' value={cityName} required></input>    
             <label className='clientInfoLabel' for="Email">Correo:</label>
-            <input onChange={(e) => {setEmailName(e.target.value)}} className='clientInfoInput' name='Email' value={emailName} required></input>             
+            <input onChange={(e) => {setEmailName(e.target.value)}} className='clientInfoInput' name='Email' value={emailName} required></input>
+            <label className='clientInfoLabel' for="Service">Tipo de Servicio:</label>
+            <select onChange={(e) => {setService(e.target.value)}} className='clientInfoInput' name="Service" id="Service">
+              <option value={'Domicilio'}>Domicilio</option>
+              <option value={'Para Llevar'}>Para Llevar</option>
+            </select>             
         </div>
       </div>
       <button type='submit' className='procedeButtonClientInfo'>Seguir</button>
@@ -189,6 +223,8 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
             <h2 className='clientDetail'>Apartamento: {buildingName}</h2>
             <h2 className='clientDetail'>Teléfono: {phone}</h2>
             <h2 className='clientDetail'>Correo: {emailName}</h2>
+            <h2 className='clientDetail'>Método del Pago: {payment}</h2>
+            <h2 className='clientDetail'>Tipo de Servicio: {service}</h2>
         </div>
       <h1 className='infoHeader'>Su Orden</h1>
       <div className='detailsHeaders'>
@@ -214,7 +250,7 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
       </div>
       <h1>${newSum}</h1>
       <button onClick={() => {setFirstPage(true)}} className='procedeButtonClientInfo'>Atrás</button>
-      <button className='procedeButtonClientInfo'>Proceder al Pago</button>
+      <a href={`https://wa.me/5491159061461?text=${message}`}><button className='procedeButtonClientInfo'>Proceder al Pago</button></a>
       </>}
         <div className='footer'>
           <h1>Dharma Pastelería</h1>

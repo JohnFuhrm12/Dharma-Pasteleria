@@ -675,6 +675,7 @@ html body {
     padding: 10px;
     transition: 0.5s;
     margin-bottom: 60px;
+    margin-left: 25px;
 }
 
 .procedeButtonClientInfo:hover {
@@ -889,6 +890,8 @@ html body {
 .selectionIMG:hover {
     width: 240px;
     height: 240px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .selectionChoicesTop {

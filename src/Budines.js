@@ -11,7 +11,11 @@ import budinFrutosRojos from './static/budinFrutosRojos.png';
 
 import {useState, useEffect} from 'react';
 
-function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
+function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  useEffect(() => {
+    getDbmessages();
+  }, []);
 
   function returnHome() {
     setBudinesScreen(false);
@@ -48,6 +52,11 @@ function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, 
     setProductDesc(e.currentTarget.name);
   };
 
+  function showCart() {
+    setCartScreen(true);
+    setBudinesScreen(false);
+  };
+
   return (
     <>
     <div className="page">
@@ -62,7 +71,7 @@ function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, 
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
-          <img src={cart} className="cart" alt="Carrito"/>
+          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>

@@ -10,7 +10,11 @@ import Ricota from './static/tartadeRicota.png';
 
 import {useState, useEffect} from 'react';
 
-function Tartas( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen} ) {
+function Tartas( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+    useEffect(() => {
+      getDbmessages();
+    }, []);
 
     function returnHome() {
         setTartasScreen(false);
@@ -48,6 +52,11 @@ function goToProduct(e) {
   setProductDesc(e.currentTarget.name);
 };
 
+function showCart() {
+  setCartScreen(true);
+  setTartasScreen(false);
+};
+
   return (
     <>
     <div className="page">
@@ -62,7 +71,7 @@ function goToProduct(e) {
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
-          <img src={cart} className="cart" alt="Carrito"/>
+          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>

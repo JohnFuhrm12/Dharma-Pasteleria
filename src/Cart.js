@@ -30,7 +30,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, setClientInfoScreen, currentUser} ) {
+function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, setClientInfoScreen, currentUser, paypalTotal, setPaypalTotal} ) {
 
     const [cartItems, setCartItems] = useState([]);
     const [newSum, setNewSum] = useState(0);
@@ -56,7 +56,8 @@ function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBu
           sum += item;
         });
 
-        setNewSum(sum)
+        setNewSum(sum);
+        setPaypalTotal((newSum / 282.50).toFixed(2));
       };
 
     useEffect(() => {     

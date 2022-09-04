@@ -18,7 +18,7 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
-function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, cartAmount, getDbmessages}) {
+function Homescreen( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, cartAmount, getDbmessages}) {
 
   useEffect(() => {
     getDbmessages();
@@ -70,6 +70,12 @@ function Homescreen( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
 
   function showCart() {
     setCartScreen(true);
+    setHome(false);
+  };
+
+  function showAdmin() {
+    setAdmin(true);
+    setAdminScreen(true);
     setHome(false);
   };
 

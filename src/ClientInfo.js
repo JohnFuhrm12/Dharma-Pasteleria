@@ -7,6 +7,9 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
+// Paypal Imports
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
+
 // Firebase imports
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
@@ -26,7 +29,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
+function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser, paypalTotal, setCartScreen} ) {
 
   const [clientFirstName, setClientFirstName] = useState('');
   const [businessName, setBusinessName] = useState('');
@@ -57,7 +60,7 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
   Dirección: ${streetName}, ${cityName}, ${postalCode}
   
   Metodo del pago: ${payment}
-  Estado del pago: No Pagado
+  Estado del pago: No Pagado 
   
   Costos:
   Costo de los productos: $${newSum}
@@ -102,16 +105,7 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
     setTimeout( function() { getTotal(); }, 1000);
 
   useEffect(() => {
-    console.log(clientFirstName);
-    console.log(businessName);
-    console.log(streetName);
-    console.log(postalCode);
-    console.log(phone);
-    console.log(clientLastName);
-    console.log(countryName);
-    console.log(buildingName);
-    console.log(cityName);
-    console.log(emailName);
+    console.log(newSum);
   });
 
   function returnHome() {
@@ -144,6 +138,11 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
     setOtrosScreen(true);
   };
 
+  function showCart() {
+    setCartScreen(true);
+    setClientInfoScreen(false);
+  };
+
   return (
     <>
     <div className="page">
@@ -158,7 +157,7 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
-          <img src={cart} className="cart" alt="Carrito"/>
+          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>
@@ -189,7 +188,10 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
             <label className='clientInfoLabel' for="Phone">Teléfono:</label>
             <input onChange={(e) => {setPhone(e.target.value)}} className='clientInfoInput' name='Phone' value={phone} required></input>
             <label className='clientInfoLabel' for="Payment">Método del Pago:</label>
-            <input onChange={(e) => {setPayment(e.target.value)}} className='clientInfoInput' name='Payment' value={'Effectivo'} required></input>
+            <select onChange={(e) => {setPayment(e.target.value)}} className='clientInfoInput' name="Payment" id="Payment">
+              <option value={'Efectivo'}>Efectivo</option>
+              <option value={'Tarjeta'}>Tarjeta</option>
+            </select>     
         </div>
         <div className='secondInfoColumn'>
             <label className='clientInfoLabel' for="LastName">Apellido:</label>
@@ -206,7 +208,7 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
             <select onChange={(e) => {setService(e.target.value)}} className='clientInfoInput' name="Service" id="Service">
               <option value={'Domicilio'}>Domicilio</option>
               <option value={'Para Llevar'}>Para Llevar</option>
-            </select>             
+            </select>           
         </div>
       </div>
       <button type='submit' className='procedeButtonClientInfo'>Seguir</button>
@@ -250,7 +252,27 @@ function ClientInfo( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen,
       </div>
       <h1>${newSum}</h1>
       <button onClick={() => {setFirstPage(true)}} className='procedeButtonClientInfo'>Atrás</button>
-      <a href={`https://wa.me/5491159061461?text=${message}`}><button className='procedeButtonClientInfo'>Proceder al Pago</button></a>
+      <a target="_blank" href={`https://wa.me/5491159061461?text=${message}`}><button className='procedeButtonClientInfo'>Enviar Pedido</button></a>
+      <div className='paypal'>
+      {payment === 'Tarjeta' ?
+      <PayPalScriptProvider options={{ "client-id": "test"}}>
+        <PayPalButtons
+            style={{ layout: "vertical", color: "blue", shape: "rect" }}
+            createOrder={(data, actions) => {
+                return actions.order.create({
+                    purchase_units: [
+                        {
+                            amount: {
+                                value: paypalTotal,
+                            },
+                        },
+                    ],
+                });
+            }}
+        />;
+      </PayPalScriptProvider>
+       : <></>}
+      </div>
       </>}
         <div className='footer'>
           <h1>Dharma Pastelería</h1>

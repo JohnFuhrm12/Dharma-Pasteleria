@@ -7,6 +7,9 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
+import {Image} from 'cloudinary-react';
+import axios from "axios";
+
 // Firebase imports
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
@@ -26,31 +29,49 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Admin( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
+function Admin( {setHome, admin, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const [cartItems, setCartItems] = useState([]);
-  const [newSum, setNewSum] = useState(0);
-  const totals = [];
-  const cartRef = collection(db, "cart");
+  const [realUsername, setRealUsername] = useState('');
+  const [realPassword, setRealPassword] = useState('');
 
-  let sum = 0;
+  const [credentials, setCredentials] = useState([]);
 
-  const getDbmessages = async () => {
-    const itemsRef = query(cartRef, where('user', '==', currentUser));
-    const currentQuerySnapshot = await getDocs(itemsRef);
-    setCartItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+  const [category, setCategory] = useState('tortas');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [row, setRow] = useState('');
+
+  const [imageUrl, setImageUrl] = useState();
+  const [imageSelected, setImageSelected] = useState("");
+  const [imageAwaiting, setImageAwaiting] = useState(false);
+
+  const credentialsRef = collection(db, "admin");
+
+  const getCredentials = async () => {
+    const usernameRef = query(credentialsRef);
+    const currentQuerySnapshot = await getDocs(usernameRef);
+    setCredentials(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+  };
+
+  const getReal = async () => {
+    credentials.map((cred) => {
+      setRealUsername(cred.username);
+      setRealPassword(cred.password);
+    });
   };
 
     useEffect(() => {     
-        getDbmessages();
+        getCredentials();
+        getReal();
     }, []);
 
-  useEffect(() => {
-    console.log('search');
-  });
+    useEffect(() => {
+      getReal();
+    });
 
   function returnHome() {
     setAdminScreen(false);
@@ -82,8 +103,54 @@ function Admin( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTartasScr
     setOtrosScreen(true);
   };
 
-  function login() {
-    setAdmin(true);
+  function login(e) {
+    if (username === realUsername && password === realPassword) {
+      setAdmin(true);
+    }
+    else {
+      alert("Wrong Username or Password!");
+      e.preventDefault();
+    };
+  };
+
+  function logout() {
+    setAdmin(false);
+    window.location.reload(false);
+  };
+
+  const addProduct = async (e) => {
+    e.preventDefault();
+    await setDoc(doc(db, category, name), {
+      itemIMG: imageUrl,
+      itemName: name,
+      itemDesc: description,
+      itemPrice: price,
+      itemRow: Number(row),
+    });
+    setCategory('tortas');
+    setName('');
+    setDescription('');
+    setPrice('');
+    setRow('');
+    setImageAwaiting(false);
+  };
+
+  // Uploads images to Cloudify database
+  const uploadImage = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", imageSelected);
+    formData.append("upload_preset", "ReactDharma");
+
+    axios.post("https://api.cloudinary.com/v1_1/dvmw658s9/image/upload", formData).then((response) => {
+      console.log(response);
+      setImageUrl(response.data.url);
+    });
+
+    console.log(imageUrl);
+
+    setImageSelected("");
+    setImageAwaiting(true);
   };
 
   return (
@@ -114,16 +181,56 @@ function Admin( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTartasScr
           <h2 onClick={showOtros}>OTROS</h2>
         </div>
       </div>
-      <div>
+        {admin ? 
+        <>
+        <h1>Logout</h1>
+        <button onClick={logout}>Log Out</button> 
+        <div>
+          <h1>Agregar un Nuevo Producto:</h1>
+
+          <input type="file" onChange={(event) => {
+            setImageSelected(event.target.files[0]);
+          }}></input>
+          <button onClick={uploadImage}>Upload</button>
+
+          {imageAwaiting ? 
+                  <form onSubmit={addProduct}>
+                  <label for="category">Categoria</label>
+                  <select onChange={(e) => {setCategory(e.target.value)}} name="category">
+                    <option value={'tortas'}>Tortas</option>
+                    <option value={'tartas'}>Tartas</option>
+                    <option value={'salado'}>Salado</option>
+                    <option value={'budines'}>Budines</option>
+                    <option value={'otros'}>Otros</option>
+                  </select>   
+      
+                  <label for="name">Nombre</label>
+                  <input onChange={(e) => {setName(e.target.value)}} name='name' value={name}/>
+      
+                  <label for="description">Descripcion</label>
+                  <input onChange={(e) => {setDescription(e.target.value)}} name='description' value={description}/>
+      
+                  <label for="price">Precio</label>
+                  <input onChange={(e) => {setPrice(e.target.value)}} name='price' value={price}/>
+      
+                  <label for="row">Row</label>
+                  <input onChange={(e) => {setRow(e.target.value)}} name='row' value={row}/>
+                  <button>Agregar</button>
+                </form>
+          : <></>}
+        </div>
+        </>
+        :
+        <>
         <h1>Admin Log In</h1>
         <form onSubmit={login} className='AdminLoginForm'>
             <label className='username' for="username">Username:</label>
             <input onChange={(e) => {setUsername(e.target.value)}} className='usernameInput' name='username' value={username}></input>
-            <label className='password' for="password">Username:</label>
+            <label className='password' for="password">Password:</label>
             <input onChange={(e) => {setPassword(e.target.value)}} className='passwordInput' name='username' value={password}></input>
             <button>Login</button>
         </form>
-      </div>
+        </>}
         <div className='footer'>
           <h1>Dharma Pastelería</h1>
           <div className='footerInsta'>

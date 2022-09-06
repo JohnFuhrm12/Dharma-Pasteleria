@@ -34,7 +34,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Product( {setHome, currentUser, currentSection, setCartScreen, setCartItems, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
+function Product( {setHome, admin, currentUser, currentSection, setCartScreen, setCartItems, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
   
   const [currentQuantity, setCurrentQuantity] = useState(0);
   const cartRef = db.collection('cart');

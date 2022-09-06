@@ -74,7 +74,6 @@ function Homescreen( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTart
   };
 
   function showAdmin() {
-    setAdmin(true);
     setAdminScreen(true);
     setHome(false);
   };
@@ -164,7 +163,7 @@ function Homescreen( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTart
           </div>
         </div>
         <div className='footer'>
-          <h1>Dharma Pastelería</h1>
+          <h1 onClick={showAdmin}>Dharma Pastelería</h1>
           <div className='footerInsta'>
             <h1>Seguinos en Instagram:</h1>
             <a href='https://www.instagram.com/dharma.pasteleria/'><img src={instagram} className="instagram" alt="Instagram"/></a>

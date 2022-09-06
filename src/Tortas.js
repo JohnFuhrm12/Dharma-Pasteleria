@@ -15,10 +15,49 @@ import Oreo from './static/tortaOreo.png';
 
 import {useState, useEffect} from 'react';
 
+// Firebase imports
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
+
+// Initialize Firebase Database
+firebase.initializeApp({
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
+});
+
+// Firebase Database
+const db = firebase.firestore();
+
 function Tortas( {setHome, setCurrentSection, cartAmount, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [tortasItems, setTortasItems] = useState([]);
+  const [tortasItems2, setTortasItems2] = useState([]);
+  const [tortasItems3, setTortasItems3] = useState([]);
+  const tortasRef = collection(db, "tortas");
+
+  const getTortas = async () => {
+    const itemsRef = query(tortasRef, where('itemRow', '==', 1));
+    const currentQuerySnapshot = await getDocs(itemsRef);
+    setTortasItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef2 = query(tortasRef, where('itemRow', '==', 2));
+    const currentQuerySnapshot2 = await getDocs(itemsRef2);
+    setTortasItems2(currentQuerySnapshot2.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef3 = query(tortasRef, where('itemRow', '==', 3));
+    const currentQuerySnapshot3 = await getDocs(itemsRef3);
+    setTortasItems3(currentQuerySnapshot3.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+  };
 
   useEffect(() => {
     getDbmessages();
+    getTortas();
   }, []);
 
   function returnHome() {
@@ -97,33 +136,37 @@ function Tortas( {setHome, setCurrentSection, cartAmount, setCakesScreen, setTar
       <h1 className='sectionTitle'>LAS TORTAS</h1>
       <div className='sectionImages'>
         <div className='sectionImagesTop'>
-          <div>
-            <img onClick={goToProduct} src={Praline} className="sectionIMG" title={Praline} name="Una torta que dispone de un bizcocho de vainilla, rellena con dulce de lecha y praline. Cubierta con ganache de chocolate amargo y con más praline." id="$2.500" alt="Torta Praline"/>
-            <h1 className='itemName'>Torta Praline</h1>
-            <h1 className='itemPrice'>$2.500</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={FrutosRojos} className="sectionIMG" title={FrutosRojos} name="Bizcocho de queso mascarpone y frutos rojos, rellena de una crema de queso mascarpone, cubierta con el mismo relleno y frutos rojos." id="$3.500" alt="Torta Frutos Rojos"/>
-            <h1 className='itemName'>Torta Frutos Rojos</h1>
-            <h1 className='itemPrice'>$3.500</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={Vegana} className="sectionIMG" title={Vegana} name="Bizcocho de cacao, rellena de dulce de leche de almendras, cubierta con crema, choco rallado y frutillas." id="$3.000" alt="Torta Vegana"/>
-            <h1 className='itemName'>Torta Vegana</h1>
-            <h1 className='itemPrice'>$3.000</h1>
-          </div>
+        {tortasItems.map((tortaItem) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={tortaItem.itemIMG} className="sectionIMG" title={tortaItem.itemIMG} name={tortaItem.itemDesc} id={tortaItem.itemPrice} alt={tortaItem.itemName}/>
+                    <h1 className='itemName'>{tortaItem.itemName}</h1>
+                    <h1 className='itemPrice'>{tortaItem.itemPrice}</h1>
+                  </div>
+          )
+        })}
         </div>
         <div className='sectionImagesBottom'>
-          <div>
-            <img onClick={goToProduct} src={Nuez} className="sectionIMG" title={Nuez} name="Bizcocho de vainilla y nueces, rellena con una ganache de choco amargo, cubierto con dulce de leche y nueces bañadas." id="$2.700" alt="Torta Nuez"/>
-            <h1 className='itemName'>Torta Nuez</h1>
-            <h1 className='itemPrice'>$2.700</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={Oreo} className="sectionIMG" title={Oreo} name="Bizcocho de cacao y oreos, rellena de dulce de leche. Cubierta con crema chantilly, choco blanco y mini oreos." id="$2.550" alt="Torta Oreo"/>
-            <h1 className='itemName'>Torta Oreo</h1>
-            <h1 className='itemPrice'>$2.550</h1>
-          </div>
+        {tortasItems2.map((tortaItem2) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={tortaItem2.itemIMG} className="sectionIMG" title={tortaItem2.itemIMG} name={tortaItem2.itemDesc} id={tortaItem2.itemPrice} alt={tortaItem2.itemName}/>
+                    <h1 className='itemName'>{tortaItem2.itemName}</h1>
+                    <h1 className='itemPrice'>{tortaItem2.itemPrice}</h1>
+                  </div>
+          )
+        })}
+        </div>
+        <div className='sectionImagesBottom'>
+        {tortasItems3.map((tortaItem3) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={tortaItem3.itemIMG} className="sectionIMG" title={tortaItem3.itemIMG} name={tortaItem3.itemDesc} id={tortaItem3.itemPrice} alt={tortaItem3.itemName}/>
+                    <h1 className='itemName'>{tortaItem3.itemName}</h1>
+                    <h1 className='itemPrice'>{tortaItem3.itemPrice}</h1>
+                  </div>
+          )
+        })}
         </div>
       </div>
         <div className='footer'>

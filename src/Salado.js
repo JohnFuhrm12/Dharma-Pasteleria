@@ -9,10 +9,53 @@ import scons from './static/scons.png';
 
 import {useState, useEffect} from 'react';
 
-function Salado( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+// Firebase imports
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
+
+// Initialize Firebase Database
+firebase.initializeApp({
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
+});
+
+// Firebase Database
+const db = firebase.firestore();
+
+
+function Salado( {setHome, admin, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [description, setDescription] = useState([]);
+  const [price, setPrice] = useState([]);
+
+  const [saladoItems, setSaladoItems] = useState([]);
+  const [saladoItems2, setSaladoItems2] = useState([]);
+  const [saladoItems3, setSaladoItems3] = useState([]);
+  const saladoRef = collection(db, "salado");
+
+  const getSalado = async () => {
+    const itemsRef = query(saladoRef, where('itemRow', '==', 1));
+    const currentQuerySnapshot = await getDocs(itemsRef);
+    setSaladoItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef2 = query(saladoRef, where('itemRow', '==', 2));
+    const currentQuerySnapshot2 = await getDocs(itemsRef2);
+    setSaladoItems2(currentQuerySnapshot2.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef3 = query(saladoRef, where('itemRow', '==', 3));
+    const currentQuerySnapshot3 = await getDocs(itemsRef3);
+    setSaladoItems3(currentQuerySnapshot3.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+  };
 
   useEffect(() => {
     getDbmessages();
+    getSalado();
   }, []);
 
   function returnHome() {
@@ -55,6 +98,30 @@ function Salado( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, s
     setSaladoScreen(false);
   };
 
+  const deleteItem = async (e, saladoItem) => {
+    e.preventDefault();
+    await deleteDoc(doc(db, "salado", saladoItem.id));
+    getSalado();
+  };
+
+  const updateItemDesc = async (e, saladoItem) => {
+    await setDoc(doc(db, "salado", saladoItem.id), { merge: true }, {
+      itemDesc: description,
+    });
+    getSalado();
+    setDescription('');
+    e.preventDefault();
+  };
+
+  const updatePrice = async (e, saladoItem) => {
+    await setDoc(doc(db, "salado", saladoItem.id), { merge: true }, {
+      itemPrice: price,
+    });
+    getSalado();
+    setPrice('');
+    e.preventDefault();
+  };
+
   return (
     <>
     <div className="page">
@@ -91,13 +158,58 @@ function Salado( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, s
       <h1 className='sectionTitle'>Lo Salado</h1>
       <div className='sectionImages'>
         <div className='sectionImagesTop'>
-          <div>
-            <img onClick={goToProduct} src={scons} className="sectionIMG" title={scons} name="Masa de cuatro quesos (opcional pedir con tomate), vienen en caja de 10 unidades." id="$1.400" alt="Scons"/>
-            <h1 className='itemName'>Scons</h1>
-            <h1 className='itemPrice'>$1.400</h1>
+        {saladoItems.map((saladoItem) => {
+            return (
+                    <div>
+                      <img onClick={goToProduct} src={saladoItem.itemIMG} className="sectionIMG" title={saladoItem.itemIMG} name={saladoItem.itemDesc} id={saladoItem.itemPrice} alt={saladoItem.itemName}/>
+                      <h1 className='itemName'>{saladoItem.itemName}</h1>
+                      <h1 className='itemPrice'>{saladoItem.itemPrice}</h1>
+                      {admin ? 
+                      <>
+                      <form>
+                        <label for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button onClick={() => updatePrice(saladoItem)}>Update</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <h2>Desc: {saladoItem.itemDesc}</h2>
+                      <form>
+                        <label for="Desc">Descripcion:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button onClick={() => updateItemDesc(saladoItem)}>Update</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2>Row: {saladoItem.itemRow}</h2> : <></>}
+                      {admin ? <h1 onClick={() => deleteItem(saladoItem)}>X</h1> : <></>}
+                    </div>
+            )
+          })}
+          </div>
+          <div className='sectionImagesBottom'>
+        {saladoItems2.map((saladoItem2) => {
+            return (
+                    <div>
+                      <img onClick={goToProduct} src={saladoItem2.itemIMG} className="sectionIMG" title={saladoItem2.itemIMG} name={saladoItem2.itemDesc} id={saladoItem2.itemPrice} alt={saladoItem2.itemName}/>
+                      <h1 className='itemName'>{saladoItem2.itemName}</h1>
+                      <h1 className='itemPrice'>{saladoItem2.itemPrice}</h1>
+                    </div>
+            )
+          })}
+          </div>
+          <div className='sectionImagesBottom'>
+        {saladoItems3.map((saladoItem3) => {
+            return (
+                    <div>
+                      <img onClick={goToProduct} src={saladoItem3.itemIMG} className="sectionIMG" title={saladoItem3.itemIMG} name={saladoItem3.itemDesc} id={saladoItem3.itemPrice} alt={saladoItem3.itemName}/>
+                      <h1 className='itemName'>{saladoItem3.itemName}</h1>
+                      <h1 className='itemPrice'>{saladoItem3.itemPrice}</h1>
+                    </div>
+            )
+          })}
           </div>
         </div>
-      </div>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>
           <div className='footerInsta'>

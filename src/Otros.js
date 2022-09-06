@@ -13,10 +13,49 @@ import donas from './static/donas.png';
 
 import {useState, useEffect} from 'react';
 
+// Firebase imports
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
+
+// Initialize Firebase Database
+firebase.initializeApp({
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
+});
+
+// Firebase Database
+const db = firebase.firestore();
+
 function Otros( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [otrosItems, setOtrosItems] = useState([]);
+  const [otrosItems2, setOtrosItems2] = useState([]);
+  const [otrosItems3, setOtrosItems3] = useState([]);
+  const otrosRef = collection(db, "otros");
+
+  const getOtros = async () => {
+    const itemsRef = query(otrosRef, where('itemRow', '==', 1));
+    const currentQuerySnapshot = await getDocs(itemsRef);
+    setOtrosItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef2 = query(otrosRef, where('itemRow', '==', 2));
+    const currentQuerySnapshot2 = await getDocs(itemsRef2);
+    setOtrosItems2(currentQuerySnapshot2.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef3 = query(otrosRef, where('itemRow', '==', 3));
+    const currentQuerySnapshot3 = await getDocs(itemsRef3);
+    setOtrosItems3(currentQuerySnapshot3.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+  };
 
   useEffect(() => {
     getDbmessages();
+    getOtros();
   }, []);
 
   function returnHome() {
@@ -95,33 +134,37 @@ function Otros( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, se
       <h1 className='sectionTitle'>Los Otros</h1>
       <div className='sectionImages'>
         <div className='sectionImagesTop'>
-          <div>
-            <img onClick={goToProduct} src={alfajores} className="sectionIMG" title={alfajores} name="Masa sablee, rellenos con dulce de leche, viene en caja de 4 unidades." id="$600" alt="Alfajores"/>
-            <h1 className='itemName'>Alfajores</h1>
-            <h1 className='itemPrice'>$600</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={cakePaletas} className="sectionIMG" title={cakePaletas} name="Paletas de chocolate rellenas de un bizcocho humedo, viene en cajitas de 3 unidades." id="$1000" alt="Cake Paletas"/>
-            <h1 className='itemName'>Cake Paletas</h1>
-            <h1 className='itemPrice'>$1.000</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={rolls} className="sectionIMG" title={rolls} name="Rolls rellenos de nutella, viene en bandeja de 6 unidades." id="$1200" alt="Rolls"/>
-            <h1 className='itemName'>Rolls</h1>
-            <h1 className='itemPrice'>$1.200</h1>
-          </div>
+        {otrosItems.map((otroItem) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={otroItem.itemIMG} className="sectionIMG" title={otroItem.itemIMG} name={otroItem.itemDesc} id={otroItem.itemPrice} alt={otroItem.itemName}/>
+                    <h1 className='itemName'>{otroItem.itemName}</h1>
+                    <h1 className='itemPrice'>{otroItem.itemPrice}</h1>
+                  </div>
+          )
+        })}
         </div>
         <div className='sectionImagesBottom'>
-          <div>
-            <img onClick={goToProduct} src={trufas} className="sectionIMG" title={trufas} name="Seleccion de lo que haya disponible en el momento, viene en bolsas de 10 unidades." id="$300" alt="Trufas"/>
-            <h1 className='itemName'>Trufas</h1>
-            <h1 className='itemPrice'>$300</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={donas} className="sectionIMG" title={donas} name="Bañadas en chocolate y rellenas de dulce de leche, viene en caja de 3." id="$350" alt="Donas"/>
-            <h1 className='itemName'>Donas</h1>
-            <h1 className='itemPrice'>$350</h1>
-          </div>
+        {otrosItems2.map((otroItem2) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={otroItem2.itemIMG} className="sectionIMG" title={otroItem2.itemIMG} name={otroItem2.itemDesc} id={otroItem2.itemPrice} alt={otroItem2.itemName}/>
+                    <h1 className='itemName'>{otroItem2.itemName}</h1>
+                    <h1 className='itemPrice'>{otroItem2.itemPrice}</h1>
+                  </div>
+          )
+        })}
+        </div>
+        <div className='sectionImagesBottom'>
+        {otrosItems3.map((otroItem3) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={otroItem3.itemIMG} className="sectionIMG" title={otroItem3.itemIMG} name={otroItem3.itemDesc} id={otroItem3.itemPrice} alt={otroItem3.itemName}/>
+                    <h1 className='itemName'>{otroItem3.itemName}</h1>
+                    <h1 className='itemPrice'>{otroItem3.itemPrice}</h1>
+                  </div>
+          )
+        })}
         </div>
       </div>
         <div className='footer'>

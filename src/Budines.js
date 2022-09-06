@@ -11,10 +11,49 @@ import budinFrutosRojos from './static/budinFrutosRojos.png';
 
 import {useState, useEffect} from 'react';
 
+// Firebase imports
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
+
+// Initialize Firebase Database
+firebase.initializeApp({
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
+});
+
+// Firebase Database
+const db = firebase.firestore();
+
 function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [budinesItems, setBudinesItems] = useState([]);
+  const [budinesItems2, setBudinesItems2] = useState([]);
+  const [budinesItems3, setBudinesItems3] = useState([]);
+  const budinesRef = collection(db, "budines");
+
+  const getBudines = async () => {
+    const itemsRef = query(budinesRef, where('itemRow', '==', 1));
+    const currentQuerySnapshot = await getDocs(itemsRef);
+    setBudinesItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef2 = query(budinesRef, where('itemRow', '==', 2));
+    const currentQuerySnapshot2 = await getDocs(itemsRef2);
+    setBudinesItems2(currentQuerySnapshot2.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef3 = query(budinesRef, where('itemRow', '==', 3));
+    const currentQuerySnapshot3 = await getDocs(itemsRef3);
+    setBudinesItems3(currentQuerySnapshot3.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+  };
 
   useEffect(() => {
     getDbmessages();
+    getBudines();
   }, []);
 
   function returnHome() {
@@ -93,21 +132,37 @@ function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, 
       <h1 className='sectionTitle'>Los Budines</h1>
       <div className='sectionImages'>
         <div className='sectionImagesTop'>
-          <div>
-            <img onClick={goToProduct} src={budinesVeganos} className="sectionIMG" title={budinesVeganos} name="Budin vegano grande, rinde 12 porciones." id="$950" alt="Budines Veganos"/>
-            <h1 className='itemName'>Budines Veganos</h1>
-            <h1 className='itemPrice'>$950</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={budinPera} className="sectionIMG" title={budinPera} name="Budin de vainilla y peras, cubierto con salsa de caramelo, peras asadas y chocolate blanco." id="$700" alt="Budin de Pera"/>
-            <h1 className='itemName'>Budin de Pera</h1>
-            <h1 className='itemPrice'>$700</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={budinFrutosRojos} className="sectionIMG" title={budinFrutosRojos} name="Budin de vainilla y queso mascarpone, cubierto con crema y frutos rojos." id="$900" alt="Budin Frutos Rojos"/>
-            <h1 className='itemName'>Budin Frutos Rojos</h1>
-            <h1 className='itemPrice'>$900</h1>
-          </div>
+        {budinesItems.map((budinItem) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={budinItem.itemIMG} className="sectionIMG" title={budinItem.itemIMG} name={budinItem.itemDesc} id={budinItem.itemPrice} alt={budinItem.itemName}/>
+                    <h1 className='itemName'>{budinItem.itemName}</h1>
+                    <h1 className='itemPrice'>{budinItem.itemPrice}</h1>
+                  </div>
+          )
+        })}
+        </div>
+        <div className='sectionImagesBottom'>
+        {budinesItems2.map((budinItem2) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={budinItem2.itemIMG} className="sectionIMG" title={budinItem2.itemIMG} name={budinItem2.itemDesc} id={budinItem2.itemPrice} alt={budinItem2.itemName}/>
+                    <h1 className='itemName'>{budinItem2.itemName}</h1>
+                    <h1 className='itemPrice'>{budinItem2.itemPrice}</h1>
+                  </div>
+          )
+        })}
+        </div>
+        <div className='sectionImagesBottom'>
+        {budinesItems3.map((budinItem3) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={budinItem3.itemIMG} className="sectionIMG" title={budinItem3.itemIMG} name={budinItem3.itemDesc} id={budinItem3.itemPrice} alt={budinItem3.itemName}/>
+                    <h1 className='itemName'>{budinItem3.itemName}</h1>
+                    <h1 className='itemPrice'>{budinItem3.itemPrice}</h1>
+                  </div>
+          )
+        })}
         </div>
       </div>
         <div className='footer'>

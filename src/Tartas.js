@@ -10,10 +10,49 @@ import Ricota from './static/tartadeRicota.png';
 
 import {useState, useEffect} from 'react';
 
+// Firebase imports
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
+
+// Initialize Firebase Database
+firebase.initializeApp({
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
+});
+
+// Firebase Database
+const db = firebase.firestore();
+
 function Tartas( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [tartasItems, setTartasItems] = useState([]);
+  const [tartasItems2, setTartasItems2] = useState([]);
+  const [tartasItems3, setTartasItems3] = useState([]);
+  const tartasRef = collection(db, "tartas");
+
+  const getTartas = async () => {
+    const itemsRef = query(tartasRef, where('itemRow', '==', 1));
+    const currentQuerySnapshot = await getDocs(itemsRef);
+    setTartasItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef2 = query(tartasRef, where('itemRow', '==', 2));
+    const currentQuerySnapshot2 = await getDocs(itemsRef2);
+    setTartasItems2(currentQuerySnapshot2.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRef3 = query(tartasRef, where('itemRow', '==', 3));
+    const currentQuerySnapshot3 = await getDocs(itemsRef3);
+    setTartasItems3(currentQuerySnapshot3.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+  };
 
     useEffect(() => {
       getDbmessages();
+      getTartas();
     }, []);
 
     function returnHome() {
@@ -93,16 +132,37 @@ function showCart() {
       <h1 className='sectionTitle'>LAS TARTAS</h1>
       <div className='sectionImages'>
         <div className='sectionImagesTop'>
-          <div>
-            <img onClick={goToProduct} src={miniTarteletas} className="sectionIMG" title={miniTarteletas} name="Masa sablee de limon, viene en una caja de 12 unidades." id="$1.650" alt="Mini Tarteletas"/>
-            <h1 className='itemName'>Mini Tarteletas</h1>
-            <h1 className='itemPrice'>$1.650</h1>
-          </div>
-          <div>
-            <img onClick={goToProduct} src={Ricota} className="sectionIMG" title={Ricota} name="Masa sablee de limon, rellena con ricota citrica, opcional agregar dulce de leche." id="$1.650" alt="Tarta de Ricota"/>
-            <h1 className='itemName'>Tarta de Ricota</h1>
-            <h1 className='itemPrice'>$1.850</h1>
-          </div>
+        {tartasItems.map((tartaItem) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={tartaItem.itemIMG} className="sectionIMG" title={tartaItem.itemIMG} name={tartaItem.itemDesc} id={tartaItem.itemPrice} alt={tartaItem.itemName}/>
+                    <h1 className='itemName'>{tartaItem.itemName}</h1>
+                    <h1 className='itemPrice'>{tartaItem.itemPrice}</h1>
+                  </div>
+          )
+        })}
+        </div>
+        <div className='sectionImagesBottom'>
+        {tartasItems2.map((tartaItem2) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={tartaItem2.itemIMG} className="sectionIMG" title={tartaItem2.itemIMG} name={tartaItem2.itemDesc} id={tartaItem2.itemPrice} alt={tartaItem2.itemName}/>
+                    <h1 className='itemName'>{tartaItem2.itemName}</h1>
+                    <h1 className='itemPrice'>{tartaItem2.itemPrice}</h1>
+                  </div>
+          )
+        })}
+        </div>
+        <div className='sectionImagesBottom'>
+        {tartasItems3.map((tartaItem3) => {
+          return (
+                  <div>
+                    <img onClick={goToProduct} src={tartaItem3.itemIMG} className="sectionIMG" title={tartaItem3.itemIMG} name={tartaItem3.itemDesc} id={tartaItem3.itemPrice} alt={tartaItem3.itemName}/>
+                    <h1 className='itemName'>{tartaItem3.itemName}</h1>
+                    <h1 className='itemPrice'>{tartaItem3.itemPrice}</h1>
+                  </div>
+          )
+        })}
         </div>
       </div>
         <div className='footer'>

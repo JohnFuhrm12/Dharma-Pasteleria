@@ -30,7 +30,12 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+function Budines( {setHome, admin, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [iName, setIName] = useState('');
+  const [row, setRow] = useState('');
 
   const [budinesItems, setBudinesItems] = useState([]);
   const [budinesItems2, setBudinesItems2] = useState([]);
@@ -96,6 +101,137 @@ function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, 
     setBudinesScreen(false);
   };
 
+  // Admin Delete Item (3 needed for each row)
+ const deleteItem = async (e, budinItem) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "budines", budinItem.id));
+  getBudines();
+};
+
+const deleteItem2 = async (e, budinItem2) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "budines", budinItem2.id));
+  getBudines();
+};
+
+const deleteItem3 = async (e, budinItem3) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "budines", budinItem3.id));
+  getBudines();
+};
+
+// Admin Update Description
+const updateItemDesc = async (e, budinItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getBudines();
+  setDescription('');
+};
+
+const updateItemDesc2 = async (e, budinItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem2.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getBudines();
+  setDescription('');
+};
+
+const updateItemDesc3 = async (e, budinItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem3.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getBudines();
+  setDescription('');
+};
+
+// Admin Update Price
+const updatePrice = async (e, budinItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getBudines();
+  setPrice('');
+};
+
+const updatePrice2 = async (e, budinItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem2.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getBudines();
+  setPrice('');
+};
+
+const updatePrice3 = async (e, budinItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem3.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getBudines();
+  setPrice('');
+};
+
+// Admin Update Name
+const updateName = async (e, budinItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem.id), {
+    itemName: iName,
+  }, { merge: true });
+  getBudines();
+  setIName('');
+};
+
+const updateName2 = async (e, budinItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem2.id), {
+    itemName: iName,
+  }, { merge: true });
+  getBudines();
+  setIName('');
+};
+
+const updateName3 = async (e, budinItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem3.id), {
+    itemName: iName,
+  }, { merge: true });
+  getBudines();
+  setIName('');
+};
+
+// Admin Update Row
+const updateRow = async (e, budinItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getBudines();
+  setRow('');
+};
+
+const updateRow2 = async (e, budinItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem2.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getBudines();
+  setRow('');
+};
+
+const updateRow3 = async (e, budinItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "budines", budinItem3.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getBudines();
+  setRow('');
+};
+
   return (
     <>
     <div className="page">
@@ -137,7 +273,44 @@ function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, 
                   <div>
                     <img onClick={goToProduct} src={budinItem.itemIMG} className="sectionIMG" title={budinItem.itemIMG} name={budinItem.itemDesc} id={budinItem.itemPrice} alt={budinItem.itemName}/>
                     <h1 className='itemName'>{budinItem.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName(e, budinItem)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{budinItem.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice(e, budinItem)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{budinItem.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc(e, budinItem)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {budinItem.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow(e, budinItem)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem(e, budinItem)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -148,7 +321,44 @@ function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, 
                   <div>
                     <img onClick={goToProduct} src={budinItem2.itemIMG} className="sectionIMG" title={budinItem2.itemIMG} name={budinItem2.itemDesc} id={budinItem2.itemPrice} alt={budinItem2.itemName}/>
                     <h1 className='itemName'>{budinItem2.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName2(e, budinItem2)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{budinItem2.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice2(e, budinItem2)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{budinItem2.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc2(e, budinItem2)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {budinItem2.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow2(e, budinItem2)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem2(e, budinItem2)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -159,7 +369,44 @@ function Budines( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, 
                   <div>
                     <img onClick={goToProduct} src={budinItem3.itemIMG} className="sectionIMG" title={budinItem3.itemIMG} name={budinItem3.itemDesc} id={budinItem3.itemPrice} alt={budinItem3.itemName}/>
                     <h1 className='itemName'>{budinItem3.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName3(e, budinItem3)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{budinItem3.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice3(e, budinItem3)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{budinItem3.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc3(e, budinItem3)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {budinItem3.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow3(e, budinItem3)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem3(e, budinItem3)}>X</h1> : <></>}
                   </div>
           )
         })}

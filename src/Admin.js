@@ -29,7 +29,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Admin( {setHome, admin, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
+function Admin( {setHome, admin, setCartScreen, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -103,6 +103,11 @@ function Admin( {setHome, admin, setAdmin, setAdminScreen, setCakesScreen, setTa
     setOtrosScreen(true);
   };
 
+  function showCart() {
+    setCartScreen(true);
+    setAdminScreen(false);
+  };
+
   function login(e) {
     if (username === realUsername && password === realPassword) {
       setAdmin(true);
@@ -167,7 +172,7 @@ function Admin( {setHome, admin, setAdmin, setAdminScreen, setCakesScreen, setTa
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
           <input className='searchBar' type="text" placeholder="Buscar ..."></input>
-          <img src={cart} className="cart" alt="Carrito"/>
+          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>
       </div>
@@ -183,20 +188,22 @@ function Admin( {setHome, admin, setAdmin, setAdminScreen, setCakesScreen, setTa
       </div>
         {admin ? 
         <>
-        <h1>Logout</h1>
-        <button onClick={logout}>Log Out</button> 
-        <div>
-          <h1>Agregar un Nuevo Producto:</h1>
+        <h1>Cerrar Sesión</h1>
+        <button className='logoutButton' onClick={logout}>Cerrar Sesión</button> 
+        <div className='adminAddWrapper'>
+          <h1 className='adminAddTitle'>Agregar un Nuevo Producto:</h1>
 
-          <input type="file" onChange={(event) => {
+          <label className='updateLabelAdmin' for="imageUpload">Foto de Producto:</label>
+          <input name="imageUpload" type="file" onChange={(event) => {
             setImageSelected(event.target.files[0]);
           }}></input>
-          <button onClick={uploadImage}>Upload</button>
+          <button className='uploadButton' onClick={uploadImage}>Subir</button>
 
           {imageAwaiting ? 
-                  <form onSubmit={addProduct}>
-                  <label for="category">Categoria</label>
-                  <select onChange={(e) => {setCategory(e.target.value)}} name="category">
+          <div>
+                <form className='adminAddForm' onSubmit={addProduct}>
+                  <label className='adminAddLabel' for="category">Categoría:</label>
+                  <select className='adminInput' onChange={(e) => {setCategory(e.target.value)}} name="category">
                     <option value={'tortas'}>Tortas</option>
                     <option value={'tartas'}>Tartas</option>
                     <option value={'salado'}>Salado</option>
@@ -204,31 +211,32 @@ function Admin( {setHome, admin, setAdmin, setAdminScreen, setCakesScreen, setTa
                     <option value={'otros'}>Otros</option>
                   </select>   
       
-                  <label for="name">Nombre</label>
-                  <input onChange={(e) => {setName(e.target.value)}} name='name' value={name}/>
+                  <label className='adminAddLabel' for="name">Nombre:</label>
+                  <input className='adminInput' onChange={(e) => {setName(e.target.value)}} name='name' value={name}/>
       
-                  <label for="description">Descripcion</label>
-                  <input onChange={(e) => {setDescription(e.target.value)}} name='description' value={description}/>
+                  <label className='adminAddLabel' for="description">Descripción:</label>
+                  <textarea className='adminInputDesc' onChange={(e) => {setDescription(e.target.value)}} name='description' value={description}/>
       
-                  <label for="price">Precio</label>
-                  <input onChange={(e) => {setPrice(e.target.value)}} name='price' value={price}/>
+                  <label className='adminAddLabel' for="price">Precio:</label>
+                  <input className='adminInput' onChange={(e) => {setPrice(e.target.value)}} name='price' value={price}/>
       
-                  <label for="row">Row</label>
-                  <input onChange={(e) => {setRow(e.target.value)}} name='row' value={row}/>
-                  <button>Agregar</button>
+                  <label className='adminAddLabel' for="row">Hilera (1-3):</label>
+                  <input className='adminInput' onChange={(e) => {setRow(e.target.value)}} name='row' value={row}/>
+                  <button className='adminAddButton'>Agregar</button>
                 </form>
+              </div>
           : <></>}
         </div>
         </>
         :
         <>
-        <h1>Admin Log In</h1>
+        <h1>Acceso Administritivo</h1>
         <form onSubmit={login} className='AdminLoginForm'>
-            <label className='username' for="username">Username:</label>
+            <label className='username' for="username">Usuario:</label>
             <input onChange={(e) => {setUsername(e.target.value)}} className='usernameInput' name='username' value={username}></input>
-            <label className='password' for="password">Password:</label>
+            <label className='password' for="password">Contraseña:</label>
             <input onChange={(e) => {setPassword(e.target.value)}} className='passwordInput' name='username' value={password}></input>
-            <button>Login</button>
+            <button className='loginButton'>Acceder</button>
         </form>
         </>}
         <div className='footer'>

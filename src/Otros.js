@@ -32,7 +32,12 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Otros( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+function Otros( {setHome, admin, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [iName, setIName] = useState('');
+  const [row, setRow] = useState('');
 
   const [otrosItems, setOtrosItems] = useState([]);
   const [otrosItems2, setOtrosItems2] = useState([]);
@@ -98,6 +103,137 @@ function Otros( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, se
     setOtrosScreen(false);
   };
 
+  // Admin Delete Item (3 needed for each row)
+ const deleteItem = async (e, otroItem) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "otros", otroItem.id));
+  getOtros();
+};
+
+const deleteItem2 = async (e, otroItem2) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "otros", otroItem2.id));
+  getOtros();
+};
+
+const deleteItem3 = async (e, otroItem3) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "otros", otroItem3.id));
+  getOtros();
+};
+
+// Admin Update Description
+const updateItemDesc = async (e, otroItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getOtros();
+  setDescription('');
+};
+
+const updateItemDesc2 = async (e, otroItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem2.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getOtros();
+  setDescription('');
+};
+
+const updateItemDesc3 = async (e, otroItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem3.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getOtros();
+  setDescription('');
+};
+
+// Admin Update Price
+const updatePrice = async (e, otroItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getOtros();
+  setPrice('');
+};
+
+const updatePrice2 = async (e, otroItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem2.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getOtros();
+  setPrice('');
+};
+
+const updatePrice3 = async (e, otroItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem3.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getOtros();
+  setPrice('');
+};
+
+// Admin Update Name
+const updateName = async (e, otroItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem.id), {
+    itemName: iName,
+  }, { merge: true });
+  getOtros();
+  setIName('');
+};
+
+const updateName2 = async (e, otroItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem2.id), {
+    itemName: iName,
+  }, { merge: true });
+  getOtros();
+  setIName('');
+};
+
+const updateName3 = async (e, otroItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem3.id), {
+    itemName: iName,
+  }, { merge: true });
+  getOtros();
+  setIName('');
+};
+
+// Admin Update Row
+const updateRow = async (e, otroItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getOtros();
+  setRow('');
+};
+
+const updateRow2 = async (e, otroItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem2.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getOtros();
+  setRow('');
+};
+
+const updateRow3 = async (e, otroItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "otros", otroItem3.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getOtros();
+  setRow('');
+};
+
   return (
     <>
     <div className="page">
@@ -139,7 +275,44 @@ function Otros( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, se
                   <div>
                     <img onClick={goToProduct} src={otroItem.itemIMG} className="sectionIMG" title={otroItem.itemIMG} name={otroItem.itemDesc} id={otroItem.itemPrice} alt={otroItem.itemName}/>
                     <h1 className='itemName'>{otroItem.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName(e, otroItem)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{otroItem.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice(e, otroItem)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{otroItem.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc(e, otroItem)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {otroItem.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow(e, otroItem)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem(e, otroItem)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -150,7 +323,44 @@ function Otros( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, se
                   <div>
                     <img onClick={goToProduct} src={otroItem2.itemIMG} className="sectionIMG" title={otroItem2.itemIMG} name={otroItem2.itemDesc} id={otroItem2.itemPrice} alt={otroItem2.itemName}/>
                     <h1 className='itemName'>{otroItem2.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName2(e, otroItem2)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{otroItem2.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice2(e, otroItem2)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{otroItem2.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc2(e, otroItem2)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {otroItem2.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow2(e, otroItem2)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem2(e, otroItem2)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -161,7 +371,44 @@ function Otros( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, se
                   <div>
                     <img onClick={goToProduct} src={otroItem3.itemIMG} className="sectionIMG" title={otroItem3.itemIMG} name={otroItem3.itemDesc} id={otroItem3.itemPrice} alt={otroItem3.itemName}/>
                     <h1 className='itemName'>{otroItem3.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName3(e, otroItem3)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{otroItem3.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice3(e, otroItem3)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{otroItem3.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc3(e, otroItem3)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {otroItem3.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow3(e, otroItem3)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem3(e, otroItem3)}>X</h1> : <></>}
                   </div>
           )
         })}

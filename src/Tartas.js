@@ -29,7 +29,12 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Tartas( {setHome, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+function Tartas( {setHome, admin, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [iName, setIName] = useState('');
+  const [row, setRow] = useState('');
 
   const [tartasItems, setTartasItems] = useState([]);
   const [tartasItems2, setTartasItems2] = useState([]);
@@ -96,6 +101,137 @@ function showCart() {
   setTartasScreen(false);
 };
 
+ // Admin Delete Item (3 needed for each row)
+ const deleteItem = async (e, tartaItem) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "tartas", tartaItem.id));
+  getTartas();
+};
+
+const deleteItem2 = async (e, tartaItem2) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "tartas", tartaItem2.id));
+  getTartas();
+};
+
+const deleteItem3 = async (e, tartaItem3) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "tartas", tartaItem3.id));
+  getTartas();
+};
+
+// Admin Update Description
+const updateItemDesc = async (e, tartaItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getTartas();
+  setDescription('');
+};
+
+const updateItemDesc2 = async (e, tartaItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem2.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getTartas();
+  setDescription('');
+};
+
+const updateItemDesc3 = async (e, tartaItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem3.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getTartas();
+  setDescription('');
+};
+
+// Admin Update Price
+const updatePrice = async (e, tartaItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getTartas();
+  setPrice('');
+};
+
+const updatePrice2 = async (e, tartaItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem2.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getTartas();
+  setPrice('');
+};
+
+const updatePrice3 = async (e, tartaItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem3.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getTartas();
+  setPrice('');
+};
+
+// Admin Update Name
+const updateName = async (e, tartaItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem.id), {
+    itemName: iName,
+  }, { merge: true });
+  getTartas();
+  setIName('');
+};
+
+const updateName2 = async (e, tartaItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem2.id), {
+    itemName: iName,
+  }, { merge: true });
+  getTartas();
+  setIName('');
+};
+
+const updateName3 = async (e, tartaItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem3.id), {
+    itemName: iName,
+  }, { merge: true });
+  getTartas();
+  setIName('');
+};
+
+// Admin Update Row
+const updateRow = async (e, tartaItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getTartas();
+  setRow('');
+};
+
+const updateRow2 = async (e, tartaItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem2.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getTartas();
+  setRow('');
+};
+
+const updateRow3 = async (e, tartaItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tartas", tartaItem3.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getTartas();
+  setRow('');
+};
+
   return (
     <>
     <div className="page">
@@ -137,7 +273,44 @@ function showCart() {
                   <div>
                     <img onClick={goToProduct} src={tartaItem.itemIMG} className="sectionIMG" title={tartaItem.itemIMG} name={tartaItem.itemDesc} id={tartaItem.itemPrice} alt={tartaItem.itemName}/>
                     <h1 className='itemName'>{tartaItem.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName(e, tartaItem)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{tartaItem.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice(e, tartaItem)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{tartaItem.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc(e, tartaItem)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {tartaItem.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow(e, tartaItem)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem(e, tartaItem)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -148,7 +321,44 @@ function showCart() {
                   <div>
                     <img onClick={goToProduct} src={tartaItem2.itemIMG} className="sectionIMG" title={tartaItem2.itemIMG} name={tartaItem2.itemDesc} id={tartaItem2.itemPrice} alt={tartaItem2.itemName}/>
                     <h1 className='itemName'>{tartaItem2.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName2(e, tartaItem2)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{tartaItem2.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice2(e, tartaItem2)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{tartaItem2.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc2(e, tartaItem2)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {tartaItem2.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow2(e, tartaItem2)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem2(e, tartaItem2)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -159,7 +369,44 @@ function showCart() {
                   <div>
                     <img onClick={goToProduct} src={tartaItem3.itemIMG} className="sectionIMG" title={tartaItem3.itemIMG} name={tartaItem3.itemDesc} id={tartaItem3.itemPrice} alt={tartaItem3.itemName}/>
                     <h1 className='itemName'>{tartaItem3.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName3(e, tartaItem3)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{tartaItem3.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice3(e, tartaItem3)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{tartaItem3.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc3(e, tartaItem3)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {tartaItem3.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow3(e, tartaItem3)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem3(e, tartaItem3)}>X</h1> : <></>}
                   </div>
           )
         })}

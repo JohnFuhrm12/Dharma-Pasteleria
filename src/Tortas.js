@@ -34,7 +34,12 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Tortas( {setHome, setCurrentSection, cartAmount, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+function Tortas( {setHome, admin, setCurrentSection, cartAmount, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [iName, setIName] = useState('');
+  const [row, setRow] = useState('');
 
   const [tortasItems, setTortasItems] = useState([]);
   const [tortasItems2, setTortasItems2] = useState([]);
@@ -100,6 +105,137 @@ function Tortas( {setHome, setCurrentSection, cartAmount, setCakesScreen, setTar
     setProductDesc(e.currentTarget.name);
   };
 
+  // Admin Delete Item (3 needed for each row)
+ const deleteItem = async (e, tortaItem) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "tortas", tortaItem.id));
+  getTortas();
+};
+
+const deleteItem2 = async (e, tortaItem2) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "tortas", tortaItem2.id));
+  getTortas();
+};
+
+const deleteItem3 = async (e, tortaItem3) => {
+  e.preventDefault();
+  await deleteDoc(doc(db, "tortas", tortaItem3.id));
+  getTortas();
+};
+
+// Admin Update Description
+const updateItemDesc = async (e, tortaItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getTortas();
+  setDescription('');
+};
+
+const updateItemDesc2 = async (e, tortaItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem2.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getTortas();
+  setDescription('');
+};
+
+const updateItemDesc3 = async (e, tortaItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem3.id), {
+    itemDesc: description,
+  }, { merge: true });
+  getTortas();
+  setDescription('');
+};
+
+// Admin Update Price
+const updatePrice = async (e, tortaItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getTortas();
+  setPrice('');
+};
+
+const updatePrice2 = async (e, tortaItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem2.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getTortas();
+  setPrice('');
+};
+
+const updatePrice3 = async (e, tortaItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem3.id), {
+    itemPrice: price,
+  }, { merge: true });
+  getTortas();
+  setPrice('');
+};
+
+// Admin Update Name
+const updateName = async (e, tortaItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem.id), {
+    itemName: iName,
+  }, { merge: true });
+  getTortas();
+  setIName('');
+};
+
+const updateName2 = async (e, tortaItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem2.id), {
+    itemName: iName,
+  }, { merge: true });
+  getTortas();
+  setIName('');
+};
+
+const updateName3 = async (e, tortaItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem3.id), {
+    itemName: iName,
+  }, { merge: true });
+  getTortas();
+  setIName('');
+};
+
+// Admin Update Row
+const updateRow = async (e, tortaItem) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getTortas();
+  setRow('');
+};
+
+const updateRow2 = async (e, tortaItem2) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem2.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getTortas();
+  setRow('');
+};
+
+const updateRow3 = async (e, tortaItem3) => {
+  e.preventDefault();
+  await setDoc(doc(db, "tortas", tortaItem3.id), {
+    itemRow: Number(row),
+  }, { merge: true });
+  getTortas();
+  setRow('');
+};
+
   return (
     <>
     <div className="page">
@@ -141,7 +277,44 @@ function Tortas( {setHome, setCurrentSection, cartAmount, setCakesScreen, setTar
                   <div>
                     <img onClick={goToProduct} src={tortaItem.itemIMG} className="sectionIMG" title={tortaItem.itemIMG} name={tortaItem.itemDesc} id={tortaItem.itemPrice} alt={tortaItem.itemName}/>
                     <h1 className='itemName'>{tortaItem.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName(e, tortaItem)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{tortaItem.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice(e, tortaItem)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{tortaItem.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc(e, tortaItem)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {tortaItem.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow(e, tortaItem)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem(e, tortaItem)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -152,7 +325,44 @@ function Tortas( {setHome, setCurrentSection, cartAmount, setCakesScreen, setTar
                   <div>
                     <img onClick={goToProduct} src={tortaItem2.itemIMG} className="sectionIMG" title={tortaItem2.itemIMG} name={tortaItem2.itemDesc} id={tortaItem2.itemPrice} alt={tortaItem2.itemName}/>
                     <h1 className='itemName'>{tortaItem2.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName2(e, tortaItem2)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{tortaItem2.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice2(e, tortaItem2)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{tortaItem2.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc2(e, tortaItem2)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {tortaItem2.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow2(e, tortaItem2)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem2(e, tortaItem2)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -163,7 +373,44 @@ function Tortas( {setHome, setCurrentSection, cartAmount, setCakesScreen, setTar
                   <div>
                     <img onClick={goToProduct} src={tortaItem3.itemIMG} className="sectionIMG" title={tortaItem3.itemIMG} name={tortaItem3.itemDesc} id={tortaItem3.itemPrice} alt={tortaItem3.itemName}/>
                     <h1 className='itemName'>{tortaItem3.itemName}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateName3(e, tortaItem3)}>
+                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
                     <h1 className='itemPrice'>{tortaItem3.itemPrice}</h1>
+                    {admin ? 
+                      <>
+                      <form onSubmit={(e) => updatePrice3(e, tortaItem3)}>
+                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? 
+                      <>
+                      <div className='itemDescAdminBox'>
+                        <h2 className='itemDescAdmin'>{tortaItem3.itemDesc}</h2>
+                      </div>
+                      <form onSubmit={(e) => updateItemDesc3(e, tortaItem3)}>
+                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h2 className='adminRow'>Hilera: {tortaItem3.itemRow}</h2> : <></>}
+                      {admin ? 
+                      <>
+                      <form onSubmit={(e) => updateRow3(e, tortaItem3)}>
+                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
+                        <button>Actualizar</button>
+                      </form>
+                      </> : <></>}
+                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem3(e, tortaItem3)}>X</h1> : <></>}
                   </div>
           )
         })}

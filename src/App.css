@@ -745,6 +745,128 @@ html body {
     width: 500px;
     margin: 0 auto;
 }
+/* Client Info */
+
+/* Admin */
+.itemDescAdminBox {
+ width: 300px;
+ margin: 0 auto;
+ margin-top: 20px;
+ margin-bottom: 20px;
+}
+
+.itemDescAdmin {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.updateLabelAdmin {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.adminRow {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.adminDelete {
+    cursor: pointer;
+    width: 20px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.adminDelete:hover {
+    color: red;
+}
+
+.adminAddTitle {
+    margin-top: 40px;
+}
+
+.adminAddForm{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 200px;
+}
+
+.adminInput {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    padding: 2px;
+}
+
+.adminInputDesc {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    padding: 2px;
+    height: 80px;
+    overflow: scroll;
+    overflow-wrap: break-word;
+}
+
+.adminAddLabel {
+    font-weight: bold;
+}
+
+.adminAddButton {
+    margin-top: 10px;
+    margin-bottom: 60px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.adminAddWrapper {
+    min-height: 400px;
+}
+
+.AdminLoginForm {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: 0 auto;
+    margin-bottom: 225px;
+}
+
+.username {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.usernameInput {
+    font-size: 18px;
+}
+
+.password {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.passwordInput {
+    font-size: 18px;
+}
+
+.loginButton {
+    margin-top: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.logoutButton {
+    cursor: pointer;
+}
+
+.uploadButton{
+    cursor: pointer;
+}
+/* Admin*/
 
 @media (max-width: 650px) {
 /* Nav Bar */

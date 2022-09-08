@@ -30,7 +30,9 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Cart( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, setClientInfoScreen, currentUser, paypalTotal, setPaypalTotal} ) {
+function Cart( {setHome, setSearchScreen, searchQuery, setSearchQuery, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, setClientInfoScreen, currentUser, paypalTotal, setPaypalTotal} ) {
+
+    const [searchKey, setSearchKey] = useState('');
 
     const [cartItems, setCartItems] = useState([]);
     const [newSum, setNewSum] = useState(0);
@@ -131,6 +133,14 @@ const subtract = async (cartItem) => {
     getDbmessages();
   };
 
+  function searchFunc(e) {
+    if(e.key === 'Enter') {
+      setSearchQuery(searchKey);
+      setSearchScreen(true);
+      setCartScreen(false);
+    };
+  };
+
   return (
     <>
     <div className="page">
@@ -144,7 +154,7 @@ const subtract = async (cartItem) => {
         <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
-          <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>
@@ -169,13 +179,12 @@ const subtract = async (cartItem) => {
         <h1>Total Parcial</h1>
       </div>
       {cartItems.map((cartItem) => {
-        const photo = require(`./static/${cartItem.itemIMG}.png`);
           return (
             <div className='cartList'>
                 <div className='cartTableProducts'>
                   <h1 onClick={() => removeItem(cartItem)} className='cancel'>x</h1>
                 <div className='cartImageTitle'>
-                    <img src={photo} className="cartImage" alt="ItemIMG"/>
+                    <img src={cartItem.itemIMG} className="cartImage" alt="ItemIMG"/>
                     <h1 className='cartItemName'>{cartItem.itemName}</h1>
                 </div>
                 <h1 className='cartItemName'>${cartItem.itemPrice}</h1>

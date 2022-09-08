@@ -26,75 +26,78 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Search( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
+function Search( {setHome, setSearchScreen, searchQuery, setSearchQuery, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser, getDbmessages} ) {
 
-  const [clientFirstName, setClientFirstName] = useState('');
-  const [businessName, setBusinessName] = useState('');
-  const [streetName, setStreetName] = useState('');
-  const [postalCode, setPostalCode] = useState('');
-  const [phone, setPhone] = useState('');
-  const [payment, setPayment] = useState('Effectivo');
+  const [searchKey, setSearchKey] = useState('');
 
-  const [clientLastName, setClientLastName] = useState('');
-  const [countryName, setCountryName] = useState('Argentina');
-  const [buildingName, setBuildingName] = useState('');
-  const [cityName, setCityName] = useState('');
-  const [emailName, setEmailName] = useState('');
-  const [service, setService] = useState('Domicilio');
+  const [searchItemsCategory, setSearchItemsCategory] = useState([]);
+  const [searchItemsName, setSearchItemsName] = useState([]);
+  const [searchItemsFlavor, setSearchItemsFlavor] = useState([]);
+  const searchRef = collection(db, 'products');
 
-  const [firstPage, setFirstPage] = useState(true);
+  const lowerCaseCategory = searchQuery.toLowerCase();
 
-  const [cartItems, setCartItems] = useState([]);
-  const [newSum, setNewSum] = useState(0);
-  const totals = [];
-  const cartRef = collection(db, "cart");
+  const words = searchQuery.split(" ");
+  const upperCaseName = words.map((word) => { 
+                            return word[0].toUpperCase() + word.substring(1); 
+                        }).join(" ");                      
 
-  let sum = 0;
+  const lowerCaseFlavor = searchQuery.toLowerCase();
 
-  const getDbmessages = async () => {
-    const itemsRef = query(cartRef, where('user', '==', currentUser));
-    const currentQuerySnapshot = await getDocs(itemsRef);
-    setCartItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+  const getSearchItems = async () => {
+    const itemsRefCategory = query(searchRef, where('itemCategory', '==', lowerCaseCategory));
+    const currentQuerySnapshotCategory = await getDocs(itemsRefCategory);
+    setSearchItemsCategory(currentQuerySnapshotCategory.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRefName = query(searchRef, where('itemName', '==', upperCaseName));
+    const currentQuerySnapshotName = await getDocs(itemsRefName);
+    setSearchItemsName(currentQuerySnapshotName.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRefFlavor = query(searchRef, where('itemFlavor', '==', lowerCaseFlavor));
+    const currentQuerySnapshotFlavor = await getDocs(itemsRefFlavor);
+    setSearchItemsFlavor(currentQuerySnapshotFlavor.docs.map((doc) => ({ ...doc.data(), id: doc.id}))); 
   };
 
     useEffect(() => {     
-        getDbmessages();
+      getDbmessages();
+      getSearchItems();
     }, []);
 
-    setTimeout( function() { getTotal(); }, 1000);
-
-  useEffect(() => {
-    console.log('search');
-  });
-
   function returnHome() {
-    setClientInfoScreen(false);
+    setSearchScreen(false);
     setHome(true);
   };
 
   function showCakes() {
-    setClientInfoScreen(false);
+    setSearchScreen(false);
     setCakesScreen(true);
   };
 
   function showTartas() {
-    setClientInfoScreen(false);
+    setSearchScreen(false);
     setTartasScreen(true);
   };
 
   function showSalado() {
-    setClientInfoScreen(false);
+    setSearchScreen(false);
     setSaladoScreen(true);
   };
 
   function showBudines() {
-    setClientInfoScreen(false);
+    setSearchScreen(false);
     setBudinesScreen(true);
   };
 
   function showOtros() {
-    setClientInfoScreen(false);
+    setSearchScreen(false);
     setOtrosScreen(true);
+  };
+
+  function searchFunc(e) {
+    if(e.key === 'Enter') {
+      setSearchQuery(searchKey);
+      getSearchItems();
+    };
   };
 
   return (
@@ -110,7 +113,7 @@ function Search( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
         <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
-          <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>
@@ -126,7 +129,52 @@ function Search( {setHome, setCakesScreen, setTartasScreen, setSaladoScreen, set
         </div>
       </div>
       <div>
-        <h1>SEARCH</h1>
+        <h1>Resultados de Busqueda de: ({searchQuery})</h1>
+        {searchItemsCategory.map((searchItemCat) => {
+            return (
+              <>
+               <div className='cartList'>
+                <div className='cartTableProducts'>
+                <div className='cartImageTitle'>
+                    <img src={searchItemCat.itemIMG} className="cartImage" alt="ItemIMG"/>
+                    <h1 className='cartItemName'>{searchItemCat.itemName}</h1>
+                </div>
+                <h1 className='cartItemName'>{searchItemCat.itemPrice}</h1>
+                </div>
+            </div>
+              </>
+            )
+            })}
+            {searchItemsName.map((searchItemName) => {
+            return (
+              <>
+              <div className='cartList'>
+                <div className='cartTableProducts'>
+                <div className='cartImageTitle'>
+                    <img src={searchItemName.itemIMG} className="cartImage" alt="ItemIMG"/>
+                    <h1 className='cartItemName'>{searchItemName.itemName}</h1>
+                </div>
+                <h1 className='cartItemName'>{searchItemName.itemPrice}</h1>
+                </div>
+            </div>
+              </>
+            )
+            })}
+            {searchItemsFlavor.map((searchItemFlavor) => {
+            return (
+              <>
+              <div className='cartList'>
+                <div className='cartTableProducts'>
+                <div className='cartImageTitle'>
+                    <img src={searchItemFlavor.itemIMG} className="cartImage" alt="ItemIMG"/>
+                    <h1 className='cartItemName'>{searchItemFlavor.itemName}</h1>
+                </div>
+                <h1 className='cartItemName'>{searchItemFlavor.itemPrice}</h1>
+                </div>
+            </div>
+              </>
+            )
+            })}
       </div>
         <div className='footer'>
           <h1>Dharma Pastelería</h1>

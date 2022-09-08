@@ -34,8 +34,10 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Product( {setHome, admin, currentUser, currentSection, setCartScreen, setCartItems, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
+function Product( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, currentUser, currentSection, setCartScreen, setCartItems, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
   
+  const [searchKey, setSearchKey] = useState('');
+
   const [currentQuantity, setCurrentQuantity] = useState(0);
   const cartRef = db.collection('cart');
 
@@ -106,7 +108,7 @@ function Product( {setHome, admin, currentUser, currentSection, setCartScreen, s
   const addToCart = async (e) => {
     e.preventDefault();
     await cartRef.add({
-      itemIMG: Newimage,
+      itemIMG: productImage,
       itemName: productName,
       itemPrice: price,
       itemQuantity: quantity,
@@ -119,6 +121,14 @@ function Product( {setHome, admin, currentUser, currentSection, setCartScreen, s
   // Grab user input
   function handleChange(e) {
     setCurrentQuantity(e.target.value);
+  };
+
+  function searchFunc(e) {
+    if(e.key === 'Enter') {
+      setSearchQuery(searchKey);
+      setSearchScreen(true);
+      setProductScreen(false);
+    };
   };
 
   return (
@@ -134,7 +144,7 @@ function Product( {setHome, admin, currentUser, currentSection, setCartScreen, s
         <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
-          <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>

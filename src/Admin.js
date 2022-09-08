@@ -29,7 +29,9 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Admin( {setHome, admin, setCartScreen, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
+function Admin( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, setCartScreen, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
+
+  const [searchKey, setSearchKey] = useState('');
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -43,6 +45,7 @@ function Admin( {setHome, admin, setCartScreen, setAdmin, setAdminScreen, setCak
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [flavor, setFlavor] = useState('');
   const [row, setRow] = useState('');
 
   const [imageUrl, setImageUrl] = useState();
@@ -158,6 +161,14 @@ function Admin( {setHome, admin, setCartScreen, setAdmin, setAdminScreen, setCak
     setImageAwaiting(true);
   };
 
+  function searchFunc(e) {
+    if(e.key === 'Enter') {
+      setSearchQuery(searchKey);
+      setSearchScreen(true);
+      setAdminScreen(false);
+    };
+  };
+
   return (
     <>
     <div className="page">
@@ -171,7 +182,7 @@ function Admin( {setHome, admin, setCartScreen, setAdmin, setAdminScreen, setCak
         <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
-          <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>

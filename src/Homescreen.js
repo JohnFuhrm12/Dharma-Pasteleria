@@ -18,7 +18,9 @@ import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
 
-function Homescreen( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, cartAmount, getDbmessages}) {
+function Homescreen( {setHome, setSearchScreen, searchQuery, setSearchQuery, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, cartAmount, getDbmessages}) {
+
+  const [searchKey, setSearchKey] = useState('');
 
   useEffect(() => {
     getDbmessages();
@@ -82,6 +84,14 @@ function Homescreen( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTart
     window.location.reload(false);
   };
 
+  function searchFunc(e) {
+    if(e.key === 'Enter') {
+      setSearchQuery(searchKey);
+      setSearchScreen(true);
+      setHome(false);
+    };
+  };
+
   return (
     <>
     <div className="page">
@@ -95,7 +105,7 @@ function Homescreen( {setHome, setAdmin, setAdminScreen, setCakesScreen, setTart
         <h1 onClick={refresh} className='title'>Dharma Pastelería</h1>
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
-          <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>

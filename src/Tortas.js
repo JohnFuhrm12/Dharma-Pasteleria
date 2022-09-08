@@ -34,7 +34,9 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Tortas( {setHome, admin, setCurrentSection, cartAmount, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+function Tortas( {setHome, admin, setSearchScreen, searchQuery, setSearchQuery, setCurrentSection, cartAmount, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+
+  const [searchKey, setSearchKey] = useState('');
 
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -103,6 +105,14 @@ function Tortas( {setHome, admin, setCurrentSection, cartAmount, setCakesScreen,
     setProductName(e.currentTarget.alt);
     setProductPrice(e.currentTarget.id);
     setProductDesc(e.currentTarget.name);
+  };
+
+  function searchFunc(e) {
+    if(e.key === 'Enter') {
+      setSearchQuery(searchKey);
+      setSearchScreen(true);
+      setCakesScreen(false);
+    };
   };
 
   // Admin Delete Item (3 needed for each row)
@@ -249,7 +259,7 @@ const updateRow3 = async (e, tortaItem3) => {
         <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
         <div className='searchCart'>
           <img src={search} className="search" alt="Buscar"/>
-          <input className='searchBar' type="text" placeholder="Buscar ..."></input>
+          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
           <p className='cartQuantity'>{cartAmount}</p>
         </div>

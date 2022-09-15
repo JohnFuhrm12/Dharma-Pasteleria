@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 
-const PREFIX = 'react-dharma-'
+const PREFIX = 'react-reef-'
 
 // Fix an identification key to associate with each name and add names to local storage
 export default function useLocalStorage(key, initalValue) {

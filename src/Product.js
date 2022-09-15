@@ -1,40 +1,32 @@
 import './App.css';
+import {useState, useEffect} from 'react';
 
-import vegan from './static/vegan.png';
-import instagram from './static/instagram.webp'; 
 import cart from './static/cart.png';
 import search from './static/search.png';
 
-import Praline from './static/tortaPraline.png';
-import FrutosRojos from './static/tortaFrutosRojos.png';
-import Vegana from './static/tortaVegana.png';
-import Nuez from './static/tortaNuez.png';
-import Oreo from './static/tortaOreo.png';
-
-import miniTarteletas from './static/miniTarteletas.png';
-
-import {useState, useEffect} from 'react';
+import coralHome from './static/coralHome.jpg';
 
 // Firebase imports
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
+import userEvent from '@testing-library/user-event';
 
 // Initialize Firebase Database
 firebase.initializeApp({
-  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
-  authDomain: "dharma-ec35e.firebaseapp.com",
-  projectId: "dharma-ec35e",
-  storageBucket: "dharma-ec35e.appspot.com",
-  messagingSenderId: "79111090409",
-  appId: "1:79111090409:web:b41568c2860577b3844078"
+  apiKey: "AIzaSyB5aeD3R-qHoRlLJcNGmrpCVZEocRz90Dk",
+  authDomain: "reef-store-9da21.firebaseapp.com",
+  projectId: "reef-store-9da21",
+  storageBucket: "reef-store-9da21.appspot.com",
+  messagingSenderId: "149895470839",
+  appId: "1:149895470839:web:5937a7595ca8b696f17df2"
 });
 
 // Firebase Database
 const db = firebase.firestore();
 
-function Product( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, currentUser, currentSection, setCartScreen, setCartItems, setCakesScreen, cartAmount, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, productDesc, setProductScreen, productImage, setProductImage, productName, productPrice} ) {
+function Product( {...props} ) {
   
   const [searchKey, setSearchKey] = useState('');
 
@@ -43,56 +35,13 @@ function Product( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin,
 
   const [quantity, setQuantity] = useState(0);
 
-  const price = Number(productPrice.replace('$','').replace('.',''));
-  const image = productName.replace(' ','').replace(' ','');
+  const price = Number(props.productPrice.replace('$','').replace('.',''));
+  const image = props.productName.replace(' ','').replace(' ','');
   const Newimage = image.charAt(0).toLowerCase() + image.slice(1)
 
-  const getDbmessages = async () => {
-    const itemsRef = query(cartRef, where('user', '==', currentUser));
-    const currentQuerySnapshot = await getDocs(itemsRef);
-    setCartItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
-    };
-
-  useEffect(() => {
-    console.log('Image:', productImage);
-    console.log('Name:', productName);
-    console.log('Price:', productPrice);
-    console.log('NewImage:', Newimage);
-  }, []);
-
   function returnHome() {
-    setProductScreen(false);
-    setHome(true);
-  };
-
-  function showCakes() {
-    setProductScreen(false);
-    setCakesScreen(true);
-  };
-
-  function showTartas() {
-    setProductScreen(false);
-    setTartasScreen(true);
-  };
-
-  function showSalado() {
-    setProductScreen(false);
-    setSaladoScreen(true);
-  };
-
-  function showBudines() {
-    setProductScreen(false);
-    setBudinesScreen(true);
-  };
-
-  function showOtros() {
-    setProductScreen(false);
-    setOtrosScreen(true);
-  };
-
-  function showCart() {
-    setCartScreen(true);
-    setProductScreen(false);
+    props.setProductScreen(false);
+    props.setHome(true);
   };
 
   function subtract() {
@@ -105,16 +54,20 @@ function Product( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin,
     setQuantity(quantity + 1);
   };
 
+  useEffect(() => {
+    console.log(props.currentUser);
+  });
+
   const addToCart = async (e) => {
     e.preventDefault();
     await cartRef.add({
-      itemIMG: productImage,
-      itemName: productName,
+      itemIMG: props.productImage,
+      itemName: props.productName,
       itemPrice: price,
       itemQuantity: quantity,
-      user: currentUser,
+      user: props.currentUser,
     });
-    getDbmessages();
+    props.getDbmessages();
     showCart();
   };
 
@@ -125,56 +78,60 @@ function Product( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin,
 
   function searchFunc(e) {
     if(e.key === 'Enter') {
-      setSearchQuery(searchKey);
-      setSearchScreen(true);
-      setProductScreen(false);
+      props.setSearchQuery(searchKey);
+      props.setSearchScreen(true);
+      props.setProductScreen(false);
     };
   };
+
+  function showCart() {
+    props.setCartScreen(true);
+    props.setProductScreen(false);
+  };
+
+  function showProductSelection(e) {
+    props.setProductScreen(false);
+    props.setProductSelectionCategory(e.currentTarget.title);
+    props.setProductSelectionScreen(true);
+};
+
+function showCart() {
+  props.setCartScreen(true);
+  props.setProductScreen(false);
+};
 
   return (
     <>
     <div className="page">
-    <h1 onClick={returnHome} className='titleBehindD'>D</h1>
-      <h1 onClick={returnHome} className='titleBehindP'>P</h1>
-      <div className='titleBar'>
-        <div className='leftBarBox'>
-          <h2 className='leftBar'>Pasteles Especiales Para Celiacos y Veganos</h2>
-          <img src={vegan} className="vegan" alt="Vegano"/>
-        </div>
-        <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
-        <div className='searchCart'>
-          <img src={search} className="search" alt="Buscar"/>
-          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
-          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>{cartAmount}</p>
-        </div>
-      </div>
-      <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
-      <div className='categories-box'>
-        <div className='categories'>
-          <h2 onClick={showCakes}>TORTAS</h2>
-          <h2 onClick={showTartas}>TARTAS</h2>
-          <h2 onClick={showSalado}>SALADO</h2>
-          <h2 onClick={showBudines}>BUDINES</h2>
-          <h2 onClick={showOtros}>OTROS</h2>
-        </div>
+    <div className='titleBar'>
+            <h1 className='titleName' onClick={returnHome} >JF Aquatics</h1>
+            <h1 onClick={showProductSelection} title="Soft Corals" className='catName'>Corals</h1>
+            <h1 onClick={showProductSelection} title="Supplies" className='catName'>Supplies</h1>
+            <h1 onClick={showProductSelection} title="Saltwater Fish" className='catName'>Fish</h1>
+            <h1 onClick={showProductSelection} title="Invertebrates" className='catName'>Inverts</h1>
+          <div className='searchCart'>
+            <img src={search} className="search" alt="Search"/>
+            <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Search ..."/>
+            <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
+            <p className='cartQuantity'>{props.cartAmount}</p>
+          </div>
       </div>
       <div className='sectionBar'>
-        <h2 onClick={returnHome} className='sectionHeadingHome'>Inicio</h2>
+        <h2 onClick={returnHome} className='sectionHeadingHome'>Home</h2>
         <h2 className='sectionHeading'>/</h2>
-        <h2 className='sectionHeading'>{currentSection}</h2>
+        <h2 className='sectionHeading'>{props.currentSection}</h2>
         <h2 className='sectionHeading'>/</h2>
-        <h2 className='sectionHeading'>{productName}</h2>
+        <h2 className='sectionHeading'>{props.productName}</h2>
       </div>
       <div className='productWrapper'>
         <div className='productImageSection'>
-          <img src={productImage} className="productIMG" alt="Foto de Producto"/>
+          <img src={props.productImage} className="productIMG" alt="Foto de Producto"/>
         </div>
         <div className='productDescSection'>
-          <h1 className='sectionTitle'>{productName}</h1>
-          <h1 className='itemName'>{productName}</h1>
-          <h1 className='itemPrice'>{productPrice}</h1>
-          <p className='itemDesc'>{productDesc}</p>
+          <h1 className='sectionTitle'>{props.productName}</h1>
+          <h1 className='itemName'>{props.productName}</h1>
+          <h1 className='itemPrice'>{props.productPrice}</h1>
+          <p className='itemDesc'>{props.productDesc}</p>
           <div className='addSubtCart'>
             <button className='subtButton' onClick={subtract}>-</button>
             <h1 className='quantity'>{quantity}</h1>
@@ -183,13 +140,9 @@ function Product( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin,
           </div>
         </div>
       </div>
-        <div className='footer'>
-          <h1>Dharma Pastelería</h1>
-          <div className='footerInsta'>
-            <h1>Seguinos en Instagram:</h1>
-            <a href='https://www.instagram.com/dharma.pasteleria/'><img src={instagram} className="instagram" alt="Instagram"/></a>
-          </div>
-        </div>
+      <svg className='bottomWave2' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 220">
+                <path fill="#092849" fill-opacity="1" d="M0,96L34.3,90.7C68.6,85,137,75,206,85.3C274.3,96,343,128,411,138.7C480,149,549,139,617,117.3C685.7,96,754,64,823,58.7C891.4,53,960,75,1029,96C1097.1,117,1166,139,1234,144C1302.9,149,1371,139,1406,133.3L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"/>
+            </svg>
     </div>
     </>
   );

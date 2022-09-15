@@ -1,102 +1,135 @@
 import './App.css';
-import {useState, useEffect} from 'react';
 
+import vegan from './static/vegan.png';
+import instagram from './static/instagram.webp'; 
 import cart from './static/cart.png';
 import search from './static/search.png';
 
-import coralHome from './static/coralHome.jpg';
+import {useState, useEffect} from 'react';
 
 // Firebase imports
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
-import userEvent from '@testing-library/user-event';
 
 // Initialize Firebase Database
 firebase.initializeApp({
-  apiKey: "AIzaSyB5aeD3R-qHoRlLJcNGmrpCVZEocRz90Dk",
-  authDomain: "reef-store-9da21.firebaseapp.com",
-  projectId: "reef-store-9da21",
-  storageBucket: "reef-store-9da21.appspot.com",
-  messagingSenderId: "149895470839",
-  appId: "1:149895470839:web:5937a7595ca8b696f17df2"
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
 });
 
 // Firebase Database
 const db = firebase.firestore();
 
-function Search( {...props} ) {
+function Search( {setHome, setSearchScreen, searchQuery, setSearchQuery, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser, getDbmessages} ) {
 
   const [searchKey, setSearchKey] = useState('');
 
   const [searchItemsCategory, setSearchItemsCategory] = useState([]);
   const [searchItemsName, setSearchItemsName] = useState([]);
+  const [searchItemsFlavor, setSearchItemsFlavor] = useState([]);
   const searchRef = collection(db, 'products');
 
-  const words = props.searchQuery.split(" ");
+  const lowerCaseCategory = searchQuery.toLowerCase();
+
+  const words = searchQuery.split(" ");
   const upperCaseName = words.map((word) => { 
                             return word[0].toUpperCase() + word.substring(1); 
                         }).join(" ");                      
 
+  const lowerCaseFlavor = searchQuery.toLowerCase();
+
   const getSearchItems = async () => {
-    const itemsRefCategory = query(searchRef, where('itemCategory', '==', upperCaseName));
+    const itemsRefCategory = query(searchRef, where('itemCategory', '==', lowerCaseCategory));
     const currentQuerySnapshotCategory = await getDocs(itemsRefCategory);
     setSearchItemsCategory(currentQuerySnapshotCategory.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
 
     const itemsRefName = query(searchRef, where('itemName', '==', upperCaseName));
     const currentQuerySnapshotName = await getDocs(itemsRefName);
     setSearchItemsName(currentQuerySnapshotName.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+
+    const itemsRefFlavor = query(searchRef, where('itemFlavor', '==', lowerCaseFlavor));
+    const currentQuerySnapshotFlavor = await getDocs(itemsRefFlavor);
+    setSearchItemsFlavor(currentQuerySnapshotFlavor.docs.map((doc) => ({ ...doc.data(), id: doc.id}))); 
   };
 
     useEffect(() => {     
-      props.getDbmessages();
+      getDbmessages();
       getSearchItems();
     }, []);
 
-    // When Category State is Changed Re-Render Mapped items
-  useEffect(() => {
-    getSearchItems();
-  }, [props.searchQuery]);
-
   function returnHome() {
-    props.setSearchScreen(false);
-    props.setHome(true);
+    setSearchScreen(false);
+    setHome(true);
+  };
+
+  function showCakes() {
+    setSearchScreen(false);
+    setCakesScreen(true);
+  };
+
+  function showTartas() {
+    setSearchScreen(false);
+    setTartasScreen(true);
+  };
+
+  function showSalado() {
+    setSearchScreen(false);
+    setSaladoScreen(true);
+  };
+
+  function showBudines() {
+    setSearchScreen(false);
+    setBudinesScreen(true);
+  };
+
+  function showOtros() {
+    setSearchScreen(false);
+    setOtrosScreen(true);
   };
 
   function searchFunc(e) {
     if(e.key === 'Enter') {
-        props.setSearchQuery(searchKey);
+      setSearchQuery(searchKey);
       getSearchItems();
     };
   };
 
-  function showProductSelection(e) {
-    props.setSearchScreen(false);
-    props.setProductSelectionCategory(e.currentTarget.title);
-    props.setProductSelectionScreen(true);
-    };
-
   return (
     <>
     <div className="page">
-    <div className='titleBar'>
-            <h1 className='titleName' onClick={returnHome} >JF Aquatics</h1>
-            <h1 onClick={showProductSelection} title="Soft Corals" className='catName'>Corals</h1>
-            <h1 onClick={showProductSelection} title="Supplies" className='catName'>Supplies</h1>
-            <h1 onClick={showProductSelection} title="Saltwater Fish" className='catName'>Fish</h1>
-            <h1 onClick={showProductSelection} title="Invertebrates" className='catName'>Inverts</h1>
-          <div className='searchCart'>
-            <img src={search} className="search" alt="Search"/>
-            <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Search ..."/>
-            <img src={cart} className="cart" alt="Carrito"/>
-            <p className='cartQuantity'>{props.cartAmount}</p>
-          </div>
+    <h1 onClick={returnHome} className='titleBehindD'>D</h1>
+      <h1 onClick={returnHome} className='titleBehindP'>P</h1>
+      <div className='titleBar'>
+        <div className='leftBarBox'>
+          <h2 className='leftBar'>Pasteles Especiales Para Celiacos y Veganos</h2>
+          <img src={vegan} className="vegan" alt="Vegano"/>
+        </div>
+        <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
+        <div className='searchCart'>
+          <img src={search} className="search" alt="Buscar"/>
+          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
+          <img src={cart} className="cart" alt="Carrito"/>
+          <p className='cartQuantity'>{cartAmount}</p>
+        </div>
+      </div>
+      <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
+      <div className='categories-box'>
+        <div className='categories'>
+          <h2 onClick={showCakes}>TORTAS</h2>
+          <h2 onClick={showTartas}>TARTAS</h2>
+          <h2 onClick={showSalado}>SALADO</h2>
+          <h2 onClick={showBudines}>BUDINES</h2>
+          <h2 onClick={showOtros}>OTROS</h2>
+        </div>
       </div>
       <div>
-        <div className='sectionBarSearch'>
-            <h1>Search Results: ({props.searchQuery})</h1>
-        </div>
+        <h1>Resultados de Busqueda de: ({searchQuery})</h1>
         {searchItemsCategory.map((searchItemCat) => {
             return (
               <>
@@ -127,10 +160,29 @@ function Search( {...props} ) {
               </>
             )
             })}
+            {searchItemsFlavor.map((searchItemFlavor) => {
+            return (
+              <>
+              <div className='cartList'>
+                <div className='cartTableProducts'>
+                <div className='cartImageTitle'>
+                    <img src={searchItemFlavor.itemIMG} className="cartImage" alt="ItemIMG"/>
+                    <h1 className='cartItemName'>{searchItemFlavor.itemName}</h1>
+                </div>
+                <h1 className='cartItemName'>{searchItemFlavor.itemPrice}</h1>
+                </div>
+            </div>
+              </>
+            )
+            })}
       </div>
-      <svg className='bottomWave3' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 220">
-                <path fill="#092849" fill-opacity="1" d="M0,96L34.3,90.7C68.6,85,137,75,206,85.3C274.3,96,343,128,411,138.7C480,149,549,139,617,117.3C685.7,96,754,64,823,58.7C891.4,53,960,75,1029,96C1097.1,117,1166,139,1234,144C1302.9,149,1371,139,1406,133.3L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"/>
-            </svg>
+        <div className='footer'>
+          <h1>Dharma Pastelería</h1>
+          <div className='footerInsta'>
+            <h1>Seguinos en Instagram:</h1>
+            <a href='https://www.instagram.com/dharma.pasteleria/'><img src={instagram} className="instagram" alt="Instagram"/></a>
+          </div>
+        </div>
     </div>
     </>
   );

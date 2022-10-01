@@ -1,23 +1,15 @@
 import './App.css';
 import {useState, useEffect} from 'react';
 import Homescreen from './Homescreen';
-import Tortas from './Tortas';
-import Tartas from './Tartas';
-import Salado from './Salado';
-import Budines from './Budines';
-import Otros from './Otros';
-
-import Admin from './Admin';
-import Search from './Search';
-
+import ProductSelection from './ProductSelection';
 import Product from './Product';
 import Cart from './Cart';
 import ClientInfo from './ClientInfo';
+import PaymentComplete from './PaymentComplete';
+import Search from './Search';
+import Admin from './Admin';
 
 import useLocalStorage from "./useLocalStorage";
-
-// Paypal Imports
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
 
 // Firebase imports
 import firebase from 'firebase/compat/app';
@@ -27,12 +19,12 @@ import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from
 
 // Initialize Firebase Database
 firebase.initializeApp({
-  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
-  authDomain: "dharma-ec35e.firebaseapp.com",
-  projectId: "dharma-ec35e",
-  storageBucket: "dharma-ec35e.appspot.com",
-  messagingSenderId: "79111090409",
-  appId: "1:79111090409:web:b41568c2860577b3844078"
+  apiKey: "AIzaSyB5aeD3R-qHoRlLJcNGmrpCVZEocRz90Dk",
+  authDomain: "reef-store-9da21.firebaseapp.com",
+  projectId: "reef-store-9da21",
+  storageBucket: "reef-store-9da21.appspot.com",
+  messagingSenderId: "149895470839",
+  appId: "1:149895470839:web:5937a7595ca8b696f17df2"
 });
 
 // Firebase Database
@@ -41,68 +33,108 @@ const db = firebase.firestore();
 function App() {
   const [home, setHome] = useState(true);
 
-  const [admin, setAdmin] = useState(false);
-  const [adminScreen, setAdminScreen] = useState(false);
-
-  const [cakesScreen, setCakesScreen] = useState(false);
-  const [tartasScreen, setTartasScreen] = useState(false);
-  const [saladoScreen, setSaladoScreen] = useState(false);
-  const [budinesScreen, setBudinesScreen] = useState(false);
-  const [otrosScreen, setOtrosScreen] = useState(false);
-
   const [searchScreen, setSearchScreen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-
-  const [cartScreen, setCartScreen] = useState(false);
-  const [clientInfoScreen, setClientInfoScreen] = useState(false);
+  const [productSelectionCategory, setProductSelectionCategory] = useState('');
+  const [productSelectionScreen, setProductSelectionScreen] = useState(false);
 
   const [productScreen, setProductScreen] = useState(false);
-  const [productImage, setProductImage] = useState();
+  const [productImage, setProductImage] = useState('');
   const [productName, setProductName] = useState(''); 
   const [productPrice, setProductPrice] = useState(''); 
   const [productDesc, setProductDesc] = useState(''); 
 
-  var id = "id" + Math.random().toString(16).slice(2);
-  const [currentUser, setCurrentUser] = useLocalStorage();
+  const [adminScreen, setAdminScreen] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   const [currentSection, setCurrentSection] = useState('');
 
   const [paypalTotal, setPaypalTotal] = useState('0.02');
 
+  const [cartScreen, setCartScreen] = useState(false);
+  const [clientInfoScreen, setClientInfoScreen] = useState(false);
+
+  const [paymentComplete, setPaymentComplete] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState('');
+
+  // Remember user for cart
+  var id = "id" + Math.random().toString(16).slice(2);
+  const [currentUser, setCurrentUser] = useLocalStorage();
+
+  // Cart items from DB
   const [cartItems, setCartItems] = useState([]);
   const cartAmount = cartItems.length;
   const cartRef = collection(db, "cart");
 
   const getDbmessages = async () => {
-      const itemsRef = query(cartRef, where('user', '==', currentUser));
-      const currentQuerySnapshot = await getDocs(itemsRef);
-      setCartItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
-      };
+    const itemsRef = query(cartRef, where('user', '==', currentUser));
+    const currentQuerySnapshot = await getDocs(itemsRef);
+    setCartItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+    };
 
-  useEffect(() => {     
-      getDbmessages();
+  useEffect(() => {   
+    getDbmessages();
+    
+    if (currentUser == undefined) {
+      setCurrentUser(id);
+    };
+    console.log(props.currentUser);
+  }, []);
 
-      if (currentUser === undefined) {
-        setCurrentUser(id);
-      };
-      console.log(currentUser);
-      console.log(cartAmount);
-    }, []);
+  const props = { 
+    home,
+    cartAmount,
+    setHome,
+    getDbmessages,
+    searchScreen,
+    setSearchScreen,
+    searchQuery,
+    setSearchQuery,
+    productSelectionCategory,
+    setProductSelectionCategory,
+    productSelectionScreen,
+    setProductSelectionScreen,
+    adminScreen,
+    setAdminScreen,
+    admin,
+    setAdmin,
+    productScreen, 
+    setProductScreen,
+    productImage,
+    setProductImage,
+    productName,
+    setProductName,
+    productPrice,
+    setProductPrice,
+    productDesc,
+    setProductDesc,
+    currentSection,
+    setCurrentSection,
+    currentUser,
+    cartScreen,
+    setCartScreen, 
+    clientInfoScreen,
+    setClientInfoScreen,
+    paypalTotal,
+    setPaypalTotal,
+    cartItems,
+    paymentComplete,
+    setPaymentComplete,
+    currentOrder,
+    setCurrentOrder
+ };
 
   return (
     <>
-      {home ? <Homescreen setHome={setHome} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} admin={admin} setAdminScreen={setAdminScreen} setAdmin={setAdmin} currentUser={currentUser} getDbmessages={getDbmessages} cartAmount={cartAmount} setCartScreen={setCartScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div> }
-      {cakesScreen && home === false ? <Tortas admin={admin} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} setHome={setHome} currentUser={currentUser} setCurrentSection={setCurrentSection} getDbmessages={getDbmessages}  cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
-      {tartasScreen && home === false ? <Tartas admin={admin} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} setHome={setHome} currentUser={currentUser} setCurrentSection={setCurrentSection} getDbmessages={getDbmessages}  cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice}/> : <div></div>}
-      {saladoScreen && home === false ? <Salado admin={admin} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} setHome={setHome} currentUser={currentUser} setCurrentSection={setCurrentSection} getDbmessages={getDbmessages}  cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice}/> : <div></div>}
-      {budinesScreen && home === false ? <Budines admin={admin} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} setHome={setHome} currentUser={currentUser} setCurrentSection={setCurrentSection} getDbmessages={getDbmessages}  cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice}/> : <div></div>}
-      {otrosScreen && home === false ? <Otros admin={admin} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} setHome={setHome} currentUser={currentUser} setCurrentSection={setCurrentSection} getDbmessages={getDbmessages}  cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice}/> : <div></div>}
-      {searchScreen && home === false ? <Search getDbmessages={getDbmessages} setSearchScreen={setSearchScreen} searchQuery={searchQuery} setSearchQuery={setSearchQuery} admin={admin} setHome={setHome} currentUser={currentUser} setCurrentSection={setCurrentSection} getDbmessages={getDbmessages}  cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice}/> : <div></div>}
-      {productScreen && home === false && cakesScreen === false && tartasScreen === false && saladoScreen === false && budinesScreen === false && otrosScreen === false ? <Product admin={admin} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} setHome={setHome} currentUser={currentUser} currentSection={currentSection} setCartItems={setCartItems} cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} productImage={productImage} setProductImage={setProductImage} productName={productName}setProductName={setProductName} productPrice={productPrice} productDesc={productDesc} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
-      {cartScreen && home === false ? <Cart admin={admin} setHome={setHome} paypalTotal={paypalTotal} setPaypalTotal={setPaypalTotal} currentUser={currentUser} setClientInfoScreen={setClientInfoScreen} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
-      {clientInfoScreen && home === false ? <ClientInfo admin={admin} setHome={setHome} paypalTotal={paypalTotal} setPaypalTotal={setPaypalTotal} setCartScreen={setCartScreen} currentUser={currentUser} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} cartAmount={cartAmount} setClientInfoScreen={setClientInfoScreen} setCartScreen={setCartScreen} setProductScreen={setProductScreen} setProductDesc={setProductDesc} setProductImage={setProductImage} setProductName={setProductName} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
-      {adminScreen && home === false && cakesScreen === false && tartasScreen === false && saladoScreen === false && budinesScreen === false && otrosScreen === false ? <Admin setHome={setHome} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setSearchScreen={setSearchScreen} admin={admin} setAdminScreen={setAdminScreen} setAdmin={setAdmin} setCartScreen={setCartScreen} currentUser={currentUser} currentSection={currentSection} setCartItems={setCartItems} cartAmount={cartAmount} setCartScreen={setCartScreen} setProductScreen={setProductScreen} productImage={productImage} setProductImage={setProductImage} productName={productName}setProductName={setProductName} productPrice={productPrice} productDesc={productDesc} setProductPrice={setProductPrice} setCakesScreen={setCakesScreen} setTartasScreen={setTartasScreen} setSaladoScreen={setSaladoScreen} setBudinesScreen={setBudinesScreen} setOtrosScreen={setOtrosScreen}/> : <div></div>}
+    {home ? <Homescreen {...props}/> : <></>}
+    {productSelectionScreen ? <ProductSelection {...props}/> : <></>}
+    {productScreen ? <Product {...props}/> : <></>}
+    {adminScreen ? <Admin {...props}/> : <></>}
+    {cartScreen ? <Cart {...props}/> : <></>}
+    {clientInfoScreen ? <ClientInfo {...props}/> : <></>}
+    {searchScreen ? <Search {...props}/> : <></>}
+    {paymentComplete ? <PaymentComplete {...props}/> : <></>}
     </>
   );
 }

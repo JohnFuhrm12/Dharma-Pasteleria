@@ -1,187 +1,131 @@
 import './App.css';
-import img1 from './static/pastry1.png';
-import img2 from './static/pastry2.png';
-import img3 from './static/pastry3.png';
-
-import vegan from './static/vegan.png';
-import instagram from './static/instagram.webp'; 
-
-import cake1 from './static/torta1.png';
-import cake2 from './static/torta2.png';
-import tart1 from './static/tarta1.png';
-import salty1 from './static/salado1.png';
-import budin1 from './static/budin1.png';
-import alfajores1 from './static/alfajores1.png';
+import {useState, useEffect} from 'react';
 
 import cart from './static/cart.png';
 import search from './static/search.png';
 
-import {useState, useEffect} from 'react';
+import coralHome from './static/coralHome.jpg';
+import hardCoralsHome from './static/hardCoralsHome.jpg';
+import fishHome from './static/fishHome.jpg';
+import invertHome from './static/invertHome.jpg';
+import suppliesHome from './static/suppliesHome.jpg';
 
-function Homescreen( {setHome, setSearchScreen, searchQuery, setSearchQuery, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setCartScreen, cartAmount, getDbmessages}) {
+import test from './static/test.gif';
+import testvid from './static/testvid.mp4';
 
-  const [searchKey, setSearchKey] = useState('');
+// Firebase imports
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
 
-  useEffect(() => {
-    getDbmessages();
-  }, []);
+// Initialize Firebase Database
+firebase.initializeApp({
+  apiKey: "AIzaSyB5aeD3R-qHoRlLJcNGmrpCVZEocRz90Dk",
+  authDomain: "reef-store-9da21.firebaseapp.com",
+  projectId: "reef-store-9da21",
+  storageBucket: "reef-store-9da21.appspot.com",
+  messagingSenderId: "149895470839",
+  appId: "1:149895470839:web:5937a7595ca8b696f17df2"
+});
 
-  useEffect(() => {
-    const buttons = document.querySelectorAll("[data-carousel-button]")
+// Firebase Database
+const db = firebase.firestore();
 
-    buttons.forEach(button => {
-      button.addEventListener("click", () => {
-        const offset = button.dataset.carouselButton === "next" ? 1 : -1
-        const slides = button.closest("[data-carousel]").querySelector("[data-slides]")
-    
-        const activeSlide = slides.querySelector("[data-active]")
-        let newIndex = [...slides.children].indexOf(activeSlide) + offset
-        if (newIndex < 0) newIndex = slides.children.length - 1
-        if (newIndex >= slides.children.length) newIndex = 0
-    
-        slides.children[newIndex].dataset.active = true
-        delete activeSlide.dataset.active
-        })
-    });
-  });
+function Homescreen( {...props} ) {
 
-  function showCakes() {
-    setCakesScreen(true);
-    setHome(false);
-  };
+    const [searchKey, setSearchKey] = useState('');
 
-  function showTartas() {
-    setTartasScreen(true);
-    setHome(false);
-  };
+    function refresh() {
+        window.location.reload(false);
+      };
 
-  function showSalado() {
-    setSaladoScreen(true);
-    setHome(false);
-  };
-
-  function showBudines() {
-    setBudinesScreen(true);
-    setHome(false);
-  };
-
-  function showOtros() {
-    setOtrosScreen(true);
-    setHome(false);
-  };
-
-  function showCart() {
-    setCartScreen(true);
-    setHome(false);
-  };
-
-  function showAdmin() {
-    setAdminScreen(true);
-    setHome(false);
-  };
-
-  function refresh() {
-    window.location.reload(false);
-  };
-
-  function searchFunc(e) {
-    if(e.key === 'Enter') {
-      setSearchQuery(searchKey);
-      setSearchScreen(true);
-      setHome(false);
+    function searchFunc(e) {
+        if(e.key === 'Enter') {
+            props.setSearchQuery(searchKey);
+            props.setSearchScreen(true);
+            props.setHome(false);
+        };
     };
-  };
 
-  return (
-    <>
-    <div className="page">
-      <h1 onClick={refresh} className='titleBehindD'>D</h1>
-      <h1 onClick={refresh} className='titleBehindP'>P</h1>
-      <div className='titleBar'>
-        <div className='leftBarBox'>
-          <h2 className='leftBar'>Pasteles Especiales Para Celiacos y Veganos</h2>
-          <img src={vegan} className="vegan" alt="Vegano"/>
+    function showProductSelection(e) {
+        props.setHome(false);
+        props.setProductSelectionCategory(e.currentTarget.title);
+        props.setProductSelectionScreen(true);
+    };
+
+    function showAdmin() {
+        props.setHome(false);
+        props.setAdminScreen(true);
+    };
+
+    function showCart() {
+        props.setCartScreen(true);
+        props.setHome(false);
+      };
+
+    return (
+        <>
+        <div className='page'>
+            <div className='titleBar'>
+                    <h1 className='titleName' onClick={refresh} >JF Aquatics</h1>
+                    <h1 className='catName' title="Soft Corals" onClick={showProductSelection}>Corals</h1>
+                    <h1 className='catName' title="Supplies" onClick={showProductSelection}>Supplies</h1>
+                    <h1 className='catName' title="Saltwater Fish" onClick={showProductSelection}>Fish</h1>
+                    <h1 className='catName' title="Invertebrates" onClick={showProductSelection}>Inverts</h1>
+                <div className='searchCart'>
+                    <img src={search} className="search" alt="Search"/>
+                    <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Search ..."/>
+                    <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
+                    <p className='cartQuantity'>{props.cartAmount}</p>
+                </div>
+            </div>
+            <div className='videoBox'>
+                <h1 className='videoText'>The Best Supply of</h1>
+                <h1 className='videoText2'>Saltwater Fish and Corals</h1>
+                <video className='homeVideo' src={testvid} webkit-playsinline playsInline muted autoPlay loop/>
+            </div>
+            <div className='waveSVG'>
+                <g fill="none" fill-rule="evenodd">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 280"><path fill="#092849" fill-opacity="1" d="M0,64L60,101.3C120,139,240,213,360,218.7C480,224,600,160,720,138.7C840,117,960,139,1080,165.3C1200,192,1320,224,1380,240L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+                    <svg className='testSVG' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#092849" fill-opacity="1" d="M0,32L80,37.3C160,43,320,53,480,80C640,107,800,149,960,154.7C1120,160,1280,128,1360,112L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path></svg>
+                    <svg className='testSVG2' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 300"><path fill="#FF" fill-opacity="1" d="M0,32L80,69.3C160,107,320,181,480,202.7C640,224,800,192,960,160C1120,128,1280,96,1360,80L1440,64L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
+                    <svg className='testSVG3' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#FFF" fill-opacity="1" d="M0,32L120,69.3C240,107,480,181,720,186.7C960,192,1200,128,1320,96L1440,64L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path></svg>
+                    <svg className='testSVG4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1990 240"><path fill="#FF" fill-opacity="1" d="M0,32L120,69.3C240,107,480,181,720,186.7C960,192,1200,128,1320,96L1440,64L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"></path></svg>
+                    <svg className='testSVG5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1540 400"><path fill="#0099FF" fill-opacity="1" d="M0,288L120,261.3C240,235,480,181,720,170.7C960,160,1200,192,1320,208L1440,224L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path></svg>
+                </g>
+            </div>
+            <h1 className='selectionTitle'>Our Selection</h1>
+            <div className='selectionChoicesTop'>
+            <div>
+                <img onClick={showProductSelection} src={coralHome} className="selectionIMG" title="Soft Corals" alt="Selection-Soft=Corals"/>
+                <h1  onClick={showProductSelection} title="Soft Corals" className='selectionName'>Shop Soft Corals</h1>
+            </div>
+            <div>
+                <img onClick={showProductSelection} src={hardCoralsHome} className="selectionIMG" title="Hard Corals" alt="Selection-Hard-Corals"/>
+                <h1 onClick={showProductSelection} title="Hard Corals"className='selectionName'>Shop Hard Corals</h1>
+            </div>
+            <div>
+                <img onClick={showProductSelection} src={fishHome} className="selectionIMG" title="Saltwater Fish" alt="Selection-Fish"/>
+                <h1 onClick={showProductSelection} title="Saltwater Fish" className='selectionName'>Shop Fish</h1>
+            </div>
+            </div>
+            <div className='selectionChoicesBottom'>
+            <div>
+                <img onClick={showProductSelection} src={invertHome} className="selectionIMG" title="Invertebrates" alt="Selection-Inverts"/>
+                <h1 onClick={showProductSelection} title="Invertebrates" className='selectionName'>Shop Inverts</h1>
+            </div>
+            <div>
+                <img onClick={showProductSelection} src={suppliesHome} className="selectionIMG" title="Supplies" alt="Selection-Supplies"/>
+                <h1 onClick={showProductSelection} title="Supplies" className='selectionName'>Shop Supplies</h1>
+            </div>
+            </div>
+            <svg className='bottomWave' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path fill="#092849" fill-opacity="1" d="M0,96L34.3,90.7C68.6,85,137,75,206,85.3C274.3,96,343,128,411,138.7C480,149,549,139,617,117.3C685.7,96,754,64,823,58.7C891.4,53,960,75,1029,96C1097.1,117,1166,139,1234,144C1302.9,149,1371,139,1406,133.3L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"/>
+            </svg>
         </div>
-        <h1 onClick={refresh} className='title'>Dharma Pastelería</h1>
-        <div className='searchCart'>
-          <img src={search} className="search" alt="Buscar"/>
-          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
-          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>{cartAmount}</p>
-        </div>
-      </div>
-      <h2 onClick={refresh} className='subtitle'>Buenos Aires</h2>
-      <div className='categories-box'>
-        <div className='categories'>
-          <h2 onClick={showCakes}>TORTAS</h2>
-          <h2 onClick={showTartas}>TARTAS</h2>
-          <h2 onClick={showSalado}>SALADO</h2>
-          <h2 onClick={showBudines}>BUDINES</h2>
-          <h2 onClick={showOtros}>OTROS</h2>
-        </div>
-      </div>
-        <div className='carouselBlock'>
-          <div className="carousel" data-carousel>
-              <button className="prev" data-carousel-button="prev">&#8249;</button>
-              <button className="next" data-carousel-button="next">&#8250;</button>
-              <ul data-slides>
-                  <li className="slide" data-active><img src={img1} className="home-image" alt="Pastel"/></li>
-                  <li className="slide"><img src={img2} className="home-image" alt="Pastel"/></li>
-                  <li className="slide"><img src={img3} className="home-image" alt="Pastel"/></li>
-              </ul>
-          </div>
-        </div>
-        <div className='selectionTitle'>
-          <h1 className='selectionTitleBehind'>Descubre</h1>
-          <h1>La Selección Dharma</h1>
-        </div>
-        <div className='selectionChoicesTop'>
-          <div>
-            <img onClick={showCakes} src={cake2} className="selectionIMG" alt="Selección-Tortas"/>
-            <h1  onClick={showCakes} className='selectionName'>LAS TORTAS</h1>
-          </div>
-          <div>
-            <img onClick={showTartas} src={tart1} className="selectionIMG" alt="Selección-Tartas"/>
-            <h1 onClick={showTartas} className='selectionName'>LAS TARTAS</h1>
-          </div>
-          <div>
-            <img onClick={showSalado} src={salty1} className="selectionIMG" alt="Selección-Salado"/>
-            <h1 onClick={showSalado} className='selectionName'>LO SALADO</h1>
-          </div>
-        </div>
-        <div className='selectionChoicesBottom'>
-          <div>
-            <img onClick={showBudines} src={budin1} className="selectionIMG" alt="Selección-Budines"/>
-            <h1 onClick={showBudines} className='selectionName'>LOS BUDINES</h1>
-          </div>
-          <div>
-            <img onClick={showOtros} src={alfajores1} className="selectionIMG" alt="Selección-Otros"/>
-            <h1 onClick={showOtros} className='selectionName'>LOS OTROS</h1>
-          </div>
-        </div>
-        <div className='whereFindSection'>
-          <div className='whereFindTitles'>
-            <h1 className='whereFindTitleBehind'>La Tienda</h1>
-            <h1 className='whereFindTitle'>¿Donde Encontrarnos?</h1>
-          </div>
-          <div className='whereFindParagraphs'>
-            <p>Operamos desde casa adentro de la provincia de Buenos Aires. El punto de retiro es Caseros. La Dirección:</p>
-            <p>Dr. Amadeo Sabattini 4545, B1678 Caseros, Provincia de Buenos Aires, Argentina</p>
-          </div>
-          <div className='whereFindParagraphs2'>
-            <p>Todos los pedidos encargados serán retirados o enviados a domicilio despues de 24 horas realizada la compra. Contactanos a través de Whatsapp para coordinar las entregas.</p>
-          </div>
-        </div>
-        <div className='footer'>
-          <h1 onClick={showAdmin}>Dharma Pastelería</h1>
-          <div className='footerInsta'>
-            <h1>Seguinos en Instagram:</h1>
-            <a href='https://www.instagram.com/dharma.pasteleria/'><img src={instagram} className="instagram" alt="Instagram"/></a>
-          </div>
-        </div>
-    </div>
-    </>
-  );
+        </>
+    )
 }
 
 export default Homescreen;

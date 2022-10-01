@@ -29,7 +29,7 @@ firebase.initializeApp({
 const db = firebase.firestore();
 
 
-function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+function Salado( {...props} ) {
 
   const [searchKey, setSearchKey] = useState('');
 
@@ -58,7 +58,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
   };
 
   useEffect(() => {
-    getDbmessages();
+    props.getDbmessages();
     getSalado();
   }, []);
 
@@ -67,54 +67,54 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
   });
 
   function returnHome() {
-    setSaladoScreen(false);
-    setHome(true);
+    props.setSaladoScreen(false);
+    props.setHome(true);
   };
 
   function showCakes() {
-    setSaladoScreen(false);
-    setCakesScreen(true);
+    props.setSaladoScreen(false);
+    props.setCakesScreen(true);
   };
 
   function showTartas() {
-    setSaladoScreen(false);
-    setTartasScreen(true);
+    props.setSaladoScreen(false);
+    props.setTartasScreen(true);
   };
 
   function showBudines() {
-    setSaladoScreen(false);
-    setBudinesScreen(true);
+    props.setSaladoScreen(false);
+    props.setBudinesScreen(true);
   };
 
   function showOtros() {
-    setSaladoScreen(false);
-    setOtrosScreen(true);
+    props.setSaladoScreen(false);
+    props.setOtrosScreen(true);
   };
 
   function goToProduct(e) {
-    setSaladoScreen(false);
-    setProductScreen(true);
-    setCurrentSection('Salado');
-    setProductImage(e.currentTarget.title);
-    setProductName(e.currentTarget.alt);
-    setProductPrice(e.currentTarget.id);
-    setProductDesc(e.currentTarget.name);
+    props.setSaladoScreen(false);
+    props.setProductScreen(true);
+    props.setCurrentSection('Salado');
+    props.setProductImage(e.currentTarget.title);
+    props.setProductName(e.currentTarget.alt);
+    props.setProductPrice(e.currentTarget.id);
+    props.setProductDesc(e.currentTarget.name);
   };
 
   function showCart() {
-    setCartScreen(true);
-    setSaladoScreen(false);
+    props.setCartScreen(true);
+    props.setSaladoScreen(false);
   };
 
   function searchFunc(e) {
     if(e.key === 'Enter') {
-      setSearchQuery(searchKey);
-      setSearchScreen(true);
-      setSaladoScreen(false);
+      props.setSearchQuery(searchKey);
+      props.setSearchScreen(true);
+      props.setSaladoScreen(false);
     };
   };
 
-  // Admin Delete Item (3 needed for each row)
+  // props.admin Delete Item (3 needed for each row)
   const deleteItem = async (e, saladoItem) => {
     e.preventDefault();
     await deleteDoc(doc(db, "salado", saladoItem.id));
@@ -133,7 +133,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
     getSalado();
   };
 
-  // Admin Update Description
+  // props.admin Update Description
   const updateItemDesc = async (e, saladoItem) => {
     e.preventDefault();
     await setDoc(doc(db, "salado", saladoItem.id), {
@@ -161,7 +161,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
     setDescription('');
   };
 
-  // Admin Update Price
+  // props.admin Update Price
   const updatePrice = async (e, saladoItem) => {
     e.preventDefault();
     await setDoc(doc(db, "salado", saladoItem.id), {
@@ -189,7 +189,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
     setPrice('');
   };
 
-  // Admin Update Name
+  // props.admin Update Name
   const updateName = async (e, saladoItem) => {
     e.preventDefault();
     await setDoc(doc(db, "salado", saladoItem.id), {
@@ -217,7 +217,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
     setIName('');
   };
 
-  // Admin Update Row
+  // props.admin Update Row
   const updateRow = async (e, saladoItem) => {
     e.preventDefault();
     await setDoc(doc(db, "salado", saladoItem.id), {
@@ -260,7 +260,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
           <img src={search} className="search" alt="Buscar"/>
           <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>{cartAmount}</p>
+          <p className='cartQuantity'>{props.cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
@@ -286,44 +286,44 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                     <div>
                       <img onClick={goToProduct} src={saladoItem.itemIMG} className="sectionIMG" title={saladoItem.itemIMG} name={saladoItem.itemDesc} id={saladoItem.itemPrice} alt={saladoItem.itemName}/>
                       <h1 className='itemName'>{saladoItem.itemName}</h1>
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName(e, saladoItem)}>
-                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <label className='updateLabelprops.admin' for="Name">Nombre:</label>
                         <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
                       <h1 className='itemPrice'>{saladoItem.itemPrice}</h1>
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice(e, saladoItem)}>
-                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <label className='updateLabelprops.admin'  for="Price">Precio:</label>
                         <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
-                      <div className='itemDescAdminBox'>
-                        <h2 className='itemDescAdmin'>{saladoItem.itemDesc}</h2>
+                      <div className='itemDescprops.adminBox'>
+                        <h2 className='itemDescprops.admin'>{saladoItem.itemDesc}</h2>
                       </div>
                       <form onSubmit={(e) => updateItemDesc(e, saladoItem)}>
-                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <label className='updateLabelprops.admin'  for="Desc">Descripción:</label>
                         <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2 className='adminRow'>Hilera: {saladoItem.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2 className='props.adminRow'>Hilera: {saladoItem.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow(e, saladoItem)}>
-                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <label className='updateLabelprops.admin'  for="Row">Hilera (1-3):</label>
                         <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem(e, saladoItem)}>X</h1> : <></>}
+                      {props.admin ? <h1 className='props.adminDelete' onClick={(e) => deleteItem(e, saladoItem)}>X</h1> : <></>}
                     </div>
             )
           })}
@@ -334,7 +334,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                     <div>
                       <img onClick={goToProduct} src={saladoItem2.itemIMG} className="sectionIMG" title={saladoItem2.itemIMG} name={saladoItem2.itemDesc} id={saladoItem2.itemPrice} alt={saladoItem2.itemName}/>
                       <h1 className='itemName'>{saladoItem2.itemName}</h1>
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName2(e, saladoItem2)}>
                         <label for="Name">Nombre:</label>
@@ -343,7 +343,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                       </form>
                       </> : <></>}
                       <h1 className='itemPrice'>{saladoItem2.itemPrice}</h1>
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice2(e, saladoItem2)}>
                         <label for="Price">Precio:</label>
@@ -351,7 +351,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <h2>Desc: {saladoItem2.itemDesc}</h2>
                       <form onSubmit={(e) => updateItemDesc2(e, saladoItem2)}>
@@ -360,8 +360,8 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2>Hilera: {saladoItem2.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2>Hilera: {saladoItem2.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow2(e, saladoItem2)}>
                         <label for="Row">Hilera (1-3):</label>
@@ -369,7 +369,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 onClick={(e) => deleteItem2(e, saladoItem2)}>X</h1> : <></>}
+                      {props.admin ? <h1 onClick={(e) => deleteItem2(e, saladoItem2)}>X</h1> : <></>}
                     </div>
             )
           })}
@@ -380,7 +380,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                     <div>
                       <img onClick={goToProduct} src={saladoItem3.itemIMG} className="sectionIMG" title={saladoItem3.itemIMG} name={saladoItem3.itemDesc} id={saladoItem3.itemPrice} alt={saladoItem3.itemName}/>
                       <h1 className='itemName'>{saladoItem3.itemName}</h1>
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName3(e, saladoItem3)}>
                         <label for="Name">Nombre:</label>
@@ -389,7 +389,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                       </form>
                       </> : <></>}
                       <h1 className='itemPrice'>{saladoItem3.itemPrice}</h1>
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice3(e, saladoItem3)}>
                         <label for="Price">Precio:</label>
@@ -397,7 +397,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <h2>Desc: {saladoItem3.itemDesc}</h2>
                       <form onSubmit={(e) => updateItemDesc3(e, saladoItem3)}>
@@ -406,8 +406,8 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2>Hilera: {saladoItem3.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2>Hilera: {saladoItem3.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow3(e, saladoItem3)}>
                         <label for="Row">Hilera (1-3):</label>
@@ -415,7 +415,7 @@ function Salado( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, 
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 onClick={(e) => deleteItem3(e, saladoItem3)}>X</h1> : <></>}
+                      {props.admin ? <h1 onClick={(e) => deleteItem3(e, saladoItem3)}>X</h1> : <></>}
                     </div>
             )
           })}

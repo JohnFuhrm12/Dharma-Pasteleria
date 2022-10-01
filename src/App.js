@@ -1,15 +1,24 @@
 import './App.css';
 import {useState, useEffect} from 'react';
 import Homescreen from './Homescreen';
-import ProductSelection from './ProductSelection';
+import Tortas from './Tortas';
+import Tartas from './Tartas';
+import Salado from './Salado';
+import Budines from './Budines';
+import Otros from './Otros';
+
+import Admin from './Admin';
+import Search from './Search';
+
 import Product from './Product';
 import Cart from './Cart';
 import ClientInfo from './ClientInfo';
 import PaymentComplete from './PaymentComplete';
-import Search from './Search';
-import Admin from './Admin';
 
 import useLocalStorage from "./useLocalStorage";
+
+// Paypal Imports
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
 
 // Firebase imports
 import firebase from 'firebase/compat/app';
@@ -19,12 +28,12 @@ import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from
 
 // Initialize Firebase Database
 firebase.initializeApp({
-  apiKey: "AIzaSyB5aeD3R-qHoRlLJcNGmrpCVZEocRz90Dk",
-  authDomain: "reef-store-9da21.firebaseapp.com",
-  projectId: "reef-store-9da21",
-  storageBucket: "reef-store-9da21.appspot.com",
-  messagingSenderId: "149895470839",
-  appId: "1:149895470839:web:5937a7595ca8b696f17df2"
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
 });
 
 // Firebase Database
@@ -33,108 +42,122 @@ const db = firebase.firestore();
 function App() {
   const [home, setHome] = useState(true);
 
+  const [admin, setAdmin] = useState(false);
+  const [adminScreen, setAdminScreen] = useState(false);
+
+  const [cakesScreen, setCakesScreen] = useState(false);
+  const [tartasScreen, setTartasScreen] = useState(false);
+  const [saladoScreen, setSaladoScreen] = useState(false);
+  const [budinesScreen, setBudinesScreen] = useState(false);
+  const [otrosScreen, setOtrosScreen] = useState(false);
+
   const [searchScreen, setSearchScreen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [productSelectionCategory, setProductSelectionCategory] = useState('');
-  const [productSelectionScreen, setProductSelectionScreen] = useState(false);
+
+  const [cartScreen, setCartScreen] = useState(false);
+  const [clientInfoScreen, setClientInfoScreen] = useState(false);
 
   const [productScreen, setProductScreen] = useState(false);
-  const [productImage, setProductImage] = useState('');
+  const [productImage, setProductImage] = useState();
   const [productName, setProductName] = useState(''); 
   const [productPrice, setProductPrice] = useState(''); 
   const [productDesc, setProductDesc] = useState(''); 
 
-  const [adminScreen, setAdminScreen] = useState(false);
-  const [admin, setAdmin] = useState(false);
+  var id = "id" + Math.random().toString(16).slice(2);
+  const [currentUser, setCurrentUser] = useLocalStorage();
 
   const [currentSection, setCurrentSection] = useState('');
 
   const [paypalTotal, setPaypalTotal] = useState('0.02');
 
-  const [cartScreen, setCartScreen] = useState(false);
-  const [clientInfoScreen, setClientInfoScreen] = useState(false);
-
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [currentOrder, setCurrentOrder] = useState('');
 
-  // Remember user for cart
-  var id = "id" + Math.random().toString(16).slice(2);
-  const [currentUser, setCurrentUser] = useLocalStorage();
-
-  // Cart items from DB
   const [cartItems, setCartItems] = useState([]);
   const cartAmount = cartItems.length;
   const cartRef = collection(db, "cart");
 
   const getDbmessages = async () => {
-    const itemsRef = query(cartRef, where('user', '==', currentUser));
-    const currentQuerySnapshot = await getDocs(itemsRef);
-    setCartItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
-    };
+      const itemsRef = query(cartRef, where('user', '==', currentUser));
+      const currentQuerySnapshot = await getDocs(itemsRef);
+      setCartItems(currentQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id})));
+      };
 
-  useEffect(() => {   
-    getDbmessages();
-    
-    if (currentUser == undefined) {
-      setCurrentUser(id);
-    };
-    console.log(props.currentUser);
-  }, []);
+  useEffect(() => {     
+      getDbmessages();
 
-  const props = { 
-    home,
-    cartAmount,
-    setHome,
-    getDbmessages,
-    searchScreen,
-    setSearchScreen,
-    searchQuery,
-    setSearchQuery,
-    productSelectionCategory,
-    setProductSelectionCategory,
-    productSelectionScreen,
-    setProductSelectionScreen,
-    adminScreen,
-    setAdminScreen,
-    admin,
-    setAdmin,
-    productScreen, 
-    setProductScreen,
-    productImage,
-    setProductImage,
-    productName,
-    setProductName,
-    productPrice,
-    setProductPrice,
-    productDesc,
-    setProductDesc,
-    currentSection,
-    setCurrentSection,
-    currentUser,
-    cartScreen,
-    setCartScreen, 
-    clientInfoScreen,
-    setClientInfoScreen,
-    paypalTotal,
-    setPaypalTotal,
-    cartItems,
-    paymentComplete,
-    setPaymentComplete,
-    currentOrder,
-    setCurrentOrder
- };
+      if (currentUser === undefined) {
+        setCurrentUser(id);
+      };
+      console.log(currentUser);
+      console.log(cartAmount);
+    }, []);
+
+    const props = { 
+      home,
+      cartAmount,
+      setHome,
+      getDbmessages,
+      searchScreen,
+      setSearchScreen,
+      searchQuery,
+      setSearchQuery,
+      adminScreen,
+      setAdminScreen,
+      admin,
+      setAdmin,
+      productScreen, 
+      setProductScreen,
+      productImage,
+      setProductImage,
+      productName,
+      setProductName,
+      productPrice,
+      setProductPrice,
+      productDesc,
+      setProductDesc,
+      currentSection,
+      setCurrentSection,
+      currentUser,
+      cartScreen,
+      setCartScreen, 
+      clientInfoScreen,
+      setClientInfoScreen,
+      paypalTotal,
+      setPaypalTotal,
+      cartItems,
+      setCartItems,
+      paymentComplete,
+      setPaymentComplete,
+      currentOrder,
+      setCurrentOrder,
+      cakesScreen,
+      setCakesScreen,
+      tartasScreen,
+      setTartasScreen,
+      saladoScreen,
+      setSaladoScreen,
+      budinesScreen,
+      setBudinesScreen,
+      otrosScreen,
+      setOtrosScreen,
+   };
 
   return (
     <>
-    {home ? <Homescreen {...props}/> : <></>}
-    {productSelectionScreen ? <ProductSelection {...props}/> : <></>}
-    {productScreen ? <Product {...props}/> : <></>}
-    {adminScreen ? <Admin {...props}/> : <></>}
-    {cartScreen ? <Cart {...props}/> : <></>}
-    {clientInfoScreen ? <ClientInfo {...props}/> : <></>}
-    {searchScreen ? <Search {...props}/> : <></>}
-    {paymentComplete ? <PaymentComplete {...props}/> : <></>}
+      {home ? <Homescreen {...props}/> : <></> }
+      {cakesScreen ? <Tortas {...props}/> : <></>}
+      {tartasScreen ? <Tartas {...props}/> : <></>}
+      {saladoScreen ? <Salado {...props}/> : <></>}
+      {budinesScreen ? <Budines {...props}/> : <></>}
+      {otrosScreen ? <Otros {...props}/> : <></>}
+      {searchScreen ? <Search {...props}/> : <></>}
+      {productScreen ? <Product {...props}/> : <></>}
+      {cartScreen ? <Cart {...props}/> : <></>}
+      {clientInfoScreen ? <ClientInfo {...props}/> : <></>}
+      {paymentComplete ? <PaymentComplete {...props}/> : <></>}
+      {adminScreen ? <Admin {...props}/> : <></>}
     </>
   );
 }

@@ -30,7 +30,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Budines( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+function Budines( {...props} ) {
 
   const [searchKey, setSearchKey] = useState('');
 
@@ -59,59 +59,59 @@ function Budines( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin,
   };
 
   useEffect(() => {
-    getDbmessages();
+    props.getDbmessages();
     getBudines();
   }, []);
 
   function returnHome() {
-    setBudinesScreen(false);
-    setHome(true);
+    props.setBudinesScreen(false);
+    props.setHome(true);
   };
 
   function showTartas() {
-    setBudinesScreen(false);
-    setTartasScreen(true);
+    props.setBudinesScreen(false);
+    props.setTartasScreen(true);
   };
 
   function showCakes() {
-    setBudinesScreen(false);
-    setCakesScreen(true);
+    props.setBudinesScreen(false);
+    props.setCakesScreen(true);
   };
 
   function showSalado() {
-    setBudinesScreen(false);
-    setSaladoScreen(true);
+    props.setBudinesScreen(false);
+    props.setSaladoScreen(true);
   };
 
   function showOtros() {
-    setBudinesScreen(false);
-    setOtrosScreen(true);
+    props.setBudinesScreen(false);
+    props.setOtrosScreen(true);
   };
 
   function goToProduct(e) {
-    setBudinesScreen(false);
-    setProductScreen(true);
-    setCurrentSection('Budines');
-    setProductImage(e.currentTarget.title);
-    setProductName(e.currentTarget.alt);
-    setProductPrice(e.currentTarget.id);
-    setProductDesc(e.currentTarget.name);
+    props.setBudinesScreen(false);
+    props.setProductScreen(true);
+    props.setCurrentSection('Budines');
+    props.setProductImage(e.currentTarget.title);
+    props.setProductName(e.currentTarget.alt);
+    props.setProductPrice(e.currentTarget.id);
+    props.setProductDesc(e.currentTarget.name);
   };
 
   function showCart() {
-    setCartScreen(true);
-    setBudinesScreen(false);
+    props.setCartScreen(true);
+    props.setBudinesScreen(false);
   };
 
   function searchFunc(e) {
     if(e.key === 'Enter') {
-      setSearchQuery(searchKey);
-      setSearchScreen(true);
-      setBudinesScreen(false);
+      props.setSearchQuery(searchKey);
+      props.setSearchScreen(true);
+      props.setBudinesScreen(false);
     };
   };
 
-  // Admin Delete Item (3 needed for each row)
+  // props.admin Delete Item (3 needed for each row)
  const deleteItem = async (e, budinItem) => {
   e.preventDefault();
   await deleteDoc(doc(db, "budines", budinItem.id));
@@ -130,7 +130,7 @@ const deleteItem3 = async (e, budinItem3) => {
   getBudines();
 };
 
-// Admin Update Description
+// props.admin Update Description
 const updateItemDesc = async (e, budinItem) => {
   e.preventDefault();
   await setDoc(doc(db, "budines", budinItem.id), {
@@ -158,7 +158,7 @@ const updateItemDesc3 = async (e, budinItem3) => {
   setDescription('');
 };
 
-// Admin Update Price
+// props.admin Update Price
 const updatePrice = async (e, budinItem) => {
   e.preventDefault();
   await setDoc(doc(db, "budines", budinItem.id), {
@@ -186,7 +186,7 @@ const updatePrice3 = async (e, budinItem3) => {
   setPrice('');
 };
 
-// Admin Update Name
+// props.admin Update Name
 const updateName = async (e, budinItem) => {
   e.preventDefault();
   await setDoc(doc(db, "budines", budinItem.id), {
@@ -214,7 +214,7 @@ const updateName3 = async (e, budinItem3) => {
   setIName('');
 };
 
-// Admin Update Row
+// props.admin Update Row
 const updateRow = async (e, budinItem) => {
   e.preventDefault();
   await setDoc(doc(db, "budines", budinItem.id), {
@@ -257,7 +257,7 @@ const updateRow3 = async (e, budinItem3) => {
           <img src={search} className="search" alt="Buscar"/>
           <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>{cartAmount}</p>
+          <p className='cartQuantity'>{props.cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
@@ -283,44 +283,44 @@ const updateRow3 = async (e, budinItem3) => {
                   <div>
                     <img onClick={goToProduct} src={budinItem.itemIMG} className="sectionIMG" title={budinItem.itemIMG} name={budinItem.itemDesc} id={budinItem.itemPrice} alt={budinItem.itemName}/>
                     <h1 className='itemName'>{budinItem.itemName}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName(e, budinItem)}>
-                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <label className='updateLabelprops.admin' for="Name">Nombre:</label>
                         <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
                     <h1 className='itemPrice'>{budinItem.itemPrice}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice(e, budinItem)}>
-                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <label className='updateLabelprops.admin'  for="Price">Precio:</label>
                         <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
-                      <div className='itemDescAdminBox'>
-                        <h2 className='itemDescAdmin'>{budinItem.itemDesc}</h2>
+                      <div className='itemDescprops.adminBox'>
+                        <h2 className='itemDescprops.admin'>{budinItem.itemDesc}</h2>
                       </div>
                       <form onSubmit={(e) => updateItemDesc(e, budinItem)}>
-                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <label className='updateLabelprops.admin'  for="Desc">Descripción:</label>
                         <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2 className='adminRow'>Hilera: {budinItem.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2 className='props.adminRow'>Hilera: {budinItem.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow(e, budinItem)}>
-                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <label className='updateLabelprops.admin'  for="Row">Hilera (1-3):</label>
                         <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem(e, budinItem)}>X</h1> : <></>}
+                      {props.admin ? <h1 className='props.adminDelete' onClick={(e) => deleteItem(e, budinItem)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -331,44 +331,44 @@ const updateRow3 = async (e, budinItem3) => {
                   <div>
                     <img onClick={goToProduct} src={budinItem2.itemIMG} className="sectionIMG" title={budinItem2.itemIMG} name={budinItem2.itemDesc} id={budinItem2.itemPrice} alt={budinItem2.itemName}/>
                     <h1 className='itemName'>{budinItem2.itemName}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName2(e, budinItem2)}>
-                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <label className='updateLabelprops.admin' for="Name">Nombre:</label>
                         <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
                     <h1 className='itemPrice'>{budinItem2.itemPrice}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice2(e, budinItem2)}>
-                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <label className='updateLabelprops.admin'  for="Price">Precio:</label>
                         <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
-                      <div className='itemDescAdminBox'>
-                        <h2 className='itemDescAdmin'>{budinItem2.itemDesc}</h2>
+                      <div className='itemDescprops.adminBox'>
+                        <h2 className='itemDescprops.admin'>{budinItem2.itemDesc}</h2>
                       </div>
                       <form onSubmit={(e) => updateItemDesc2(e, budinItem2)}>
-                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <label className='updateLabelprops.admin'  for="Desc">Descripción:</label>
                         <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2 className='adminRow'>Hilera: {budinItem2.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2 className='props.adminRow'>Hilera: {budinItem2.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow2(e, budinItem2)}>
-                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <label className='updateLabelprops.admin'  for="Row">Hilera (1-3):</label>
                         <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem2(e, budinItem2)}>X</h1> : <></>}
+                      {props.admin ? <h1 className='props.adminDelete' onClick={(e) => deleteItem2(e, budinItem2)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -379,44 +379,44 @@ const updateRow3 = async (e, budinItem3) => {
                   <div>
                     <img onClick={goToProduct} src={budinItem3.itemIMG} className="sectionIMG" title={budinItem3.itemIMG} name={budinItem3.itemDesc} id={budinItem3.itemPrice} alt={budinItem3.itemName}/>
                     <h1 className='itemName'>{budinItem3.itemName}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName3(e, budinItem3)}>
-                        <label className='updateLabelAdmin' for="Name">Nombre:</label>
+                        <label className='updateLabelprops.admin' for="Name">Nombre:</label>
                         <input onChange={(e) => {setIName(e.target.value)}} name="Name" value={iName}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
                     <h1 className='itemPrice'>{budinItem3.itemPrice}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice3(e, budinItem3)}>
-                        <label className='updateLabelAdmin'  for="Price">Precio:</label>
+                        <label className='updateLabelprops.admin'  for="Price">Precio:</label>
                         <input onChange={(e) => {setPrice(e.target.value)}} name="Price" value={price}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
-                      <div className='itemDescAdminBox'>
-                        <h2 className='itemDescAdmin'>{budinItem3.itemDesc}</h2>
+                      <div className='itemDescprops.adminBox'>
+                        <h2 className='itemDescprops.admin'>{budinItem3.itemDesc}</h2>
                       </div>
                       <form onSubmit={(e) => updateItemDesc3(e, budinItem3)}>
-                        <label className='updateLabelAdmin'  for="Desc">Descripción:</label>
+                        <label className='updateLabelprops.admin'  for="Desc">Descripción:</label>
                         <input onChange={(e) => {setDescription(e.target.value)}} name="Desc" value={description}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2 className='adminRow'>Hilera: {budinItem3.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2 className='props.adminRow'>Hilera: {budinItem3.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow3(e, budinItem3)}>
-                        <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
+                        <label className='updateLabelprops.admin'  for="Row">Hilera (1-3):</label>
                         <input onChange={(e) => {setRow(e.target.value)}} name="Row" value={row}></input>
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem3(e, budinItem3)}>X</h1> : <></>}
+                      {props.admin ? <h1 className='props.adminDelete' onClick={(e) => deleteItem3(e, budinItem3)}>X</h1> : <></>}
                   </div>
           )
         })}

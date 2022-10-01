@@ -29,7 +29,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Tartas( {setHome, admin, setSearchScreen, searchQuery, setSearchQuery, setCurrentSection, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, cartAmount, setProductScreen, setProductImage, setProductName, setProductPrice, setProductDesc, setCartScreen, getDbmessages} ) {
+function Tartas( {...props} ) {
 
   const [searchKey, setSearchKey] = useState('');
 
@@ -58,56 +58,56 @@ function Tartas( {setHome, admin, setSearchScreen, searchQuery, setSearchQuery, 
   };
 
     useEffect(() => {
-      getDbmessages();
+      props.getDbmessages();
       getTartas();
     }, []);
 
     function returnHome() {
-        setTartasScreen(false);
-        setHome(true);
+      props.setTartasScreen(false);
+      props.setHome(true);
       };
 
 
     function showTortas() {
-        setTartasScreen(false);
-        setCakesScreen(true);
+      props.setTartasScreen(false);
+      props.setCakesScreen(true);
     };
 
     function showSalado() {
-      setTartasScreen(false);
-      setSaladoScreen(true);
+      props.setTartasScreen(false);
+      props.setSaladoScreen(true);
   };
 
     function showBudines() {
-      setTartasScreen(false);
-      setBudinesScreen(true);
+      props.setTartasScreen(false);
+      props.setBudinesScreen(true);
   };
 
   function showOtros() {
-    setTartasScreen(false);
-    setOtrosScreen(true);
+    props.setTartasScreen(false);
+    props.setOtrosScreen(true);
 };
 
 function goToProduct(e) {
-  setTartasScreen(false);
-  setProductScreen(true);
-  setCurrentSection('Tartas');
-  setProductImage(e.currentTarget.title);
-  setProductName(e.currentTarget.alt);
-  setProductPrice(e.currentTarget.id);
-  setProductDesc(e.currentTarget.name);
+  props.setTartasScreen(false);
+  props.setProductScreen(true);
+  props.setCurrentSection('Tartas');
+  props.setProductImage(e.currentTarget.title);
+  props.setProductName(e.currentTarget.alt);
+  props.setProductPrice(e.currentTarget.id);
+  props.setProductDesc(e.currentTarget.name);
 };
 
 function showCart() {
-  setCartScreen(true);
-  setTartasScreen(false);
+  props.setCartScreen(true);
+  props.setTartasScreen(false);
 };
 
 function searchFunc(e) {
   if(e.key === 'Enter') {
-    setSearchQuery(searchKey);
-    setSearchScreen(true);
-    setTartasScreen(false);
+    props.setSearchQuery(searchKey);
+    props.setSearchScreen(true);
+    props.setTartasScreen(false);
   };
 };
 
@@ -257,7 +257,7 @@ const updateRow3 = async (e, tartaItem3) => {
           <img src={search} className="search" alt="Buscar"/>
           <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>{cartAmount}</p>
+          <p className='cartQuantity'>{props.cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
@@ -283,7 +283,7 @@ const updateRow3 = async (e, tartaItem3) => {
                   <div>
                     <img onClick={goToProduct} src={tartaItem.itemIMG} className="sectionIMG" title={tartaItem.itemIMG} name={tartaItem.itemDesc} id={tartaItem.itemPrice} alt={tartaItem.itemName}/>
                     <h1 className='itemName'>{tartaItem.itemName}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName(e, tartaItem)}>
                         <label className='updateLabelAdmin' for="Name">Nombre:</label>
@@ -292,7 +292,7 @@ const updateRow3 = async (e, tartaItem3) => {
                       </form>
                       </> : <></>}
                     <h1 className='itemPrice'>{tartaItem.itemPrice}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice(e, tartaItem)}>
                         <label className='updateLabelAdmin'  for="Price">Precio:</label>
@@ -300,7 +300,7 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <div className='itemDescAdminBox'>
                         <h2 className='itemDescAdmin'>{tartaItem.itemDesc}</h2>
@@ -311,8 +311,8 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2 className='adminRow'>Hilera: {tartaItem.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2 className='adminRow'>Hilera: {tartaItem.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow(e, tartaItem)}>
                         <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
@@ -320,7 +320,7 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem(e, tartaItem)}>X</h1> : <></>}
+                      {props.admin ? <h1 className='adminDelete' onClick={(e) => deleteItem(e, tartaItem)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -331,7 +331,7 @@ const updateRow3 = async (e, tartaItem3) => {
                   <div>
                     <img onClick={goToProduct} src={tartaItem2.itemIMG} className="sectionIMG" title={tartaItem2.itemIMG} name={tartaItem2.itemDesc} id={tartaItem2.itemPrice} alt={tartaItem2.itemName}/>
                     <h1 className='itemName'>{tartaItem2.itemName}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName2(e, tartaItem2)}>
                         <label className='updateLabelAdmin' for="Name">Nombre:</label>
@@ -340,7 +340,7 @@ const updateRow3 = async (e, tartaItem3) => {
                       </form>
                       </> : <></>}
                     <h1 className='itemPrice'>{tartaItem2.itemPrice}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice2(e, tartaItem2)}>
                         <label className='updateLabelAdmin'  for="Price">Precio:</label>
@@ -348,7 +348,7 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <div className='itemDescAdminBox'>
                         <h2 className='itemDescAdmin'>{tartaItem2.itemDesc}</h2>
@@ -359,8 +359,8 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2 className='adminRow'>Hilera: {tartaItem2.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2 className='adminRow'>Hilera: {tartaItem2.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow2(e, tartaItem2)}>
                         <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
@@ -368,7 +368,7 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem2(e, tartaItem2)}>X</h1> : <></>}
+                      {props.admin ? <h1 className='adminDelete' onClick={(e) => deleteItem2(e, tartaItem2)}>X</h1> : <></>}
                   </div>
           )
         })}
@@ -379,7 +379,7 @@ const updateRow3 = async (e, tartaItem3) => {
                   <div>
                     <img onClick={goToProduct} src={tartaItem3.itemIMG} className="sectionIMG" title={tartaItem3.itemIMG} name={tartaItem3.itemDesc} id={tartaItem3.itemPrice} alt={tartaItem3.itemName}/>
                     <h1 className='itemName'>{tartaItem3.itemName}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateName3(e, tartaItem3)}>
                         <label className='updateLabelAdmin' for="Name">Nombre:</label>
@@ -388,7 +388,7 @@ const updateRow3 = async (e, tartaItem3) => {
                       </form>
                       </> : <></>}
                     <h1 className='itemPrice'>{tartaItem3.itemPrice}</h1>
-                    {admin ? 
+                    {props.admin ? 
                       <>
                       <form onSubmit={(e) => updatePrice3(e, tartaItem3)}>
                         <label className='updateLabelAdmin'  for="Price">Precio:</label>
@@ -396,7 +396,7 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? 
+                      {props.admin ? 
                       <>
                       <div className='itemDescAdminBox'>
                         <h2 className='itemDescAdmin'>{tartaItem3.itemDesc}</h2>
@@ -407,8 +407,8 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h2 className='adminRow'>Hilera: {tartaItem3.itemRow}</h2> : <></>}
-                      {admin ? 
+                      {props.admin ? <h2 className='adminRow'>Hilera: {tartaItem3.itemRow}</h2> : <></>}
+                      {props.admin ? 
                       <>
                       <form onSubmit={(e) => updateRow3(e, tartaItem3)}>
                         <label className='updateLabelAdmin'  for="Row">Hilera (1-3):</label>
@@ -416,7 +416,7 @@ const updateRow3 = async (e, tartaItem3) => {
                         <button>Actualizar</button>
                       </form>
                       </> : <></>}
-                      {admin ? <h1 className='adminDelete' onClick={(e) => deleteItem3(e, tartaItem3)}>X</h1> : <></>}
+                      {props.admin ? <h1 className='adminDelete' onClick={(e) => deleteItem3(e, tartaItem3)}>X</h1> : <></>}
                   </div>
           )
         })}

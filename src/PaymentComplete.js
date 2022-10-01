@@ -1,10 +1,10 @@
 import './App.css';
 import {useState, useEffect} from 'react';
 
+import vegan from './static/vegan.png';
+import instagram from './static/instagram.webp'; 
 import cart from './static/cart.png';
 import search from './static/search.png';
-
-import coralHome from './static/coralHome.jpg';
 
 // Paypal Imports
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
@@ -14,17 +14,15 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { collection, doc, setDoc, deleteDoc, getDocs, query, where, limit } from "firebase/firestore";
-import userEvent from '@testing-library/user-event';
-import { CheckCircleFilled } from '@ant-design/icons';
 
 // Initialize Firebase Database
 firebase.initializeApp({
-  apiKey: "AIzaSyB5aeD3R-qHoRlLJcNGmrpCVZEocRz90Dk",
-  authDomain: "reef-store-9da21.firebaseapp.com",
-  projectId: "reef-store-9da21",
-  storageBucket: "reef-store-9da21.appspot.com",
-  messagingSenderId: "149895470839",
-  appId: "1:149895470839:web:5937a7595ca8b696f17df2"
+  apiKey: "AIzaSyAWkqnRPfh3R2WIesSODdKFns4ymZridvM",
+  authDomain: "dharma-ec35e.firebaseapp.com",
+  projectId: "dharma-ec35e",
+  storageBucket: "dharma-ec35e.appspot.com",
+  messagingSenderId: "79111090409",
+  appId: "1:79111090409:web:b41568c2860577b3844078"
 });
 
 // Firebase Database
@@ -35,6 +33,7 @@ function PaymentComplete( {...props} ) {
     const [searchKey, setSearchKey] = useState('');
     const [orderItems, setOrderItems] = useState([]);
     const orderRef = collection(db, "orders");
+    const cartRef = collection(db, "cart");
 
     const getCurrentOrder = async () => {
             const itemsRef = query(orderRef, where('orderNumber', '==', props.currentOrder));
@@ -45,7 +44,17 @@ function PaymentComplete( {...props} ) {
     useEffect(() => {     
         props.getDbmessages();
         getCurrentOrder();
+        clearCart();
     }, [props.currentOrder]);
+
+    const clearCart = async () => {
+      const currentDoc = query(cartRef, where('user', '==', props.currentUser));
+      const querySnapshot = await getDocs(currentDoc);
+
+      querySnapshot.forEach((docu) => {
+        deleteDoc(doc(db, 'cart', docu.id));
+      });
+    };
 
   function returnHome() {
     props.setPaymentComplete(false);
@@ -55,6 +64,31 @@ function PaymentComplete( {...props} ) {
   function showCart() {
     props.setCartScreen(true);
     props.setPaymentComplete(false);
+  };
+
+  function showCakes() {
+    props.setPaymentComplete(false);
+    props.setCakesScreen(true);
+  };
+
+  function showTartas() {
+    props.setPaymentComplete(false);
+    props.setTartasScreen(true);
+  };
+
+  function showSalado() {
+    props.setPaymentComplete(false);
+    props.setSaladoScreen(true);
+  };
+
+  function showBudines() {
+    props.setPaymentComplete(false);
+    props.setBudinesScreen(true);
+  };
+
+  function showOtros() {
+    props.setPaymentComplete(false);
+    props.setOtrosScreen(true);
   };
 
   function searchFunc(e) {
@@ -74,44 +108,60 @@ function PaymentComplete( {...props} ) {
   return (
     <>
     <div className="page">
-    <div className='titleBar'>
-            <h1 className='titleName' onClick={returnHome} >JF Aquatics</h1>
-            <h1 onClick={showProductSelection} title="Soft Corals" className='catName'>Corals</h1>
-            <h1 onClick={showProductSelection} title="Supplies" className='catName'>Supplies</h1>
-            <h1 onClick={showProductSelection} title="Saltwater Fish" className='catName'>Fish</h1>
-            <h1 onClick={showProductSelection} title="Invertebrates" className='catName'>Inverts</h1>
-          <div className='searchCart'>
-            <img src={search} className="search" alt="Search"/>
-            <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Search ..."/>
-            <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
-            <p className='cartQuantity'>{props.cartAmount}</p>
-          </div>
+    <h1 onClick={returnHome} className='titleBehindD'>D</h1>
+      <h1 onClick={returnHome} className='titleBehindP'>P</h1>
+      <div className='titleBar'>
+        <div className='leftBarBox'>
+          <h2 className='leftBar'>Pasteles Especiales Para Celiacos y Veganos</h2>
+          <img src={vegan} className="vegan" alt="Vegano"/>
+        </div>
+        <h1 onClick={returnHome} className='title'>Dharma Pastelería</h1>
+        <div className='searchCart'>
+          <img src={search} className="search" alt="Buscar"/>
+          <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
+          <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
+          <p className='cartQuantity'>{props.cartAmount}</p>
+        </div>
+      </div>
+      <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
+      <div className='categories-box'>
+        <div className='categories'>
+          <h2 onClick={showCakes}>TORTAS</h2>
+          <h2 onClick={showTartas}>TARTAS</h2>
+          <h2 onClick={showSalado}>SALADO</h2>
+          <h2 onClick={showBudines}>BUDINES</h2>
+          <h2 onClick={showOtros}>OTROS</h2>
+        </div>
       </div>
       <div className='confirmBox'>
-        <h1 className='confirmTitle'>Order Complete!</h1>
-        <h2 className='confirmSubTitle'>Thank you for shopping with us! You can find your order details below.</h2>
+        <h1 className='confirmTitle'>¡Compra Realizada!</h1>
+        <h2 className='confirmSubTitle'>¡Muchas gracias por elegir a nosotros! Se puede encontrar sus detalles del pedido abajo.</h2>
         {orderItems.map((orderItem) => {
             return (
                 <>
                 <div className='orderDetails'>
-                    <h1 className='orderTitle'>Order Details:</h1>
-                    <h2 className='orderSubtitle'>Order Total: {orderItem.orderTotal}</h2>
-                    <h2 className='orderSubtitle'>Order Number: {orderItem.orderNumber}</h2>
-                    <h2 className='orderSubtitle'>Products: {orderItem.orderProducts}</h2>
+                    <h1 className='orderTitle'>Detalles del Pedido:</h1>
+                    <h2 className='orderSubtitle'>Total del Pedido: {orderItem.orderTotal}</h2>
+                    <h2 className='orderSubtitle'>Número del Pedido: {orderItem.orderNumber}</h2>
+                    <h2 className='orderSubtitle'>Productos: {orderItem.orderProducts}</h2>
                 </div>
                 <div className='shippingDetails'>
-                    <h1 className='orderTitle'>Shipping Details:</h1>
-                    <h2 className='orderSubtitle'>Your order will be sent to: {orderItem.clientAddress}</h2>
-                    <h2 className='orderSubtitle'>Estimated Delivery Date: {Date(Date.now())}</h2>
+                    <h1 className='orderTitle'>Detalles del Envío:</h1>
+                    <h2 className='orderSubtitle'>Tu Orden se Enviará a: {orderItem.clientAddress}</h2>
+                    <h2 className='orderSubtitle'>Fecha de Entrega Estimada: {Date(Date.now())}</h2>
                 </div>
                 </>
             )
             })}
         </div>
-      <svg className='bottomWave' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 220">
-                <path fill="#092849" fill-opacity="1" d="M0,96L34.3,90.7C68.6,85,137,75,206,85.3C274.3,96,343,128,411,138.7C480,149,549,139,617,117.3C685.7,96,754,64,823,58.7C891.4,53,960,75,1029,96C1097.1,117,1166,139,1234,144C1302.9,149,1371,139,1406,133.3L1440,128L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"/>
-            </svg>
-    </div>
+        <div className='footer'>
+          <h1>Dharma Pastelería</h1>
+          <div className='footerInsta'>
+            <h1>Seguinos en Instagram:</h1>
+            <a href='https://www.instagram.com/dharma.pasteleria/'><img src={instagram} className="instagram" alt="Instagram"/></a>
+          </div>
+        </div>
+        </div>
     </>
   );
 }

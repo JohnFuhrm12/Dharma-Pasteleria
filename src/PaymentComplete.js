@@ -6,6 +6,8 @@ import instagram from './static/instagram.webp';
 import cart from './static/cart.png';
 import search from './static/search.png';
 
+import whatsapp from './static/whatsapp.webp'
+
 // Paypal Imports
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
 
@@ -34,6 +36,15 @@ function PaymentComplete( {...props} ) {
     const [orderItems, setOrderItems] = useState([]);
     const orderRef = collection(db, "orders");
     const cartRef = collection(db, "cart");
+
+    const message = `¡Hola! Vengo de https://dharmapasteleria.netlify.app/. Mi numero de pedido es ${props.currentOrder}.`;
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+    var yyyy = today.getFullYear();
+
+    today = dd + '/' + mm + '/' + yyyy;
 
     const getCurrentOrder = async () => {
             const itemsRef = query(orderRef, where('orderNumber', '==', props.currentOrder));
@@ -99,12 +110,6 @@ function PaymentComplete( {...props} ) {
     };
   };
 
-  function showProductSelection(e) {
-    props.setPaymentComplete(false);
-    props.setProductSelectionCategory(e.currentTarget.title);
-    props.setProductSelectionScreen(true);
-    };
-
   return (
     <>
     <div className="page">
@@ -134,7 +139,7 @@ function PaymentComplete( {...props} ) {
         </div>
       </div>
       <div className='confirmBox'>
-        <h1 className='confirmTitle'>¡Compra Realizada!</h1>
+        {props.orderPayment === 'Tarjeta' ? <h1 className='confirmTitle'>¡Compra Realizada!</h1> : <h1 className='confirmTitle'>¡Pedido Realizado!</h1>}
         <h2 className='confirmSubTitle'>¡Muchas gracias por elegir a nosotros! Se puede encontrar sus detalles del pedido abajo.</h2>
         {orderItems.map((orderItem) => {
             return (
@@ -145,11 +150,28 @@ function PaymentComplete( {...props} ) {
                     <h2 className='orderSubtitle'>Número del Pedido: {orderItem.orderNumber}</h2>
                     <h2 className='orderSubtitle'>Productos: {orderItem.orderProducts}</h2>
                 </div>
+                {props.orderService === 'Domicilio' ?
                 <div className='shippingDetails'>
                     <h1 className='orderTitle'>Detalles del Envío:</h1>
-                    <h2 className='orderSubtitle'>Tu Orden se Enviará a: {orderItem.clientAddress}</h2>
-                    <h2 className='orderSubtitle'>Fecha de Entrega Estimada: {Date(Date.now())}</h2>
+                    <h2 className='orderSubtitle'>Su Orden se Enviará a: {orderItem.clientAddress}</h2>
+                    <h2 className='orderSubtitle'>Fecha de Entrega Estimada: {today}</h2> 
+                    <div className='orderWhatsapp'>
+                      <h2 className='orderSubtitle'>Coordine su Pedido:</h2> 
+                      <a target="_blank" href={`https://wa.me/5491159061461?text=${message}`}><img src={whatsapp} className='whatsappLogo'></img></a>
+                    </div>
                 </div>
+                : <></>}
+                {props.orderService === 'Para Llevar' ?
+                <div className='shippingDetails'>
+                    <h1 className='orderTitle'>Detalles del Retiro:</h1>
+                    <h2 className='orderSubtitle'>Su Orden se Recoge por Acá: Dr. Amadeo Sabattini 4545, B1678 Caseros, Provincia de Buenos Aires, Argentina</h2>
+                    <h2 className='orderSubtitle'>Estará listo dentro de 24hrs. Contactános por Whatsapp para coordinar.</h2> 
+                    <div className='orderWhatsapp'>
+                      <h2 className='orderSubtitle'>Consulte su Pedido:</h2>
+                      <a target="_blank" href={`https://wa.me/5491159061461?text=${message}`}><img src={whatsapp} className='whatsappLogo'></img></a> 
+                    </div>
+                </div>
+                : <></>}
                 </>
             )
             })}

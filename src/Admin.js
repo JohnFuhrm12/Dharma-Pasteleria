@@ -29,7 +29,7 @@ firebase.initializeApp({
 // Firebase Database
 const db = firebase.firestore();
 
-function Admin( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, setCartScreen, setAdmin, setAdminScreen, setCakesScreen, setTartasScreen, setSaladoScreen, setBudinesScreen, setOtrosScreen, setClientInfoScreen, cartAmount, currentUser} ) {
+function Admin( {...props} ) {
 
   const [searchKey, setSearchKey] = useState('');
 
@@ -45,7 +45,7 @@ function Admin( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, s
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [flavor, setFlavor] = useState('');
+  const [error, setError] = useState(false);
   const [row, setRow] = useState('');
 
   const [imageUrl, setImageUrl] = useState();
@@ -77,52 +77,52 @@ function Admin( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, s
     });
 
   function returnHome() {
-    setAdminScreen(false);
-    setHome(true);
+    props.setAdminScreen(false);
+    props.setHome(true);
   };
 
   function showCakes() {
-    setAdminScreen(false);
-    setCakesScreen(true);
+    props.setAdminScreen(false);
+    props.setCakesScreen(true);
   };
 
   function showTartas() {
-    setAdminScreen(false);
-    setTartasScreen(true);
+    props.setAdminScreen(false);
+    props.setTartasScreen(true);
   };
 
   function showSalado() {
-    setAdminScreen(false);
-    setSaladoScreen(true);
+    props.setAdminScreen(false);
+    props.setSaladoScreen(true);
   };
 
   function showBudines() {
-    setAdminScreen(false);
-    setBudinesScreen(true);
+    props.setAdminScreen(false);
+    props.setBudinesScreen(true);
   };
 
   function showOtros() {
-    setAdminScreen(false);
-    setOtrosScreen(true);
+    props.setAdminScreen(false);
+    props.setOtrosScreen(true);
   };
 
   function showCart() {
-    setCartScreen(true);
-    setAdminScreen(false);
+    props.setCartScreen(true);
+    props.setAdminScreen(false);
   };
 
   function login(e) {
     if (username === realUsername && password === realPassword) {
-      setAdmin(true);
+      props.setAdmin(true);
     }
     else {
-      alert("Wrong Username or Password!");
+      setError(true);
       e.preventDefault();
     };
   };
 
   function logout() {
-    setAdmin(false);
+    props.setAdmin(false);
     window.location.reload(false);
   };
 
@@ -163,9 +163,9 @@ function Admin( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, s
 
   function searchFunc(e) {
     if(e.key === 'Enter') {
-      setSearchQuery(searchKey);
-      setSearchScreen(true);
-      setAdminScreen(false);
+      props.setSearchQuery(searchKey);
+      props.setSearchScreen(true);
+      props.setAdminScreen(false);
     };
   };
 
@@ -184,7 +184,7 @@ function Admin( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, s
           <img src={search} className="search" alt="Buscar"/>
           <input onChange={(e) => {setSearchKey(e.target.value)}} onKeyDown={(e) => {searchFunc(e)}} className='searchBar' type="text" value={searchKey} placeholder="Buscar ..."></input>
           <img onClick={showCart} src={cart} className="cart" alt="Carrito"/>
-          <p className='cartQuantity'>{cartAmount}</p>
+          <p className='cartQuantity'>{props.cartAmount}</p>
         </div>
       </div>
       <h2 onClick={returnHome} className='subtitle'>Buenos Aires</h2>
@@ -197,7 +197,7 @@ function Admin( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, s
           <h2 onClick={showOtros}>OTROS</h2>
         </div>
       </div>
-        {admin ? 
+        {props.admin ? 
         <>
         <h1>Cerrar Sesión</h1>
         <button className='logoutButton' onClick={logout}>Cerrar Sesión</button> 
@@ -242,7 +242,8 @@ function Admin( {setHome, setSearchScreen, searchQuery, setSearchQuery, admin, s
         :
         <>
         <h1>Acceso Administritivo</h1>
-        <form onSubmit={login} className='AdminLoginForm'>
+        {error ? <h1 className='errorMessage'>¡El nombre de usuario o contraseña son incorrectos!</h1> : <></>}
+        <form onChange={() => {setError(false)}} onSubmit={login} className='AdminLoginForm'>
             <label className='username' for="username">Usuario:</label>
             <input onChange={(e) => {setUsername(e.target.value)}} className='usernameInput' name='username' value={username}></input>
             <label className='password' for="password">Contraseña:</label>

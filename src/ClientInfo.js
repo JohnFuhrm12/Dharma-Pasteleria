@@ -6,6 +6,7 @@ import cart from './static/cart.png';
 import search from './static/search.png';
 
 import {useState, useEffect} from 'react';
+import emailjs from '@emailjs/browser';
 
 // Paypal Imports
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"; 
@@ -38,7 +39,7 @@ function ClientInfo( {...props} ) {
   const [streetName, setStreetName] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [phone, setPhone] = useState('');
-  const [payment, setPayment] = useState('Effectivo');
+  const [payment, setPayment] = useState('Efectivo');
 
   const [clientLastName, setClientLastName] = useState('');
   const [countryName, setCountryName] = useState('Argentina');
@@ -54,7 +55,7 @@ function ClientInfo( {...props} ) {
   const totals = [];
   const cartRef = collection(db, "cart");
 
-  const message = `Hola! Vengo de https://dharmapasteleria.netlify.app/.  
+  const message = `¡Hola! Vengo de https://dharmapasteleria.netlify.app/.  
   Tipo de Servicio: ${service}
   
   Nombre: ${clientFirstName}${clientLastName}
@@ -104,7 +105,16 @@ function ClientInfo( {...props} ) {
     useEffect(() => {     
         getDbmessages();
         getTotal();
+        Init();
     }, []);
+
+    useEffect(() => {
+      props.setOrderService(service);
+    }, [service])
+
+    useEffect(() => {
+      props.setOrderPayment(payment);
+    }, [payment])
 
     setTimeout( function() { getTotal(); }, 1000);
 
@@ -167,6 +177,34 @@ function ClientInfo( {...props} ) {
       orderType: service,
     });
     props.setCurrentOrder(id);
+};
+
+function Init() {
+  emailjs.init("2jI9ojHs6Sk2b6u_l");
+};
+
+function sendEmail() {
+  emailjs.send("service_03qx7ub","template_t88qnzi",{
+    orderNumber: id,
+    orderType: service,
+    clientAddress: `${streetName}, ${buildingName}, ${cityName} ${postalCode}, ${countryName}`,
+    clientEmail: emailName,
+    clientName: `${clientFirstName} ${clientLastName}`,
+    clientNumber: phone,
+    orderStatus: "Pendiente",
+    paymentMethod: payment,
+    orderTotal: `$${newSum}`,
+    orderProducts: props.cartItems.map((cartItem) => {
+      return cartItem.itemQuantity + 'x' + ' ' + cartItem.itemName + ' ';
+    }),
+    });
+};
+
+function cashOrder() {
+  props.setClientInfoScreen(false);
+  props.setPaymentComplete(true);
+  createOrder();
+  sendEmail();
 };
 
   return (
@@ -278,7 +316,7 @@ function ClientInfo( {...props} ) {
       </div>
       <h1>${newSum}</h1>
       <button onClick={() => {setFirstPage(true)}} className='procedeButtonClientInfo'>Atrás</button>
-      {payment === 'Efectivo' ? <a target="_blank" href={`https://wa.me/5491159061461?text=${message}`}><button className='procedeButtonClientInfo'>Enviar Pedido</button></a> : <></>}
+      {payment !== 'Tarjeta' ? <button onClick={cashOrder} className='procedeButtonClientInfo'>Confirmar</button>: <></>}
       <div className='paypal'>
       {payment === 'Tarjeta' ?
       <PayPalScriptProvider options={{ "client-id": "test"}}>
@@ -296,9 +334,16 @@ function ClientInfo( {...props} ) {
                 });
             }}
             onApprove={(data, actions) => {
-              props.setClientInfoScreen(false);
-              props.setPaymentComplete(true);
-              createOrder();
+              return actions.order.capture().then(function(orderData) {
+                // Successful capture! For dev/demo purposes:
+                console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                const transaction = orderData.purchase_units[0].payments.captures[0];
+                alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+                props.setClientInfoScreen(false);
+                props.setPaymentComplete(true);
+                createOrder();
+                sendEmail();
+              });
             }}
         />;
       </PayPalScriptProvider>

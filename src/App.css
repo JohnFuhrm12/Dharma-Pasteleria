@@ -921,7 +921,28 @@ html body {
   
   /* Order Confirmation */
 
+.errorMessage {
+    color: red;
+    font-size: 20px;
+}
 
+.orderWhatsapp {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.whatsappLogo {
+    width: 50px;
+    margin-top: -5px;
+    margin-left: -30px;
+    transition: 0.4s;
+}
+
+.whatsappLogo:hover {
+    margin-top: -12px;
+    transition: 0.4s;
+}
 
 
 
@@ -1667,5 +1688,23 @@ html body {
     font-size: 25px;
     text-shadow: 4px 4px black;
     text-transform: uppercase;
+}
+
+.orderWhatsapp {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.whatsappLogo {
+    width: 30px;
+    margin-top: -3px;
+    margin-left: -30px;
+    transition: 0.4s;
+}
+
+.whatsappLogo:hover {
+    margin-top: -10px;
+    transition: 0.4s;
 }
 }

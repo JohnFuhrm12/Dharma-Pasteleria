@@ -74,6 +74,9 @@ function App() {
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [currentOrder, setCurrentOrder] = useState('');
 
+  const [orderService, setOrderService] = useState('');
+  const [orderPayment, setOrderPayment] = useState('');
+
   const [cartItems, setCartItems] = useState([]);
   const cartAmount = cartItems.length;
   const cartRef = collection(db, "cart");
@@ -142,6 +145,10 @@ function App() {
       setBudinesScreen,
       otrosScreen,
       setOtrosScreen,
+      orderService,
+      setOrderService,
+      orderPayment,
+      setOrderPayment,
    };
 
   return (

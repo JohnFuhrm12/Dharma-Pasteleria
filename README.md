@@ -1,5 +1,5 @@
 # Dharma-Pastelería
-A pastry store e-commerce site in Spanish made for a client in Buenos Aires, Argentina. Made with React.js and Firebase and deployed using Netlify.
+A pastry store e-commerce site in Spanish made for a place in Buenos Aires, Argentina. Made with React.js and Firebase and deployed using Netlify.
 
 Link to Site: https://dharmapasteleria.netlify.app/
 
